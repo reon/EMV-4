@@ -21,7 +21,8 @@
 
 
 
-MapWidget::MapWidget()
+MapWidget::MapWidget(QWidget *parent)
+    : Marble::MarbleWidget(parent)
 {
 
 
@@ -85,11 +86,11 @@ void MapWidget::updateData()
 
 
 
-    double rlat;
-    double rlon;
+//    double rlat;
+//    double rlon;
     eventFlag = false;
-    Marble::GeoDataPlacemark *event;
-    Marble::GeoDataCoordinates *coors;
+//    Marble::GeoDataPlacemark *event;
+//    Marble::GeoDataCoordinates *coors;
 
 
 

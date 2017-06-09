@@ -1,5 +1,8 @@
 #ifndef MAPWIDGET_H
 #define MAPWIDGET_H
+
+#include <QWidget>
+
 #include <marble/MarbleWidget.h>
 #include <marble/GeoPainter.h>
 //#include "plot.h"
@@ -19,13 +22,17 @@ class MapWidget : public Marble::MarbleWidget
     Q_OBJECT
 
 public:
+//    explicit MapWidget();
+    explicit MapWidget( QWidget *parent = 0 );
+
     double slat;
     double slon;
-    QList<Marble::GeoDataCoordinates*> stations;
     bool eventFlag;
+
+    QList<Marble::GeoDataCoordinates*> stations;
     Marble::GeoDataCoordinates* eventcoors;
     archPaintLayer* layer;
-    MapWidget();
+
 //    MapWidget(QList<Plot *> *plotList);
     Marble::GeoDataDocument *document;
 //    virtual void customPaint(Marble::GeoPainter* painter);
