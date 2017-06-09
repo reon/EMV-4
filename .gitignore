@@ -1,1 +1,3 @@
 *.pro.user
+
+/build-EMV-Desktop-Debug/
