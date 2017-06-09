@@ -1,7 +1,13 @@
+#include <memory>
+
+#include <QXmlStreamReader>
+#include <QMessageBox>
+
 #include "emv.h"
 #include "ui_emv.h"
 
-#include <QMessageBox>
+#include "outputhttpresponse.h"
+#include "quakemlreader.h"
 
 EMV::EMV(QWidget *parent) :
     QMainWindow(parent),
@@ -35,5 +41,21 @@ void EMV::replyFinished(QNetworkReply* response)
 {
     QString status = response->error()==QNetworkReply::NoError ? "Success" : "Error";
     QMessageBox::information(this, "Network response.", status);
+
     response->deleteLater();
+
+    if (response->error() != QNetworkReply::NoError) return;
+
+    QByteArray bytes = response->readAll();
+    QString XMLstring = QString(bytes);
+
+//    auto responseWindow = new OutputHTTPResponse();
+//    responseWindow->SetText(XMLstring);
+
+//    responseWindow->show();
+
+//    TestParserXML(XMLstring);
+
+    std::unique_ptr<QuakeMLReader> obj(new QuakeMLReader(XMLstring));
 }
+

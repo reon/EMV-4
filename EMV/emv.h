@@ -1,6 +1,7 @@
 #ifndef EMV_H
 #define EMV_H
 
+#include <QObject>
 #include <QMainWindow>
 #include <QUrl>
 #include <QUrlQuery>
@@ -32,6 +33,7 @@ private:
     Ui::EMV *ui;
     QNetworkAccessManager net;
 
+//    QString XMLstring;
 
 };
 
