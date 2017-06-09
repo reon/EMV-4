@@ -1,12 +1,13 @@
-#include "archpaintlayer.h"
+#include <QtGui/QKeyEvent>
+
 #include <marble/MarbleMap.h>
 #include <marble/GeoPainter.h>
 #include <marble/LayerInterface.h>
-#include <QtGui/QKeyEvent>
 #include <marble/GeoDataLineString.h>
 
+#include "archpaintlayer.h"
 
-
+using namespace Marble;
 
 archPaintLayer::archPaintLayer(MarbleWidget* widget,QList<Marble::GeoDataCoordinates*> stations,
                            Marble::GeoDataCoordinates* eventcoors) : m_widget(widget), m_index(0)

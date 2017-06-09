@@ -1,8 +1,8 @@
-#include "mapwidget.h"
-#include "marble/GeoDataDocument.h"
-#include "marble/GeoDataPlacemark.h"
-#include "marble/MarbleModel.h"
-#include "marble/GeoDataTreeModel.h"
+#include <mapwidget.h>
+#include <marble/GeoDataDocument.h>
+#include <marble/GeoDataPlacemark.h>
+#include <marble/MarbleModel.h>
+#include <marble/GeoDataTreeModel.h>
 
 #include <QtCore/QDataStream>
 #include <QtCore/QFile>
@@ -13,41 +13,42 @@
 #include <marble/GeoDataLineString.h>
 #include <marble/GeoDataTreeModel.h>
 #include <marble/MarbleModel.h>
-#include "marble/AbstractFloatItem.h"
+#include <marble/AbstractFloatItem.h>
 #include <marble/GeoPainter.h>
 #include <marble/GeoDataLineString.h>
 
 
 
 
+//MapWidget::MapWidget(/*QList<Plot*> *plotList*/)
 
 MapWidget::MapWidget(QWidget *parent)
     : Marble::MarbleWidget(parent)
 {
 
-
-}
-
-
-//MapWidget::MapWidget(QList<Plot*> *plotList)
-//{
-
 //    _plotList = plotList;
 
+    //setMapThemeId("earth/plain/plain.dgml");
+    setMapThemeId("earth/openstreetmap/openstreetmap.dgml");
 
 
-//    setMapThemeId("earth/plain/plain.dgml");
+    //Set Default Marble settings
+    centerOn(8.4, 49.0);
 
-//    //make some kind of default
-//    centerOn(8.4, 49.0);
+    setShowCities(false);
+    setShowPlaces(false);
+    setShowOtherPlaces(false);
+    setShowBackground(false);
+    setShowBorders(false);
+    setShowGrid(false);
+    //setShowTerrain(false);
 
-//    setShowCities(false);
-//    setShowPlaces(false);
-//    setShowOtherPlaces(false);
-//    setShowBackground(false);
-//    setShowBorders(false);
-//    setShowGrid(false);
-//    //setShowTerrain(false);
+    // Set the map quality to gain speed
+    setMapQualityForViewContext( Marble::HighQuality, Marble::Still );
+    setMapQualityForViewContext( Marble::LowQuality, Marble::Animation );
+
+    //TODO, future configurables
+    //setProjection( Mercator );
 
 //    foreach (Marble::AbstractFloatItem * floatItem, floatItems())
 //    {
@@ -58,33 +59,18 @@ MapWidget::MapWidget(QWidget *parent)
 //        floatItem->setVisible(false);
 //    }
 
-
-//    //TODO, create a button and make configurable
-//    //setProjection( Mercator );
-
-//    // Set the map quality to gain speed
-//    setMapQualityForViewContext( Marble::NormalQuality, Marble::Still );
-//    setMapQualityForViewContext( Marble::LowQuality, Marble::Animation );
-
-//   // Center the map onto a given position
-//   // Marble::GeoDataCoordinates home(-60.0, -10.0, 0.0, Marble::GeoDataCoordinates::Degree);
-//   // mapWidget->centerOn(home);
-
-//    document = new Marble::GeoDataDocument;
-
-//    updateData();
+   // Center the map onto a given position
+   // Marble::GeoDataCoordinates home(-60.0, -10.0, 0.0, Marble::GeoDataCoordinates::Degree);
+   // mapWidget->centerOn(home);
 
 
+    document = new Marble::GeoDataDocument;
+    updateData();
 
-
-
-
-//}
+}
 
 void MapWidget::updateData()
 {
-
-
 
 //    double rlat;
 //    double rlon;
@@ -92,16 +78,11 @@ void MapWidget::updateData()
 //    Marble::GeoDataPlacemark *event;
 //    Marble::GeoDataCoordinates *coors;
 
-
-
-
     if(stations.length() > 0)
         stations.clear();
 
      this->model()->treeModel()->removeDocument( document );
      document->clear();
-
-
 
     //Puts all station in the satation list to the map
 //    for(int i=0; i< _plotList->length();i++)
@@ -121,10 +102,7 @@ void MapWidget::updateData()
 
 //        place->setVisualCategory(Marble::GeoDataPlacemark::GeoDataVisualCategory::Volcano);
 
-
-
 //        document->append( place );
-
 
 //        //TODO change if condition to a flag
 //        if(_plotList->at(i)->data->eventLat != -12345 && _plotList->at(i)->data->eventLong != -12345 && i ==0 )
@@ -159,7 +137,6 @@ void MapWidget::updateData()
 
 //    }
 
-
     this->model()->treeModel()->addDocument( document );
     this->removeLayer(layer);
     layer = new archPaintLayer(this,stations,eventcoors);
@@ -169,22 +146,14 @@ void MapWidget::updateData()
     // Install an event handler: Pressing + will change the layer we paint at
     this->installEventFilter(layer);
 
-
-
-
 }
 
 //void MapWidget::customPaint(Marble::GeoPainter* painter)
 //{
 
-
 //   //TODO make this more genaric (can I move this into the ctor?)
 //   //Draw event label
 //    Marble::GeoDataCoordinates home(_plotList->at(0)->data->eventLong, _plotList->at(0)->data->eventLat, 0.0, Marble::GeoDataCoordinates::Degree);
 //    painter->drawText(home,_plotList->at(0)->data->eventName,-15,-17,200,200);
-
-
-
-
 
 //}

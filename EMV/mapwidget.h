@@ -24,6 +24,8 @@ class MapWidget : public Marble::MarbleWidget
 public:
 //    explicit MapWidget();
     explicit MapWidget( QWidget *parent = 0 );
+//    explicit MapWidget(/*QList<Plot*> *plotList*/)
+
 
     double slat;
     double slon;

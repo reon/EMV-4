@@ -50,8 +50,20 @@
      <height>25</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuTests">
+    <property name="title">
+     <string>Tests</string>
+    </property>
+    <addaction name="actionTest_1_Get"/>
+   </widget>
+   <addaction name="menuTests"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionTest_1_Get">
+   <property name="text">
+    <string>Test 1 - Get()</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

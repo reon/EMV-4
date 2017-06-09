@@ -1,5 +1,6 @@
-#include "emv.h"
 #include <QApplication>
+
+#include "emv.h"
 
 int main(int argc, char *argv[])
 {

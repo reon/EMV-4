@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,10 +15,12 @@ CONFIG += c++11
 
 SOURCES += main.cpp\
         emv.cpp \
-        mapwidget.cpp archpaintlayer.cpp
+        mapwidget.cpp archpaintlayer.cpp \
+    station.cpp
 
 HEADERS  += emv.h \
-        archcolors.h archpaintlayer.h mapwidget.h
+        archcolors.h archpaintlayer.h mapwidget.h \
+    station.h
 
 FORMS    += emv.ui
 
