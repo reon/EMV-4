@@ -36,6 +36,7 @@ void QuakeMLReader::ProcessEvent()
     currentEvent = {};
     while(xml.readNextStartElement()) {
         if (xml.name() == "origin") ProcessOrigin();
+        else if (xml.name() == "magnitude")   ProcessMagnitude();
         else xml.skipCurrentElement();
     }
     events.push_back(currentEvent);
@@ -46,10 +47,19 @@ void QuakeMLReader::ProcessOrigin()
     while (xml.readNextStartElement()) {
         QStringRef name = xml.name();
         if (name == "time")             currentEvent.time = ProcessValue();
-        else if (name == "latitude")         currentEvent.latitude = ProcessValue();
+        else if (name == "latitude")    currentEvent.latitude = ProcessValue();
         else if (name == "longitude")   currentEvent.longitude = ProcessValue();
-        else if (name == "magnitude")   currentEvent.magnitude = ProcessValue();
         else xml.skipCurrentElement();
+    }
+}
+
+void QuakeMLReader::ProcessMagnitude()
+{
+    while (xml.readNextStartElement()) {
+        if (xml.name() == "mag")
+            currentEvent.magnitude = ProcessValue();
+        else
+            xml.skipCurrentElement();
     }
 }
 

@@ -5,34 +5,27 @@
 #include <QVector>
 #include <QXmlStreamReader>
 
-
-class QMLEvent {
-public:
-    QString time;
-
-    QString latitude;
-    QString longitude;
-
-    QString magnitude;
-};
-
+#include "quakemlevent.h"
 
 class QuakeMLReader
 {
 public:
     QuakeMLReader(QString xml);
 
-    QVector<QMLEvent> events;
+    QVector<QuakeMLEvent> events;
 
 private:
     void ProcessEventParameters();
     void ProcessEvent();
     void ProcessOrigin();
+    void ProcessMagnitude();
     QString ProcessValue();
 
     QXmlStreamReader xml;
 
-    QMLEvent currentEvent;
+    QuakeMLEvent currentEvent;
 };
 
 #endif // QUAKEMLREADER_H
+
+

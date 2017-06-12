@@ -18,13 +18,15 @@ SOURCES += main.cpp\
         mapwidget.cpp archpaintlayer.cpp \
     station.cpp \
     quakemlreader.cpp \
-    eventlayer.cpp
+    eventlayer.cpp \
+    quakemlevent.cpp
 
 HEADERS  += emv.h \
         archcolors.h archpaintlayer.h mapwidget.h \
     station.h \
     quakemlreader.h \
-    eventlayer.h
+    eventlayer.h \
+    quakemlevent.h
 
 FORMS    += emv.ui
 

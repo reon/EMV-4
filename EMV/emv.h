@@ -16,6 +16,7 @@
 #include <marble/GeoDataTreeModel.h>
 
 #include "quakemlreader.h"
+#include "quakemlevent.h"
 #include "eventlayer.h"
 
 namespace Ui {
@@ -39,13 +40,13 @@ private slots:
     //Network
     void replyFinished(QNetworkReply* response);
 
-    void LoadEvents(QVector<QMLEvent> events);
+    void LoadEvents(QVector<QuakeMLEvent> events);
 
 private:
     Ui::EMV *ui;
     QNetworkAccessManager net;
 
-    QVector<QMLEvent> events;
+    QVector<QuakeMLEvent> events;
     Marble::GeoDataDocument* geoDoc {new Marble::GeoDataDocument};
 
     EventLayer* eventLayer {};

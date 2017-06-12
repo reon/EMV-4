@@ -4,7 +4,6 @@
 #include "emv.h"
 #include "ui_emv.h"
 
-#include "quakemlreader.h"
 
 EMV::EMV(QWidget *parent) :
     QMainWindow(parent),
@@ -66,14 +65,14 @@ void EMV::replyFinished(QNetworkReply* response)
 
 
 ///Old
-void EMV::LoadEvents(QVector<QMLEvent> events)
+void EMV::LoadEvents(QVector<QuakeMLEvent> events)
 {
     using namespace Marble;
 
     ui->map->model()->treeModel()->removeDocument(geoDoc);
     geoDoc->clear();
 
-    for (QMLEvent event : events)
+    for (QuakeMLEvent event : events)
     {
         auto placemark = new GeoDataPlacemark("event");
         //placemarkers.append(placemark);

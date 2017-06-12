@@ -11,22 +11,27 @@ QStringList EventLayer::renderPosition() const
     return QStringList() << "HOVERS_ABOVE_SURFACE";
 }
 
+
+
 bool EventLayer::render( GeoPainter *painter, ViewportParams *viewport,
    const QString& renderPos, GeoSceneLayer * layer)
 {
+
+
+//    if (events.isEmpty())
+//        return true;
+    const qreal MAGNITUDE_MIN = 2.0;
+    const qreal MAGNITUDE_FACTOR = 5.0;
+
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    if (events.isEmpty())
-        return true;
+    painter->setPen( QPen(QBrush(QColor::fromRgb(255,10,10,175)), 3.0, Qt::SolidLine, Qt::RoundCap ) );
 
-
-    painter->setPen( QPen(QBrush(QColor::fromRgb(255,10,10,200)), 10.0, Qt::SolidLine, Qt::RoundCap ) );
-    for (auto event : events) {
-        painter->drawEllipse(
-            GeoDataCoordinates(event.longitude.toFloat(), event.latitude.toFloat(), 0, GeoDataCoordinates::Degree),
-            30.0f, 30.0f);
-//        painter->drawPoint(
-//            GeoDataCoordinates(event.longitude.toFloat(), event.latitude.toFloat(), 0, GeoDataCoordinates::Degree));
+    for (QuakeMLEvent event : events) {
+        qreal magnitude = event.magnitude.toDouble();
+        magnitude = (magnitude > MAGNITUDE_MIN) ? magnitude : MAGNITUDE_MIN;
+        magnitude *= MAGNITUDE_FACTOR;
+        painter->drawEllipse(event.Point(), magnitude, magnitude);
     }
 
     return true;

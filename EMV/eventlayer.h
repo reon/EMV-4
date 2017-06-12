@@ -9,7 +9,7 @@
 #include <marble/GeoPainter.h>
 #include <marble/LayerInterface.h>
 
-#include "quakemlreader.h"
+#include "quakemlevent.h"
 
 
 class EventLayer : public QObject, public Marble::LayerInterface
@@ -28,7 +28,7 @@ public:
     // Overriding QObject
 //    virtual bool eventFilter(QObject *obj, QEvent *event);
 
-    QVector<QMLEvent> events;
+    QVector<QuakeMLEvent> events;
 
 signals:
 
