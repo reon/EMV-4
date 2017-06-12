@@ -25,36 +25,44 @@ QuakeMLReader::QuakeMLReader(QString XMLstring)
 void QuakeMLReader::ProcessEventParameters()
 {
     while(xml.readNextStartElement()) {
-        if (xml.name() == "event") ProcessEvent();
+        if (xml.name() == "event")
+            ProcessEvent();
         else xml.skipCurrentElement();
     }
 }
 
 void QuakeMLReader::ProcessEvent()
 {
+    currentEvent = {};
     while(xml.readNextStartElement()) {
         if (xml.name() == "origin") ProcessOrigin();
         else xml.skipCurrentElement();
     }
+    events.push_back(currentEvent);
 }
 
 void QuakeMLReader::ProcessOrigin()
 {
     while (xml.readNextStartElement()) {
-        if (xml.name() == "latitude") ProcessLatitude();
+        QStringRef name = xml.name();
+        if (name == "time")             currentEvent.time = ProcessValue();
+        else if (name == "latitude")         currentEvent.latitude = ProcessValue();
+        else if (name == "longitude")   currentEvent.longitude = ProcessValue();
+        else if (name == "magnitude")   currentEvent.magnitude = ProcessValue();
         else xml.skipCurrentElement();
     }
 }
 
-void QuakeMLReader::ProcessLatitude()
+QString QuakeMLReader::ProcessValue()
 {
     QString value;
 
     while (xml.readNextStartElement()) {
         if (xml.name() == "value")
-        {
             value = xml.readElementText();
-            QMessageBox::information(nullptr, "Latitude", value);
-        }
+        else
+            xml.skipCurrentElement();
     }
+
+    return value;
 }

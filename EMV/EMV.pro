@@ -17,12 +17,14 @@ SOURCES += main.cpp\
         emv.cpp \
         mapwidget.cpp archpaintlayer.cpp \
     station.cpp \
-    quakemlreader.cpp
+    quakemlreader.cpp \
+    eventlayer.cpp
 
 HEADERS  += emv.h \
         archcolors.h archpaintlayer.h mapwidget.h \
     station.h \
-    quakemlreader.h
+    quakemlreader.h \
+    eventlayer.h
 
 FORMS    += emv.ui
 

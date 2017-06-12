@@ -28,7 +28,7 @@
        </widget>
       </item>
       <item>
-       <widget class="MapWidget" name="widget" native="true">
+       <widget class="MapWidget" name="map" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>

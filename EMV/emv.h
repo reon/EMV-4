@@ -3,10 +3,20 @@
 
 #include <QObject>
 #include <QMainWindow>
+#include <QMessageBox>
 #include <QUrl>
 #include <QUrlQuery>
 #include <QNetworkReply>
+#include <QXmlStreamReader>
 #include <QtNetwork/qnetworkaccessmanager.h>
+
+#include <marble/GeoDataDocument.h>
+#include <marble/GeoDataPlacemark.h>
+#include <marble/MarbleModel.h>
+#include <marble/GeoDataTreeModel.h>
+
+#include "quakemlreader.h"
+#include "eventlayer.h"
 
 namespace Ui {
 class EMV;
@@ -29,11 +39,16 @@ private slots:
     //Network
     void replyFinished(QNetworkReply* response);
 
+    void LoadEvents(QVector<QMLEvent> events);
+
 private:
     Ui::EMV *ui;
     QNetworkAccessManager net;
 
-//    QString XMLstring;
+    QVector<QMLEvent> events;
+    Marble::GeoDataDocument* geoDoc {new Marble::GeoDataDocument};
+
+    EventLayer* eventLayer {};
 
 };
 

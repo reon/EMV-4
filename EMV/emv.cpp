@@ -1,12 +1,9 @@
-#include <memory>
+//#include <memory>
 
-#include <QXmlStreamReader>
-#include <QMessageBox>
 
 #include "emv.h"
 #include "ui_emv.h"
 
-#include "outputhttpresponse.h"
 #include "quakemlreader.h"
 
 EMV::EMV(QWidget *parent) :
@@ -16,12 +13,20 @@ EMV::EMV(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    eventLayer = new EventLayer(ui->map);
+    ui->map->addLayer(eventLayer);
+
     connect(&net, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
+
 
 }
 
 EMV::~EMV()
 {
+    delete geoDoc;
+
+    if (eventLayer) delete eventLayer;
+
     delete ui;
 }
 
@@ -49,13 +54,37 @@ void EMV::replyFinished(QNetworkReply* response)
     QByteArray bytes = response->readAll();
     QString XMLstring = QString(bytes);
 
-//    auto responseWindow = new OutputHTTPResponse();
-//    responseWindow->SetText(XMLstring);
+    QuakeMLReader qxml(XMLstring);
 
-//    responseWindow->show();
+    ///To be replaced with onNewEvents(QVector<QMLEvent>)
+    this->events = qxml.events;
+    //LoadEvents(qxml.events);
+    eventLayer->events = events;
 
-//    TestParserXML(XMLstring);
-
-    std::unique_ptr<QuakeMLReader> obj(new QuakeMLReader(XMLstring));
+    ui->map->centerOn(events[0].longitude.toFloat(), events[0].latitude.toFloat(), true);
 }
 
+
+///Old
+void EMV::LoadEvents(QVector<QMLEvent> events)
+{
+    using namespace Marble;
+
+    ui->map->model()->treeModel()->removeDocument(geoDoc);
+    geoDoc->clear();
+
+    for (QMLEvent event : events)
+    {
+        auto placemark = new GeoDataPlacemark("event");
+        //placemarkers.append(placemark);
+
+        placemark->setCoordinate(event.longitude.toFloat(), event.latitude.toFloat(), 0, GeoDataCoordinates::Degree);
+        placemark->setPopulation(777);
+        placemark->setVisualCategory(Marble::GeoDataPlacemark::GeoDataVisualCategory::Bookmark);
+
+        geoDoc->append(placemark);
+
+    }
+    ui->map->centerOn(events[0].longitude.toFloat(), events[0].latitude.toFloat(), true);
+    ui->map->model()->treeModel()->addDocument(geoDoc);
+}

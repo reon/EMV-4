@@ -33,7 +33,7 @@ public:
 
     QList<Marble::GeoDataCoordinates*> stations;
     Marble::GeoDataCoordinates* eventcoors;
-    archPaintLayer* layer;
+//    archPaintLayer* layer;
 
 //    MapWidget(QList<Plot *> *plotList);
     Marble::GeoDataDocument *document;

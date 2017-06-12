@@ -1,9 +1,9 @@
 #include <QtGui/QKeyEvent>
 
-#include <marble/MarbleMap.h>
-#include <marble/GeoPainter.h>
-#include <marble/LayerInterface.h>
-#include <marble/GeoDataLineString.h>
+//#include <marble/MarbleMap.h>
+//#include <marble/GeoPainter.h>
+//#include <marble/LayerInterface.h>
+//#include <marble/GeoDataLineString.h>
 
 #include "archpaintlayer.h"
 

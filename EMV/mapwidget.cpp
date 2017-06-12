@@ -64,8 +64,8 @@ MapWidget::MapWidget(QWidget *parent)
    // mapWidget->centerOn(home);
 
 
-    document = new Marble::GeoDataDocument;
-    updateData();
+//    document = new Marble::GeoDataDocument;
+//    updateData();
 
 }
 
@@ -138,13 +138,13 @@ void MapWidget::updateData()
 //    }
 
     this->model()->treeModel()->addDocument( document );
-    this->removeLayer(layer);
-    layer = new archPaintLayer(this,stations,eventcoors);
+//    this->removeLayer(layer);
+//    layer = new archPaintLayer(this,stations,eventcoors);
     // Uncomment for older versions of Marble:
     // mapWidget->map()->model()->addLayer(layer);
-    this->addLayer(layer);
+//    this->addLayer(layer);
     // Install an event handler: Pressing + will change the layer we paint at
-    this->installEventFilter(layer);
+//    this->installEventFilter(layer);
 
 }
 
