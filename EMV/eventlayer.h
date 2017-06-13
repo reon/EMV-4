@@ -36,7 +36,7 @@ public slots:
 
 private:
     Marble::MarbleWidget * mWidget;
-    QVector<QuakeMLEvent>* mEvents;
+    QVector<QuakeMLEvent>* mEvents;     //Not managed
 
     int mIndex {};
 

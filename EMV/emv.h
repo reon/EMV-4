@@ -46,14 +46,19 @@ private slots:
     void LoadNewEvents(QVector<QuakeMLEvent> events);
 
 
+
 private:
     Ui::EMV *ui;
     QNetworkAccessManager net;
 
     QVector<QuakeMLEvent> events;
-    Marble::GeoDataDocument* geoDoc {new Marble::GeoDataDocument};
 
     EventLayer* eventLayer {};
+
+    Marble::GeoDataDocument* geoDoc {new Marble::GeoDataDocument};
+
+
+    void ReloadGeoDocument();
 
 };
 

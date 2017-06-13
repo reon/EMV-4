@@ -26,9 +26,13 @@ EMV::EMV(QWidget *parent) :
 
 EMV::~EMV()
 {
+    ui->map->model()->treeModel()->removeDocument(geoDoc);
     delete geoDoc;
 
-    if (eventLayer) delete eventLayer;
+    if (eventLayer) {
+        ui->map->removeLayer(eventLayer);
+        delete eventLayer;
+    }
 
     delete ui;
 }
@@ -78,36 +82,37 @@ void EMV::ReplyFinished(QNetworkReply* response)
 
 void EMV::LoadNewEvents(QVector<QuakeMLEvent> newEvents)
 {
-//    this->events = qxml.events;
+    //Might need to move
+    ui->map->centerOn(newEvents[0].longitude.toFloat(), newEvents[0].latitude.toFloat(), true);
+
     events += newEvents;
 
-    ui->map->centerOn(events[0].longitude.toFloat(), events[0].latitude.toFloat(), true);
+    ReloadGeoDocument();
+}
+
+void EMV::ReloadGeoDocument()
+{
+    using namespace Marble;
+
+    ui->map->model()->treeModel()->removeDocument(geoDoc);
+    geoDoc->clear();
+
+    for (QuakeMLEvent event : events)
+    {
+        auto placemark = new GeoDataPlacemark("event");
+
+        placemark->setCoordinate(event.longitude.toFloat(), event.latitude.toFloat(), 0, GeoDataCoordinates::Degree);
+        placemark->setPopulation(777);
+        placemark->setVisualCategory(Marble::GeoDataPlacemark::GeoDataVisualCategory::Bookmark);
+
+        geoDoc->append(placemark);
+    }
+
+    ui->map->model()->treeModel()->addDocument(geoDoc);
 }
 
 
-///Old
-//void EMV::LoadEvents(QVector<QuakeMLEvent> events)
-//{
-//    using namespace Marble;
 
-//    ui->map->model()->treeModel()->removeDocument(geoDoc);
-//    geoDoc->clear();
-
-//    for (QuakeMLEvent event : events)
-//    {
-//        auto placemark = new GeoDataPlacemark("event");
-//        //placemarkers.append(placemark);
-
-//        placemark->setCoordinate(event.longitude.toFloat(), event.latitude.toFloat(), 0, GeoDataCoordinates::Degree);
-//        placemark->setPopulation(777);
-//        placemark->setVisualCategory(Marble::GeoDataPlacemark::GeoDataVisualCategory::Bookmark);
-
-//        geoDoc->append(placemark);
-
-//    }
-//    ui->map->centerOn(events[0].longitude.toFloat(), events[0].latitude.toFloat(), true);
-//    ui->map->model()->treeModel()->addDocument(geoDoc);
-//}
 
 
 

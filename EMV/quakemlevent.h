@@ -14,8 +14,10 @@ public:
 
     QString longitude;
     QString latitude;
+    QString depth;
 
     QString magnitude;
+    QString magnitudeType;
 
     //For conversion to Marble Types
     Marble::GeoDataCoordinates Point() const;

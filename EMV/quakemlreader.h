@@ -15,11 +15,12 @@ public:
     QVector<QuakeMLEvent> events;
 
 private:
-    void ProcessEventParameters();
-    void ProcessEvent();
-    void ProcessOrigin();
-    void ProcessMagnitude();
-    QString ProcessValue();
+    void ProcessEventParameters();      // <eventParameters>
+    void ProcessEvent();                // <eventParameters><event>
+    void ProcessOrigin();               // <event><origin>
+    void ProcessMagnitude();            // <event><magnitude>
+    QString ProcessValue();             // <*><value>QString</value>
+    //QString ProcessValue(QString tag) // <*><tag>QString</tag>
 
     QXmlStreamReader xml;
 
