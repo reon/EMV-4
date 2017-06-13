@@ -75,6 +75,10 @@ void EMV::ReplyFinished(QNetworkReply* response)
     QByteArray bytes = response->readAll();
     QString XMLstring = QString(bytes);
 
+    #ifdef QT_DEBUG
+    SaveXML(XMLstring);
+    #endif
+
     QuakeMLReader qxml(XMLstring);
 
     emit LoadNewEvents(qxml.events);
@@ -82,12 +86,30 @@ void EMV::ReplyFinished(QNetworkReply* response)
 
 void EMV::LoadNewEvents(QVector<QuakeMLEvent> newEvents)
 {
+    if (newEvents.empty()) return;
+
     //Might need to move
     ui->map->centerOn(newEvents[0].longitude.toFloat(), newEvents[0].latitude.toFloat(), true);
 
     events += newEvents;
-
     ReloadGeoDocument();
+}
+
+
+void EMV::SaveXML(QString xmlResponse)
+{
+    if (!ui->actionSave_XML->isChecked())
+        return;
+
+    QFile out("XML Response at : " + QDateTime().toString("hh:mm dd.MM"), this);
+
+    if (!out.open(QIODevice::WriteOnly | QIODevice::Truncate))
+        return;
+
+    QTextStream textOut(&out);
+    textOut << xmlResponse;
+    textOut.flush();
+    out.close();
 }
 
 void EMV::ReloadGeoDocument()
@@ -112,7 +134,23 @@ void EMV::ReloadGeoDocument()
 }
 
 
+void EMV::on_actionLoad_XML_triggered()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+        tr("Open XML"), "/home/alex", tr("XML Files (*.xml)"));
 
+    if (fileName.isNull()) return;
 
+    QFile in(fileName);
 
+    if (!in.open(QIODevice::ReadOnly))
+        return;
 
+    QTextStream textIn(&in);
+    QString XML = textIn.readAll();
+
+    QuakeMLReader qxml(XML);
+
+    emit LoadNewEvents(qxml.events);
+
+}

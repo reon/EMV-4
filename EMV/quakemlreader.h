@@ -1,9 +1,12 @@
 #ifndef QUAKEMLREADER_H
 #define QUAKEMLREADER_H
 
+#include <QtCore>
 #include <QString>
 #include <QVector>
 #include <QXmlStreamReader>
+
+#include <QRegularExpression> //Should not be needed
 
 #include "quakemlevent.h"
 

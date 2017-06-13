@@ -2,6 +2,11 @@
 #define EMV_H
 
 #include <QObject>
+#include <QDateTime>
+#include <QFile>
+#include <QFileDialog>
+#include <QTextStream>
+
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QUrl>
@@ -47,6 +52,8 @@ private slots:
 
 
 
+    void on_actionLoad_XML_triggered();
+
 private:
     Ui::EMV *ui;
     QNetworkAccessManager net;
@@ -58,6 +65,8 @@ private:
     Marble::GeoDataDocument* geoDoc {new Marble::GeoDataDocument};
 
 
+
+    void SaveXML(QString xmlResponse); ///< For testing, Save XML on ReplayFinished()
     void ReloadGeoDocument();
 
 };

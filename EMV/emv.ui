@@ -78,6 +78,9 @@
     </property>
     <addaction name="actionTest_1"/>
     <addaction name="actionTest_2"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave_XML"/>
+    <addaction name="actionLoad_XML"/>
    </widget>
    <addaction name="menuTests"/>
   </widget>
@@ -93,6 +96,19 @@
   <action name="actionTest_2">
    <property name="text">
     <string>Test 2 - ISTI mole</string>
+   </property>
+  </action>
+  <action name="actionSave_XML">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Save XML</string>
+   </property>
+  </action>
+  <action name="actionLoad_XML">
+   <property name="text">
+    <string>Load XML</string>
    </property>
   </action>
  </widget>
