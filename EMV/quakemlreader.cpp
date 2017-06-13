@@ -58,6 +58,8 @@ void QuakeMLReader::ProcessMagnitude()
     while (xml.readNextStartElement()) {
         if (xml.name() == "mag")
             currentEvent.magnitude = ProcessValue();
+        else if (xml.name() == "type")
+            currentEvent.magnitudeType = ProcessValue();
         else
             xml.skipCurrentElement();
     }
