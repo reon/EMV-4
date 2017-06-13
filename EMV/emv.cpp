@@ -12,12 +12,16 @@ EMV::EMV(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    eventLayer = new EventLayer(ui->map);
+    //Size the two main widgets, with table being smaller
+    ui->splitter->setSizes(QList<int>{100, 400});
+
+    eventLayer = new EventLayer(ui->map, &events);
     ui->map->addLayer(eventLayer);
 
-    connect(&net, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
+    connect(ui->actionTest_1, SIGNAL(triggered(bool)), this, SLOT(Test_1_IRIS_Request()));
+    connect(ui->actionTest_2, SIGNAL(triggered(bool)), this, SLOT(Test_2_ISTI_mole_Request()));
 
-
+    connect(&net, SIGNAL(finished(QNetworkReply*)), this, SLOT(ReplyFinished(QNetworkReply*)));
 }
 
 EMV::~EMV()
@@ -29,19 +33,33 @@ EMV::~EMV()
     delete ui;
 }
 
-void EMV::on_actionTest_1_Get_triggered()
+void EMV::Test_1_IRIS_Request()
 {
-//    QMessageBox::information(this, "Host", GetURL().host());
-    QString rawQuery = "minmag=5&limit=200&maxlat=38.101&minlon=-105.64100000000002&minlat=36.099&maxlon=-103.769&orderby=time";
-    QUrlQuery query(rawQuery);
+    QUrl url {"http://service.iris.edu/fdsnws/event/1/query"};
+    QString query {"minmag=5&limit=200&maxlat=38.101&minlon=-105.64100000000002&minlat=36.099&maxlon=-103.769&orderby=time"};
 
-    QUrl url = GetURL();
-    url.setQuery(query);
+    url.setQuery(QUrlQuery(query));
 
+    emit FDSNRequest(url);
+    //net.get(QNetworkRequest(url));
+}
+
+void EMV::Test_2_ISTI_mole_Request()
+{
+    QUrl url {"http://love.isti.com:8089/mole"};
+    QString query {"minmag=2&limit=200&orderby=mag"};
+
+    url.setQuery(QUrlQuery(query));
+    emit FDSNRequest(url);
+}
+
+
+void EMV::FDSNRequest(QUrl url)
+{
     net.get(QNetworkRequest(url));
 }
 
-void EMV::replyFinished(QNetworkReply* response)
+void EMV::ReplyFinished(QNetworkReply* response)
 {
     QString status = response->error()==QNetworkReply::NoError ? "Success" : "Error";
     QMessageBox::information(this, "Network response.", status);
@@ -55,35 +73,41 @@ void EMV::replyFinished(QNetworkReply* response)
 
     QuakeMLReader qxml(XMLstring);
 
-    ///To be replaced with onNewEvents(QVector<QMLEvent>)
-    this->events = qxml.events;
-    //LoadEvents(qxml.events);
-    eventLayer->events = events;
+    emit LoadNewEvents(qxml.events);
+}
+
+void EMV::LoadNewEvents(QVector<QuakeMLEvent> newEvents)
+{
+//    this->events = qxml.events;
+    events += newEvents;
 
     ui->map->centerOn(events[0].longitude.toFloat(), events[0].latitude.toFloat(), true);
 }
 
 
 ///Old
-void EMV::LoadEvents(QVector<QuakeMLEvent> events)
-{
-    using namespace Marble;
+//void EMV::LoadEvents(QVector<QuakeMLEvent> events)
+//{
+//    using namespace Marble;
 
-    ui->map->model()->treeModel()->removeDocument(geoDoc);
-    geoDoc->clear();
+//    ui->map->model()->treeModel()->removeDocument(geoDoc);
+//    geoDoc->clear();
 
-    for (QuakeMLEvent event : events)
-    {
-        auto placemark = new GeoDataPlacemark("event");
-        //placemarkers.append(placemark);
+//    for (QuakeMLEvent event : events)
+//    {
+//        auto placemark = new GeoDataPlacemark("event");
+//        //placemarkers.append(placemark);
 
-        placemark->setCoordinate(event.longitude.toFloat(), event.latitude.toFloat(), 0, GeoDataCoordinates::Degree);
-        placemark->setPopulation(777);
-        placemark->setVisualCategory(Marble::GeoDataPlacemark::GeoDataVisualCategory::Bookmark);
+//        placemark->setCoordinate(event.longitude.toFloat(), event.latitude.toFloat(), 0, GeoDataCoordinates::Degree);
+//        placemark->setPopulation(777);
+//        placemark->setVisualCategory(Marble::GeoDataPlacemark::GeoDataVisualCategory::Bookmark);
 
-        geoDoc->append(placemark);
+//        geoDoc->append(placemark);
 
-    }
-    ui->map->centerOn(events[0].longitude.toFloat(), events[0].latitude.toFloat(), true);
-    ui->map->model()->treeModel()->addDocument(geoDoc);
-}
+//    }
+//    ui->map->centerOn(events[0].longitude.toFloat(), events[0].latitude.toFloat(), true);
+//    ui->map->model()->treeModel()->addDocument(geoDoc);
+//}
+
+
+

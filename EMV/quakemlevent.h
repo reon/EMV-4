@@ -9,6 +9,7 @@
 class QuakeMLEvent
 {
 public:
+    QString name {"event"};
     QString time;
 
     QString longitude;
@@ -18,6 +19,8 @@ public:
 
     //For conversion to Marble Types
     Marble::GeoDataCoordinates Point() const;
+    Marble::GeoDataPlacemark Placemark() const;
+
 };
 
 

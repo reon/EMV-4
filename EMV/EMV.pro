@@ -16,17 +16,17 @@ CONFIG += c++11
 SOURCES += main.cpp\
         emv.cpp \
         mapwidget.cpp archpaintlayer.cpp \
-    station.cpp \
     quakemlreader.cpp \
     eventlayer.cpp \
-    quakemlevent.cpp
+    quakemlevent.cpp \
+    fdsnrequest.cpp
 
 HEADERS  += emv.h \
         archcolors.h archpaintlayer.h mapwidget.h \
-    station.h \
     quakemlreader.h \
     eventlayer.h \
-    quakemlevent.h
+    quakemlevent.h \
+    fdsnrequest.h
 
 FORMS    += emv.ui
 

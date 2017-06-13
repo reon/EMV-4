@@ -1,7 +1,8 @@
 #include "eventlayer.h"
 
 using namespace Marble;
-EventLayer::EventLayer(Marble::MarbleWidget* marbleWidget) : QObject(marbleWidget), mWidget{marbleWidget}
+EventLayer::EventLayer(Marble::MarbleWidget* marbleWidget, QVector<QuakeMLEvent>* events)
+    : QObject(marbleWidget), mWidget{marbleWidget}, mEvents{events}
 {
 
 }
@@ -13,11 +14,9 @@ QStringList EventLayer::renderPosition() const
 
 
 
-bool EventLayer::render( GeoPainter *painter, ViewportParams *viewport,
-   const QString& renderPos, GeoSceneLayer * layer)
+bool EventLayer::render( GeoPainter *painter, ViewportParams * /*viewport*/,
+   const QString& /*renderPos*/, GeoSceneLayer * /*layer*/)
 {
-
-
 //    if (events.isEmpty())
 //        return true;
     const qreal MAGNITUDE_MIN = 2.0;
@@ -27,7 +26,9 @@ bool EventLayer::render( GeoPainter *painter, ViewportParams *viewport,
 
     painter->setPen( QPen(QBrush(QColor::fromRgb(255,10,10,175)), 3.0, Qt::SolidLine, Qt::RoundCap ) );
 
-    for (QuakeMLEvent event : events) {
+    for (QuakeMLEvent event : *mEvents)
+    {
+        //Size circle based on magnitude
         qreal magnitude = event.magnitude.toDouble();
         magnitude = (magnitude > MAGNITUDE_MIN) ? magnitude : MAGNITUDE_MIN;
         magnitude *= MAGNITUDE_FACTOR;

@@ -16,7 +16,7 @@ class EventLayer : public QObject, public Marble::LayerInterface
 {
     Q_OBJECT
 public:
-    explicit EventLayer(Marble::MarbleWidget* marbleWidget);
+    explicit EventLayer(Marble::MarbleWidget* marbleWidget, QVector<QuakeMLEvent>* events);
 
     // Implemented from LayerInterface
     virtual QStringList renderPosition() const;
@@ -28,7 +28,7 @@ public:
     // Overriding QObject
 //    virtual bool eventFilter(QObject *obj, QEvent *event);
 
-    QVector<QuakeMLEvent> events;
+
 
 signals:
 
@@ -36,6 +36,7 @@ public slots:
 
 private:
     Marble::MarbleWidget * mWidget;
+    QVector<QuakeMLEvent>* mEvents;
 
     int mIndex {};
 

@@ -31,16 +31,20 @@ public:
     explicit EMV(QWidget *parent = 0);
     ~EMV();
 
-    static QUrl GetURL() { return QUrl("http://service.iris.edu/fdsnws/event/1/query"); }
+//    static QUrl GetURL() { return QUrl("http://service.iris.edu/fdsnws/event/1/query"); }
 //    static QUrl GetURL() { return QUrl("http://www.google.com"); }
 
 private slots:
-    void on_actionTest_1_Get_triggered();
+    void Test_1_IRIS_Request();
+    void Test_2_ISTI_mole_Request();
 
     //Network
-    void replyFinished(QNetworkReply* response);
+    void FDSNRequest(QUrl url);
 
-    void LoadEvents(QVector<QuakeMLEvent> events);
+    void ReplyFinished(QNetworkReply* response);
+
+    void LoadNewEvents(QVector<QuakeMLEvent> events);
+
 
 private:
     Ui::EMV *ui;
