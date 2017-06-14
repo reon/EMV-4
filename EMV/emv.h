@@ -54,6 +54,8 @@ private slots:
 
     void on_actionLoad_XML_triggered();
 
+    void on_actionOpen_FDSN_Request_Dialong_triggered();
+
 private:
     Ui::EMV *ui;
     QNetworkAccessManager net;

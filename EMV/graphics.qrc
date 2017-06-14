@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/graphics">
+        <file>icons/appbar.database.png</file>
+    </qresource>
+</RCC>

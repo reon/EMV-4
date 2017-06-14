@@ -32,3 +32,6 @@ FORMS    += emv.ui \
     fdsnrequestdialog.ui
 
 LIBS +=   -L/usr/local/lib -lmarblewidget-qt5
+
+RESOURCES += \
+    graphics.qrc

@@ -1,9 +1,7 @@
-//#include <memory>
-
-
 #include "emv.h"
 #include "ui_emv.h"
 
+#include "fdsnrequestdialog.h"
 
 EMV::EMV(QWidget *parent) :
     QMainWindow(parent),
@@ -107,13 +105,13 @@ void EMV::LoadNewEvents(QVector<QuakeMLEvent> newEvents)
     ReloadGeoDocument();
 }
 
-
+/// For debug
 void EMV::SaveXML(QString xmlResponse)
 {
     if (!ui->actionSave_XML->isChecked())
         return;
 
-    QFile out("XML Response at : " + QDateTime().toString("hh.mm.dd.MM"), this);
+    QFile out("XML Response at : " + QDateTime::currentDateTime().toString("hh:mm dd.MM"), this);
 
     if (!out.open(QIODevice::WriteOnly | QIODevice::Truncate))
         return;
@@ -124,6 +122,7 @@ void EMV::SaveXML(QString xmlResponse)
     out.close();
 }
 
+/// Clears MarbleModel and reloads all QuakeMLEvents
 void EMV::ReloadGeoDocument()
 {
     using namespace Marble;
@@ -145,7 +144,7 @@ void EMV::ReloadGeoDocument()
     ui->map->model()->treeModel()->addDocument(geoDoc);
 }
 
-
+/// Loads QuakeML .xml file into QVector<QuakeMLEvents> events
 void EMV::on_actionLoad_XML_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
@@ -165,4 +164,11 @@ void EMV::on_actionLoad_XML_triggered()
 
     emit LoadNewEvents(qxml.events);
 
+}
+
+void EMV::on_actionOpen_FDSN_Request_Dialong_triggered()
+{
+    FDSNRequestDialog* dialog = new FDSNRequestDialog{this};
+
+    dialog->show();
 }
