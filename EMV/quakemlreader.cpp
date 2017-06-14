@@ -67,32 +67,33 @@ void QuakeMLReader::ProcessMagnitude()
     }
 }
 
-//QString QuakeMLReader::ProcessValue()
-//{
-//    while (xml.readNextStartElement()) {
-//        if (xml.name() == "value")
-//            value = xml.readElementText().trimmed();
-//        else
-//            xml.skipCurrentElement();
-//    }
-
-//    return value;
-//}
-
-
 QString QuakeMLReader::ProcessValue()
 {
-    QString innerText = xml.readElementText(QXmlStreamReader::SkipChildElements).trimmed();
-    if (innerText.isEmpty()) return "";
+    QString value;
+    while (xml.readNextStartElement()) {
+        if (xml.name() == "value")
+            value = xml.readElementText().trimmed();
+        else
+            xml.skipCurrentElement();
+    }
 
-    QString pattern = QStringLiteral(R"RAW((?:<value>)?(\S+)(?:<\/value>)?)RAW");
-    QRegularExpression regex(pattern, QRegularExpression::CaseInsensitiveOption);
-    QRegularExpressionMatch match = regex.match(innerText);
-
-    if (!match.hasMatch()) return "";
-
-//    for (auto str : match.capturedTexts())
-//        qDebug(str.toLatin1());
-
-    return match.captured(0);
+    return value;
 }
+
+
+//QString QuakeMLReader::ProcessValue()
+//{
+//    QString innerText = xml.readElementText(QXmlStreamReader::SkipChildElements).trimmed();
+//    if (innerText.isEmpty()) return "";
+
+//    QString pattern = QStringLiteral(R"RAW((?:<value>)?(\S+)(?:<\/value>)?)RAW");
+//    QRegularExpression regex(pattern, QRegularExpression::CaseInsensitiveOption);
+//    QRegularExpressionMatch match = regex.match(innerText);
+
+//    if (!match.hasMatch()) return "";
+
+////    for (auto str : match.capturedTexts())
+////        qDebug(str.toLatin1());
+
+//    return match.captured(0);
+//}

@@ -37,10 +37,11 @@ EMV::~EMV()
     delete ui;
 }
 
+
 void EMV::Test_1_IRIS_Request()
 {
     QUrl url {"http://service.iris.edu/fdsnws/event/1/query"};
-    QString query {"minmag=5&limit=200&maxlat=38.101&minlon=-105.64100000000002&minlat=36.099&maxlon=-103.769&orderby=time"};
+    QString query {"minmag=5&limit=100&maxlat=38.101&minlon=-105.64100000000002&minlat=36.099&maxlon=-103.769&orderby=time"};
 
     url.setQuery(QUrlQuery(query));
 
@@ -70,16 +71,27 @@ void EMV::ReplyFinished(QNetworkReply* response)
 
     response->deleteLater();
 
-    if (response->error() != QNetworkReply::NoError) return;
+    if (response->error() != QNetworkReply::NoError) {
+        qDebug() << "Network error.\n";
+        return;
+    }
 
     QByteArray bytes = response->readAll();
-    QString XMLstring = QString(bytes);
+    QString strResponse = QString(bytes);
+
+    int httpCode = response->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    if (httpCode != 200)
+    {
+        QMessageBox::critical(this, "FDSN response", "Failed to retreive data \n Response: \n" + strResponse);
+        return;
+    }
 
     #ifdef QT_DEBUG
-    SaveXML(XMLstring);
+    SaveXML(strResponse);
     #endif
 
-    QuakeMLReader qxml(XMLstring);
+    QuakeMLReader qxml(strResponse);
 
     emit LoadNewEvents(qxml.events);
 }
@@ -101,7 +113,7 @@ void EMV::SaveXML(QString xmlResponse)
     if (!ui->actionSave_XML->isChecked())
         return;
 
-    QFile out("XML Response at : " + QDateTime().toString("hh:mm dd.MM"), this);
+    QFile out("XML Response at : " + QDateTime().toString("hh.mm.dd.MM"), this);
 
     if (!out.open(QIODevice::WriteOnly | QIODevice::Truncate))
         return;
