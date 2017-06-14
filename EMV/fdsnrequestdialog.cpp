@@ -7,7 +7,7 @@ FDSNRequestDialog::FDSNRequestDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->ServiceSelect->addItems(QStringList{"Event", "Station", "Dataselect"});
+//    ui->ServiceSelect->addItems(QStringList{"Event", "Station", "Dataselect"});
 }
 
 FDSNRequestDialog::~FDSNRequestDialog()

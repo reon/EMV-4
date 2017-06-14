@@ -41,7 +41,7 @@ EMV::~EMV()
 void EMV::Test_1_IRIS_Request()
 {
     QUrl url {"http://service.iris.edu/fdsnws/event/1/query"};
-    QString query {"minmag=5&limit=100&maxlat=38.101&minlon=-105.64100000000002&minlat=36.099&maxlon=-103.769&orderby=time"};
+    QString query {"minmag=1&limit=50&maxlat=38.101&minlon=-105.64100000000002&minlat=36.099&maxlon=-103.769&orderby=time"};
 
     url.setQuery(QUrlQuery(query));
 
