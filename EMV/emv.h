@@ -51,6 +51,9 @@ private slots:
 
     void ReplyFinished(QNetworkReply* response);
 
+    void LoadNewQuakeML(QString xml);
+
+    ///Likely to be removed
     void LoadNewEvents(QVector<QuakeMLEvent> events);
 
     void on_actionLoad_XML_triggered();

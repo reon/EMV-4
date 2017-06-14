@@ -10,6 +10,8 @@
 
 #include <QUrl>
 
+#include "Dialogs/connectdialog.h"
+
 namespace Ui {
 class FDSNRequestDialog;
 }
@@ -21,6 +23,9 @@ class FDSNRequestDialog : public QDialog
 public:
     explicit FDSNRequestDialog(QWidget *parent = 0);
     ~FDSNRequestDialog();
+
+signals:
+    void NewFDSNResponse(QString QuakeML);
 
 private slots:
     void on_ConnectButton_clicked();

@@ -93,6 +93,13 @@ void EMV::ReplyFinished(QNetworkReply* response)
     emit LoadNewEvents(qxml.events);
 }
 
+void EMV::LoadNewQuakeML(QString xml)
+{
+    QuakeMLReader qxml(xml);
+
+    emit LoadNewEvents(qxml.events);
+}
+
 void EMV::LoadNewEvents(QVector<QuakeMLEvent> newEvents)
 {
     if (newEvents.empty()) return;
@@ -168,7 +175,10 @@ void EMV::on_actionLoad_XML_triggered()
 void EMV::on_actionOpen_FDSN_Request_Dialong_triggered()
 {
     if (!fdsnDialog)
+    {
         fdsnDialog = new FDSNRequestDialog{this};
+        connect(fdsnDialog, SIGNAL(QString), this, SLOT(LoadNewQuakeML(QString)));
+    }
 
     fdsnDialog->show();
 }

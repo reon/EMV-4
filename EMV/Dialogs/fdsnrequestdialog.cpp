@@ -25,6 +25,13 @@ void FDSNRequestDialog::on_ConnectButton_clicked()
     url.setQuery(GenerateQuery());
 
     QMessageBox::information(this, "Result", url.toString());
+
+    ConnectDialog connect(this);
+    if (!connect.exec())
+        return;
+
+    emit NewFDSNResponse(connect.RetrieveResponse());
+
 }
 
 void FDSNRequestDialog::on_StandardCallingPatternCheck_toggled(bool checked)

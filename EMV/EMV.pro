@@ -19,17 +19,20 @@ SOURCES += main.cpp\
     QuakeML/quakemlreader.cpp \
     eventlayer.cpp \
     QuakeML/quakemlevent.cpp \
-    Dialogs/fdsnrequestdialog.cpp
+    Dialogs/fdsnrequestdialog.cpp \
+    Dialogs/connectdialog.cpp
 
 HEADERS  += emv.h \
         archcolors.h archpaintlayer.h mapwidget.h \
     QuakeML/quakemlreader.h \
     eventlayer.h \
     QuakeMl/quakemlevent.h \
-    Dialogs/fdsnrequestdialog.h
+    Dialogs/fdsnrequestdialog.h \
+    Dialogs/connectdialog.h
 
 FORMS    += emv.ui \
-    Dialogs/fdsnrequestdialog.ui
+    Dialogs/fdsnrequestdialog.ui \
+    Dialogs/connectdialog.ui
 
 LIBS +=   -L/usr/local/lib -lmarblewidget-qt5
 
