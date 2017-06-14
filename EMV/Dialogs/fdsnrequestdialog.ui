@@ -29,20 +29,27 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QListWidget" name="listWidget">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Authority :</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QListWidget" name="HostListWidget">
       <item>
        <property name="text">
-        <string>http://www.isit.com:8089/</string>
+        <string>www.isit.com:8089/mole</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>http://service.iris.edu/fdsnws/event/1/query</string>
+        <string>service.iris.edu/fdsnws/event/1/query</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>http://service.iris.edu/</string>
+        <string>service.iris.edu/</string>
        </property>
       </item>
      </widget>
@@ -50,7 +57,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QLineEdit" name="lineEdit">
+       <widget class="QLineEdit" name="HostAddEdit">
         <property name="text">
          <string/>
         </property>
@@ -60,7 +67,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="AddURLButton">
+       <widget class="QPushButton" name="AddHostButton">
         <property name="text">
          <string>Add</string>
         </property>
@@ -89,10 +96,37 @@
      <x>290</x>
      <y>10</y>
      <width>371</width>
-     <height>274</height>
+     <height>306</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <spacer name="horizontalSpacer_5">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="StandardCallingPatternCheck">
+        <property name="text">
+         <string>Use Standard Calling Pattern</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
     <item>
      <layout class="QHBoxLayout" name="Service_horizontalLayout">
       <item>
@@ -412,6 +446,8 @@
   <zorder>layoutWidget</zorder>
   <zorder>layoutWidget</zorder>
   <zorder>ConnectButton</zorder>
+  <zorder>StandardCallingPatternCheck</zorder>
+  <zorder>horizontalSpacer_5</zorder>
  </widget>
  <resources/>
  <connections/>
