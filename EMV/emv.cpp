@@ -84,30 +84,24 @@ void EMV::ReplyFinished(QNetworkReply* response)
         return;
     }
 
-    #ifdef QT_DEBUG
-    SaveXML(strResponse);
-    #endif
-
-    QuakeMLReader qxml(strResponse);
-
-    emit LoadNewEvents(qxml.events);
+    emit LoadNewQuakeML(strResponse);
 }
 
 void EMV::LoadNewQuakeML(QString xml)
 {
+    #ifdef QT_DEBUG
+    SaveXML(xml);
+    #endif
+
     QuakeMLReader qxml(xml);
 
-    emit LoadNewEvents(qxml.events);
-}
-
-void EMV::LoadNewEvents(QVector<QuakeMLEvent> newEvents)
-{
-    if (newEvents.empty()) return;
+    if (qxml.events.empty()) return;
 
     //Might need to move
-    ui->map->centerOn(newEvents[0].longitude.toFloat(), newEvents[0].latitude.toFloat(), true);
+    ui->map->centerOn(qxml.events[0].longitude.toFloat(), qxml.events[0].latitude.toFloat(), true);
 
-    events += newEvents;
+    events += qxml.events;
+
     ReloadGeoDocument();
 }
 
@@ -166,18 +160,16 @@ void EMV::on_actionLoad_XML_triggered()
     QTextStream textIn(&in);
     QString XML = textIn.readAll();
 
-    QuakeMLReader qxml(XML);
-
-    emit LoadNewEvents(qxml.events);
-
+    emit LoadNewQuakeML(XML);
 }
 
+/// Open FDSN Dialog, show if already open
 void EMV::on_actionOpen_FDSN_Request_Dialong_triggered()
 {
     if (!fdsnDialog)
     {
         fdsnDialog = new FDSNRequestDialog{this};
-        connect(fdsnDialog, SIGNAL(QString), this, SLOT(LoadNewQuakeML(QString)));
+        connect(fdsnDialog, SIGNAL(NewFDSNResponse(QString)), this, SLOT(LoadNewQuakeML(QString)));
     }
 
     fdsnDialog->show();

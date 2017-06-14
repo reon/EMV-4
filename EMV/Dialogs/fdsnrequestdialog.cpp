@@ -27,7 +27,8 @@ void FDSNRequestDialog::on_ConnectButton_clicked()
     QMessageBox::information(this, "Result", url.toString());
 
     ConnectDialog connect(this);
-    if (!connect.exec())
+    connect.SetURL(url);
+    if (connect.exec() == QDialog::Rejected)
         return;
 
     emit NewFDSNResponse(connect.RetrieveResponse());
@@ -47,8 +48,11 @@ QUrl FDSNRequestDialog::GenerateURL()
     QUrl url = QUrl::fromUserInput(ui->HostListWidget->currentItem()->text());
 
     if (ui->StandardCallingPatternCheck->isChecked()) {
-        url.setPath("/fdsnws/" + ui->ServiceSelect->currentText().toLower()
-            + "/" + ui->VersionEdit->text() + "/");
+        url.setPath(
+            "/fdsnws/" +
+            ui->ServiceSelect->currentText().toLower() + "/" +
+            ui->VersionEdit->text() + "/" +
+            ui->MethodSelect->currentText().toLower());
     }
 
     return url;
@@ -65,12 +69,12 @@ QString FDSNRequestDialog::GenerateQuery()
         { "minlat", ui->LatitudeMinimumEdit->text() },
         { "maxlat", ui->LatitudeMaximumEdit->text() },
         { "minlon", ui->LongitudeMinimumEdit->text() },
-        { "maxlon", ui->LongitudeMaximumEdit->text() }
+        { "maxlon", ui->LongitudeMaximumEdit->text() },
+        { "limit", ui->LimitEdit->text() }
     };
 
     //Remove empty pairs
     for (auto key : fragments.uniqueKeys()) {
-        qDebug() << key << "\n";
         if (fragments.value(key).isEmpty())
             fragments.remove(key);
     }
@@ -81,6 +85,12 @@ QString FDSNRequestDialog::GenerateQuery()
     for (auto i = fragments.begin(); i != fragments.end(); i++) {
         query += i.key() + "=" + i.value() + "&";
     }
+
+    // !!!!! Temp hack !!!!!
+    query += "orderby=mag";
+
+    // !!!! second hack
+    query = "minmag=1&limit=50&maxlat=38.101&minlon=-105.64100000000002&minlat=36.099&maxlon=-103.769&orderby=time";
 
     return query;
 }

@@ -30,20 +30,20 @@ void ConnectDialog::showEvent(QShowEvent *)
 void ConnectDialog::ReplyFinished(QNetworkReply* response)
 {
     if (ProcessReply(response))
-        this->accepted();
+        this->accept();
     else
-        this->rejected();
+        this->reject();
 }
 
 bool ConnectDialog::ProcessReply(QNetworkReply* response)
 {
-    QString status = response->error()==QNetworkReply::NoError ? "Success" : "Error";
-    QMessageBox::information(this, "Network response.", status);
+//    QString status = response->error()==QNetworkReply::NoError ? "Success" : "Error";
+//    QMessageBox::information(this, "Network response.", status);
 
     response->deleteLater();
 
     if (response->error() != QNetworkReply::NoError) {
-        qDebug() << "Network error.\n";
+        qDebug() << "Network error.\n" << response->errorString();
         return false;
     }
 
