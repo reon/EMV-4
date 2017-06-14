@@ -2,6 +2,7 @@
 #define EMV_H
 
 #include <QObject>
+#include <QPointer>
 #include <QDateTime>
 #include <QFile>
 #include <QFileDialog>
@@ -20,9 +21,11 @@
 #include <marble/MarbleModel.h>
 #include <marble/GeoDataTreeModel.h>
 
-#include "quakemlreader.h"
-#include "quakemlevent.h"
+#include "QuakeML/quakemlreader.h"
+#include "QuakeML/quakemlevent.h"
+
 #include "eventlayer.h"
+#include "Dialogs/fdsnrequestdialog.h"
 
 namespace Ui {
 class EMV;
@@ -50,8 +53,6 @@ private slots:
 
     void LoadNewEvents(QVector<QuakeMLEvent> events);
 
-
-
     void on_actionLoad_XML_triggered();
 
     void on_actionOpen_FDSN_Request_Dialong_triggered();
@@ -66,7 +67,7 @@ private:
 
     Marble::GeoDataDocument* geoDoc {new Marble::GeoDataDocument};
 
-
+    QPointer<FDSNRequestDialog> fdsnDialog;
 
     void SaveXML(QString xmlResponse); ///< For testing, Save XML on ReplayFinished()
     void ReloadGeoDocument();

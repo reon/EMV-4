@@ -9,7 +9,7 @@
 #include <marble/GeoPainter.h>
 #include <marble/LayerInterface.h>
 
-#include "quakemlevent.h"
+#include "QuakeML/quakemlevent.h"
 
 
 class EventLayer : public QObject, public Marble::LayerInterface

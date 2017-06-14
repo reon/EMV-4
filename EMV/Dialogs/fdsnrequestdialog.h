@@ -15,6 +15,9 @@ public:
     explicit FDSNRequestDialog(QWidget *parent = 0);
     ~FDSNRequestDialog();
 
+private slots:
+    void on_ConnectButton_clicked();
+
 private:
     Ui::FDSNRequestDialog *ui;
 };

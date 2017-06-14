@@ -16,20 +16,20 @@ CONFIG += c++11
 SOURCES += main.cpp\
         emv.cpp \
         mapwidget.cpp archpaintlayer.cpp \
-    quakemlreader.cpp \
+    QuakeML/quakemlreader.cpp \
     eventlayer.cpp \
-    quakemlevent.cpp \
-    fdsnrequestdialog.cpp
+    QuakeML/quakemlevent.cpp \
+    Dialogs/fdsnrequestdialog.cpp
 
 HEADERS  += emv.h \
         archcolors.h archpaintlayer.h mapwidget.h \
-    quakemlreader.h \
+    QuakeML/quakemlreader.h \
     eventlayer.h \
-    quakemlevent.h \
-    fdsnrequestdialog.h
+    QuakeMl/quakemlevent.h \
+    Dialogs/fdsnrequestdialog.h
 
 FORMS    += emv.ui \
-    fdsnrequestdialog.ui
+    Dialogs/fdsnrequestdialog.ui
 
 LIBS +=   -L/usr/local/lib -lmarblewidget-qt5
 

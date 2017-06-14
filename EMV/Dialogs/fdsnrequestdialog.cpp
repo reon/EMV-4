@@ -7,10 +7,16 @@ FDSNRequestDialog::FDSNRequestDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->setAttribute(Qt::WA_DeleteOnClose);
 //    ui->ServiceSelect->addItems(QStringList{"Event", "Station", "Dataselect"});
 }
 
 FDSNRequestDialog::~FDSNRequestDialog()
 {
     delete ui;
+}
+
+void FDSNRequestDialog::on_ConnectButton_clicked()
+{
+    ui->ConnectButton->setDisabled(true);
 }

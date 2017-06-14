@@ -1,7 +1,6 @@
 #include "emv.h"
 #include "ui_emv.h"
 
-#include "fdsnrequestdialog.h"
 
 EMV::EMV(QWidget *parent) :
     QMainWindow(parent),
@@ -168,7 +167,8 @@ void EMV::on_actionLoad_XML_triggered()
 
 void EMV::on_actionOpen_FDSN_Request_Dialong_triggered()
 {
-    FDSNRequestDialog* dialog = new FDSNRequestDialog{this};
+    if (!fdsnDialog)
+        fdsnDialog = new FDSNRequestDialog{this};
 
-    dialog->show();
+    fdsnDialog->show();
 }
