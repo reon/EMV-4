@@ -21,7 +21,7 @@ class FDSNRequestDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit FDSNRequestDialog(QWidget *parent = 0);
+    explicit FDSNRequestDialog(QWidget *parent = 0, qreal latitude = 37.0 /*43.085*/, qreal longitude = -104.0 /*-73.788*/);
     ~FDSNRequestDialog();
 
 signals:
@@ -36,6 +36,7 @@ private:
     /// Return Scheme + Authority + Path
     QUrl GenerateURL();
     QString GenerateQuery();
+    QString GenerateOrderByFragment();
 
 
     //Members

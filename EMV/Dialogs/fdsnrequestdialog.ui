@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>681</width>
-    <height>437</height>
+    <width>701</width>
+    <height>472</height>
    </rect>
   </property>
   <property name="font">
@@ -28,13 +28,6 @@
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Authority :</string>
-      </property>
-     </widget>
-    </item>
     <item>
      <widget class="QListWidget" name="HostListWidget">
       <item>
@@ -80,8 +73,8 @@
   <widget class="QPushButton" name="ConnectButton">
    <property name="geometry">
     <rect>
-     <x>560</x>
-     <y>390</y>
+     <x>590</x>
+     <y>430</y>
      <width>99</width>
      <height>27</height>
     </rect>
@@ -130,13 +123,6 @@
     <item>
      <layout class="QHBoxLayout" name="Service_horizontalLayout">
       <item>
-       <widget class="QLabel" name="ServiceSelectLabel">
-        <property name="text">
-         <string>Service :</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <spacer name="horizontalSpacer_4">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -148,6 +134,13 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="ServiceSelectLabel">
+        <property name="text">
+         <string>Service :</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QComboBox" name="ServiceSelect">
@@ -176,19 +169,6 @@
     <item>
      <layout class="QHBoxLayout" name="Version_horizontalLayout">
       <item>
-       <widget class="QLabel" name="VersionLabel">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Version :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -203,6 +183,19 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="VersionLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Version :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QLineEdit" name="VersionEdit">
@@ -243,19 +236,6 @@
     <item>
      <layout class="QHBoxLayout" name="Method_horizontalLayout">
       <item>
-       <widget class="QLabel" name="MethodLabel">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Method :</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <spacer name="horizontalSpacer_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -270,6 +250,19 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="MethodLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Method :</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QComboBox" name="MethodSelect">
@@ -301,19 +294,6 @@
     <item>
      <layout class="QHBoxLayout" name="Limit_horizontalLayout">
       <item>
-       <widget class="QLabel" name="LimitLabel">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Limit :</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <spacer name="horizontalSpacer_3">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -325,6 +305,19 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="LimitLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Limit :</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QLineEdit" name="LimitEdit">
@@ -443,11 +436,81 @@
     </item>
    </layout>
   </widget>
+  <widget class="QGroupBox" name="OrderByBox">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>330</y>
+     <width>371</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Order By : </string>
+   </property>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>10</y>
+      <width>116</width>
+      <height>56</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="OrderByItem_verticalLayout">
+     <item>
+      <widget class="QRadioButton" name="OrderByMagnitudeRadioButton">
+       <property name="text">
+        <string>Magnitude</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="OrderByTimeRadioButton">
+       <property name="text">
+        <string>Time</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>10</y>
+      <width>115</width>
+      <height>56</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="OrderByUpDown_verticalLayout">
+     <item>
+      <widget class="QRadioButton" name="OrderByDesendingRadioButton">
+       <property name="text">
+        <string>Desending</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="OrderByAscendingRadioButton">
+       <property name="text">
+        <string>Ascending</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
   <zorder>layoutWidget</zorder>
   <zorder>layoutWidget</zorder>
   <zorder>ConnectButton</zorder>
-  <zorder>StandardCallingPatternCheck</zorder>
-  <zorder>horizontalSpacer_5</zorder>
+  <zorder>OrderByBox</zorder>
  </widget>
  <resources/>
  <connections/>
