@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/graphics">
-        <file>icons/appbar.database.png</file>
+        <file>icons/database.png</file>
+        <file>icons/close.png</file>
+        <file>icons/tag.png</file>
     </qresource>
 </RCC>

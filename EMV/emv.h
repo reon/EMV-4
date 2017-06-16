@@ -20,6 +20,7 @@
 
 #include <marble/GeoDataDocument.h>
 #include <marble/GeoDataPlacemark.h>
+#include <marble/GeoDataCoordinates.h>
 #include <marble/MarbleModel.h>
 #include <marble/GeoDataTreeModel.h>
 
@@ -48,15 +49,14 @@ public:
 signals:
     void LatLongChanged(qreal latitude, qreal longitude);
 
+
 private slots:
     void Test_1_IRIS_Request();
     void Test_2_ISTI_mole_Request();
 
     //Network
     void FDSNRequest(QUrl url);
-
     void ReplyFinished(QNetworkReply* response);
-
 
     void LoadNewQuakeML(QString xml);
 
@@ -64,7 +64,11 @@ private slots:
 
     void on_actionOpen_FDSN_Request_Dialong_triggered();
 
-    void onGlobeMove();
+    void on_action_Exit_triggered();
+
+    void on_GlobeMove();
+
+    void on_tableWidget_itemSelectionChanged();
 
 private:
     Ui::EMV *ui;

@@ -32,18 +32,13 @@
       <property name="childrenCollapsible">
        <bool>false</bool>
       </property>
-      <widget class="QTreeWidget" name="treeWidget">
+      <widget class="QuakeMLTable" name="tableWidget">
        <property name="minimumSize">
         <size>
          <width>100</width>
          <height>100</height>
         </size>
        </property>
-       <column>
-        <property name="text">
-         <string notr="true">1</string>
-        </property>
-       </column>
       </widget>
       <widget class="MapWidget" name="map" native="true">
        <property name="sizePolicy">
@@ -83,6 +78,8 @@
     <addaction name="separator"/>
     <addaction name="actionSave_XML"/>
     <addaction name="actionLoad_XML"/>
+    <addaction name="separator"/>
+    <addaction name="action_Exit"/>
    </widget>
    <addaction name="menuTests"/>
   </widget>
@@ -104,11 +101,19 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="graphics.qrc">
+     <normaloff>:/graphics/icons/tag.png</normaloff>:/graphics/icons/tag.png</iconset>
+   </property>
    <property name="text">
     <string>Save XML</string>
    </property>
   </action>
   <action name="actionLoad_XML">
+   <property name="icon">
+    <iconset resource="graphics.qrc">
+     <normaloff>:/graphics/icons/tag.png</normaloff>:/graphics/icons/tag.png</iconset>
+   </property>
    <property name="text">
     <string>Load XML</string>
    </property>
@@ -116,10 +121,19 @@
   <action name="actionOpen_FDSN_Request_Dialong">
    <property name="icon">
     <iconset resource="graphics.qrc">
-     <normaloff>:/graphics/icons/appbar.database.png</normaloff>:/graphics/icons/appbar.database.png</iconset>
+     <normaloff>:/graphics/icons/database.png</normaloff>:/graphics/icons/database.png</iconset>
    </property>
    <property name="text">
     <string>Open FDSN Request Dialong</string>
+   </property>
+  </action>
+  <action name="action_Exit">
+   <property name="icon">
+    <iconset resource="graphics.qrc">
+     <normaloff>:/graphics/icons/close.png</normaloff>:/graphics/icons/close.png</iconset>
+   </property>
+   <property name="text">
+    <string>Exit</string>
    </property>
   </action>
  </widget>
@@ -130,6 +144,11 @@
    <extends>QWidget</extends>
    <header>mapwidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QuakeMLTable</class>
+   <extends>QTableWidget</extends>
+   <header>quakemltable.h</header>
   </customwidget>
  </customwidgets>
  <resources>

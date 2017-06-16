@@ -48,7 +48,7 @@ void QuakeMLReader::ProcessOrigin()
 {
     while (xml.readNextStartElement()) {
         QStringRef name = xml.name();
-        if (name == "time")             currentEvent.time = ProcessValue();
+        if (name == "time")             currentEvent.dateTime = ProcessValue();
         else if (name == "latitude")    currentEvent.latitude = ProcessValue();
         else if (name == "longitude")   currentEvent.longitude = ProcessValue();
         else xml.skipCurrentElement();

@@ -21,3 +21,19 @@ Marble::GeoDataPlacemark QuakeMLEvent::Placemark() const
 
     return placemark;
 }
+
+bool QuakeMLEvent::operator==(const QuakeMLEvent& right)
+{
+    if (
+//        name != right.name ||
+//        dateTime != right.dateTime ||
+        latitude != right.latitude ||
+        longitude != right.longitude
+//        magnitude != right.magnitude
+       )
+    {
+        return false;
+    }
+
+    return true;
+}

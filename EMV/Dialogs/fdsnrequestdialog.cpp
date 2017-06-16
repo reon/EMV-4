@@ -11,12 +11,16 @@ FDSNRequestDialog::FDSNRequestDialog(QWidget *parent, qreal latitude, qreal long
 
     this->setAttribute(Qt::WA_DeleteOnClose);
 
+    ui->HostListWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->HostListWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->HostListWidget->setCurrentRow(0);
+
+    // To remove
     ui->LatitudeMaximumEdit->setText(QString::number(latitude + (RANGE / 2.0f)));
     ui->LatitudeMinimumEdit->setText(QString::number(latitude - (RANGE / 2.0f)));
 
     ui->LongitudeMaximumEdit->setText(QString::number(longitude + (RANGE / 2.0f)));
     ui->LongitudeMinimumEdit->setText(QString::number(longitude - (RANGE / 2.0f)));
-
 }
 
 FDSNRequestDialog::~FDSNRequestDialog()

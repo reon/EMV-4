@@ -10,8 +10,9 @@ EMV::EMV(QWidget *parent) :
     ui->setupUi(this);
 
     //Size the two main widgets, with table being smaller
-    ui->splitter->setSizes(QList<int>{100, 400});
+    ui->splitter->setSizes(QList<int>{180, 400});
 
+//    Marble::GeoDataCoordinates::setDefaultNotation(Marble::GeoDataCoordinates::Degree);
     eventLayer = new EventLayer(ui->map, &events);
     ui->map->addLayer(eventLayer);
 
@@ -27,7 +28,7 @@ EMV::EMV(QWidget *parent) :
     connect(ui->actionTest_2, SIGNAL(triggered(bool)), this, SLOT(Test_2_ISTI_mole_Request()));
 
     connect(ui->map, SIGNAL(visibleLatLonAltBoxChanged(GeoDataLatLonAltBox)),
-        this, SLOT(onGlobeMove()));
+        this, SLOT(on_GlobeMove()));
 
     connect(&net, SIGNAL(finished(QNetworkReply*)), this, SLOT(ReplyFinished(QNetworkReply*)));
 }
@@ -45,13 +46,31 @@ EMV::~EMV()
     delete ui;
 }
 
-void EMV::onGlobeMove()
+void EMV::on_GlobeMove()
 {
-    Marble::GeoDataCoordinates coords = ui->map->focusPoint();
-    LatitudeLabel->setText(QString::number(coords.latitude()));
-    LongitudeLabel->setText(QString::number(coords.longitude()));
+    using Coords = Marble::GeoDataCoordinates;
 
-    emit LatLongChanged(coords.latitude(), coords.longitude());
+    Coords coords = ui->map->focusPoint();
+    LatitudeLabel->setText(QString::number(coords.latitude(Coords::Degree)));
+    LongitudeLabel->setText(QString::number(coords.longitude(Coords::Degree)));
+
+    emit LatLongChanged(coords.latitude(Coords::Degree), coords.longitude(Coords::Degree));
+}
+
+/// Move some of this to quakeMLTable
+void EMV::on_tableWidget_itemSelectionChanged()
+{
+//    using Coords = Marble::GeoDataCoordinates;
+
+    int row = ui->tableWidget->currentRow();
+
+    qreal latitude = ui->tableWidget->item(row,2)->text().toDouble();
+    qreal longitude = ui->tableWidget->item(row, 3)->text().toDouble();
+
+    ui->map->centerOn(longitude, latitude);
+//    Coords coords(longitude, latitude, Coords::Degree );
+//    QMessageBox::information(this, "Coords", coords.toString());
+//    ui->map->centerOn(coords);
 }
 
 void EMV::LoadNewQuakeML(QString xml)
@@ -70,6 +89,8 @@ void EMV::LoadNewQuakeML(QString xml)
     events += qxml.events;
 
     ReloadGeoDocument();
+
+    ui->tableWidget->AddQuakeMLEvents(qxml.events);
 }
 
 /// For inspecting
@@ -78,7 +99,7 @@ void EMV::SaveXML(QString xmlResponse)
     if (!ui->actionSave_XML->isChecked())
         return;
 
-    QFile out("XML Response at : " + QDateTime::currentDateTime().toString("hh:mm dd.MM"), this);
+    QFile out("XML Response at : " + QDateTime::currentDateTime().toString("hh:mm dd.MM") + ".xml", this);
 
     if (!out.open(QIODevice::WriteOnly | QIODevice::Truncate))
         return;
@@ -103,13 +124,14 @@ void EMV::ReloadGeoDocument()
 
         placemark->setCoordinate(event.longitude.toFloat(), event.latitude.toFloat(), 0, GeoDataCoordinates::Degree);
         placemark->setPopulation(777);
-        placemark->setVisualCategory(Marble::GeoDataPlacemark::GeoDataVisualCategory::Bookmark);
+        placemark->setVisualCategory(GeoDataPlacemark::GeoDataVisualCategory::Bookmark);
 
         geoDoc->append(placemark);
     }
 
     ui->map->model()->treeModel()->addDocument(geoDoc);
 }
+
 
 /// Loads QuakeML .xml file into QVector<QuakeMLEvents> events
 void EMV::on_actionLoad_XML_triggered()
@@ -130,12 +152,17 @@ void EMV::on_actionLoad_XML_triggered()
     emit LoadNewQuakeML(XML);
 }
 
+/// Network
+
 /// Open FDSN Dialog, show if already open
 void EMV::on_actionOpen_FDSN_Request_Dialong_triggered()
 {
+    using Coords = Marble::GeoDataCoordinates;
+
     if (!fdsnDialog)
     {
-        fdsnDialog = new FDSNRequestDialog{this};
+        Coords coords = ui->map->focusPoint();
+        fdsnDialog = new FDSNRequestDialog{this, coords.latitude(Coords::Degree), coords.longitude(Coords::Degree)};
         connect(fdsnDialog, SIGNAL(NewFDSNResponse(QString)), this, SLOT(LoadNewQuakeML(QString)));
         connect(this, SIGNAL(LatLongChanged(qreal,qreal)), fdsnDialog, SLOT(onUpdateCoords(qreal, qreal)));
     }
@@ -143,6 +170,10 @@ void EMV::on_actionOpen_FDSN_Request_Dialong_triggered()
     fdsnDialog->show();
 }
 
+void EMV::on_action_Exit_triggered()
+{
+    QApplication::quit();
+}
 
 void EMV::Test_1_IRIS_Request()
 {
@@ -196,3 +227,6 @@ void EMV::ReplyFinished(QNetworkReply* response)
 
     emit LoadNewQuakeML(strResponse);
 }
+
+
+

@@ -13,6 +13,9 @@ TEMPLATE = app
 
 CONFIG += c++11
 
+#For promoting widget in emv.ui
+INCLUDEPATH += Widgets/
+
 SOURCES += main.cpp\
         emv.cpp \
         mapwidget.cpp archpaintlayer.cpp \
@@ -21,14 +24,16 @@ SOURCES += main.cpp\
     QuakeML/quakemlevent.cpp \
     Dialogs/fdsnrequestdialog.cpp \
     Dialogs/connectdialog.cpp \
+    Widgets/quakemltable.cpp
 
 HEADERS  += emv.h \
         archcolors.h archpaintlayer.h mapwidget.h \
     QuakeML/quakemlreader.h \
     eventlayer.h \
-    QuakeMl/quakemlevent.h \
+    QuakeML/quakemlevent.h \
     Dialogs/fdsnrequestdialog.h \
     Dialogs/connectdialog.h \
+    Widgets/quakemltable.h
 
 FORMS    += emv.ui \
     Dialogs/fdsnrequestdialog.ui \
