@@ -3,11 +3,13 @@
 
 #include <QObject>
 #include <QPointer>
+#include <QScopedPointer>
 #include <QDateTime>
 #include <QFile>
 #include <QFileDialog>
 #include <QTextStream>
 
+#include <QLabel>
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QUrl>
@@ -27,6 +29,7 @@
 #include "eventlayer.h"
 #include "Dialogs/fdsnrequestdialog.h"
 
+
 namespace Ui {
 class EMV;
 }
@@ -42,6 +45,9 @@ public:
 //    static QUrl GetURL() { return QUrl("http://service.iris.edu/fdsnws/event/1/query"); }
 //    static QUrl GetURL() { return QUrl("http://www.google.com"); }
 
+signals:
+    void LatLongChanged(qreal latitude, qreal longitude);
+
 private slots:
     void Test_1_IRIS_Request();
     void Test_2_ISTI_mole_Request();
@@ -51,23 +57,28 @@ private slots:
 
     void ReplyFinished(QNetworkReply* response);
 
-    void LoadNewQuakeML(QString xml);
 
-    ///Likely to be removed
-//    void LoadNewEvents(QVector<QuakeMLEvent> events);
+    void LoadNewQuakeML(QString xml);
 
     void on_actionLoad_XML_triggered();
 
     void on_actionOpen_FDSN_Request_Dialong_triggered();
 
+    void onGlobeMove();
+
 private:
     Ui::EMV *ui;
+    //Move to ui
+    QLabel* LatitudeNameLabel { new QLabel("Latitude : ", this) };
+    QLabel* LatitudeLabel { new QLabel(this) };
+    QLabel* LongitudeNameLabel { new QLabel("Longitude : ", this) };
+    QLabel* LongitudeLabel { new QLabel(this) };
+
     QNetworkAccessManager net;
 
     QVector<QuakeMLEvent> events;
 
     EventLayer* eventLayer {};
-
     Marble::GeoDataDocument* geoDoc {new Marble::GeoDataDocument};
 
     QPointer<FDSNRequestDialog> fdsnDialog;

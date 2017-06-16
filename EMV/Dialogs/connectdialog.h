@@ -35,6 +35,8 @@ private slots:
 
 
     // Members
+    void on_CancelButton_clicked();
+
 private:
     Ui::ConnectDialog *ui;
 

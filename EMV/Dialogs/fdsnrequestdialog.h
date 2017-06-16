@@ -27,9 +27,11 @@ public:
 signals:
     void NewFDSNResponse(QString QuakeML);
 
+public slots:
+    void onUpdateCoords(qreal latitude, qreal longitude);
+
 private slots:
     void on_ConnectButton_clicked();
-
     void on_StandardCallingPatternCheck_toggled(bool checked);
 
 private:
@@ -41,7 +43,7 @@ private:
 
     //Members
 public:
-
+    const float RANGE = 1.0f;
 private:
     Ui::FDSNRequestDialog *ui;
 

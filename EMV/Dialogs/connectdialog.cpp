@@ -64,3 +64,8 @@ bool ConnectDialog::ProcessReply(QNetworkReply* response)
 }
 
 
+
+void ConnectDialog::on_CancelButton_clicked()
+{
+    this->reject();
+}

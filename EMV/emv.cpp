@@ -15,8 +15,19 @@ EMV::EMV(QWidget *parent) :
     eventLayer = new EventLayer(ui->map, &events);
     ui->map->addLayer(eventLayer);
 
+    LatitudeLabel->setFixedWidth(100);
+    LongitudeLabel->setFixedWidth(100);
+
+    ui->StatusBar->addPermanentWidget(LatitudeNameLabel);
+    ui->StatusBar->addPermanentWidget(LatitudeLabel);
+    ui->StatusBar->addPermanentWidget(LongitudeNameLabel);
+    ui->StatusBar->addPermanentWidget(LongitudeLabel);
+
     connect(ui->actionTest_1, SIGNAL(triggered(bool)), this, SLOT(Test_1_IRIS_Request()));
     connect(ui->actionTest_2, SIGNAL(triggered(bool)), this, SLOT(Test_2_ISTI_mole_Request()));
+
+    connect(ui->map, SIGNAL(visibleLatLonAltBoxChanged(GeoDataLatLonAltBox)),
+        this, SLOT(onGlobeMove()));
 
     connect(&net, SIGNAL(finished(QNetworkReply*)), this, SLOT(ReplyFinished(QNetworkReply*)));
 }
@@ -34,57 +45,13 @@ EMV::~EMV()
     delete ui;
 }
 
-
-void EMV::Test_1_IRIS_Request()
+void EMV::onGlobeMove()
 {
-    QUrl url {"http://service.iris.edu/fdsnws/event/1/query"};
-    QString query {"minmag=1&limit=50&maxlat=38.101&minlon=-105.64100000000002&minlat=36.099&maxlon=-103.769&orderby=time"};
+    Marble::GeoDataCoordinates coords = ui->map->focusPoint();
+    LatitudeLabel->setText(QString::number(coords.latitude()));
+    LongitudeLabel->setText(QString::number(coords.longitude()));
 
-    url.setQuery(QUrlQuery(query));
-
-    emit FDSNRequest(url);
-    //net.get(QNetworkRequest(url));
-}
-
-void EMV::Test_2_ISTI_mole_Request()
-{
-    QUrl url {"http://love.isti.com:8089/mole"};
-    QString query {"minmag=2&limit=200&orderby=mag"};
-
-    url.setQuery(QUrlQuery(query));
-    emit FDSNRequest(url);
-}
-
-
-void EMV::FDSNRequest(QUrl url)
-{
-    net.get(QNetworkRequest(url));
-}
-
-void EMV::ReplyFinished(QNetworkReply* response)
-{
-    QString status = response->error()==QNetworkReply::NoError ? "Success" : "Error";
-    QMessageBox::information(this, "Network response.", status);
-
-    response->deleteLater();
-
-    if (response->error() != QNetworkReply::NoError) {
-        qDebug() << "Network error.\n";
-        return;
-    }
-
-    QByteArray bytes = response->readAll();
-    QString strResponse = QString(bytes);
-
-    int httpCode = response->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-    if (httpCode != 200)
-    {
-        QMessageBox::critical(this, "FDSN response", "Failed to retreive data \n Response: \n" + strResponse);
-        return;
-    }
-
-    emit LoadNewQuakeML(strResponse);
+    emit LatLongChanged(coords.latitude(), coords.longitude());
 }
 
 void EMV::LoadNewQuakeML(QString xml)
@@ -105,7 +72,7 @@ void EMV::LoadNewQuakeML(QString xml)
     ReloadGeoDocument();
 }
 
-/// For debug
+/// For inspecting
 void EMV::SaveXML(QString xmlResponse)
 {
     if (!ui->actionSave_XML->isChecked())
@@ -170,7 +137,62 @@ void EMV::on_actionOpen_FDSN_Request_Dialong_triggered()
     {
         fdsnDialog = new FDSNRequestDialog{this};
         connect(fdsnDialog, SIGNAL(NewFDSNResponse(QString)), this, SLOT(LoadNewQuakeML(QString)));
+        connect(this, SIGNAL(LatLongChanged(qreal,qreal)), fdsnDialog, SLOT(onUpdateCoords(qreal, qreal)));
     }
 
     fdsnDialog->show();
+}
+
+
+void EMV::Test_1_IRIS_Request()
+{
+    QUrl url {"http://service.iris.edu/fdsnws/event/1/query"};
+    QString query {"minmag=1&limit=50&maxlat=38.101&minlon=-105.64100000000002&minlat=36.099&maxlon=-103.769&orderby=time"};
+
+    url.setQuery(QUrlQuery(query));
+
+    emit FDSNRequest(url);
+    //net.get(QNetworkRequest(url));
+}
+
+void EMV::Test_2_ISTI_mole_Request()
+{
+    QUrl url {"http://love.isti.com:8089/mole"};
+    QString query {"minmag=2&limit=200&orderby=mag"};
+
+    url.setQuery(QUrlQuery(query));
+    emit FDSNRequest(url);
+}
+
+
+void EMV::FDSNRequest(QUrl url)
+{
+    net.get(QNetworkRequest(url));
+}
+
+
+void EMV::ReplyFinished(QNetworkReply* response)
+{
+    QString status = response->error()==QNetworkReply::NoError ? "Success" : "Error";
+    QMessageBox::information(this, "Network response.", status);
+
+    response->deleteLater();
+
+    if (response->error() != QNetworkReply::NoError) {
+        qDebug() << "Network error.\n";
+        return;
+    }
+
+    QByteArray bytes = response->readAll();
+    QString strResponse = QString(bytes);
+
+    int httpCode = response->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    if (httpCode != 200)
+    {
+        QMessageBox::critical(this, "FDSN response", "Failed to retreive data \n Response: \n" + strResponse);
+        return;
+    }
+
+    emit LoadNewQuakeML(strResponse);
 }

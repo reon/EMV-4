@@ -40,11 +40,14 @@ MapWidget::MapWidget(QWidget *parent)
     setShowOtherPlaces(false);
     setShowBackground(false);
     setShowBorders(false);
-    setShowGrid(false);
-    //setShowTerrain(false);
+
+    setShowGrid(true);
+
+    setShowCrosshairs(true);
+
 
     // Set the map quality to gain speed
-    setMapQualityForViewContext( Marble::HighQuality, Marble::Still );
+    setMapQualityForViewContext( Marble::PrintQuality, Marble::Still );
     setMapQualityForViewContext( Marble::LowQuality, Marble::Animation );
 
     //TODO, future configurables

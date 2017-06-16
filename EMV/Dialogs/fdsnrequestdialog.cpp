@@ -1,6 +1,8 @@
 #include "fdsnrequestdialog.h"
 #include "ui_fdsnrequestdialog.h"
 
+
+
 FDSNRequestDialog::FDSNRequestDialog(QWidget *parent, qreal latitude, qreal longitude) :
     QDialog(parent),
     ui(new Ui::FDSNRequestDialog)
@@ -9,7 +11,6 @@ FDSNRequestDialog::FDSNRequestDialog(QWidget *parent, qreal latitude, qreal long
 
     this->setAttribute(Qt::WA_DeleteOnClose);
 
-    const float RANGE = 1.0f;
     ui->LatitudeMaximumEdit->setText(QString::number(latitude + (RANGE / 2.0f)));
     ui->LatitudeMinimumEdit->setText(QString::number(latitude - (RANGE / 2.0f)));
 
@@ -27,8 +28,6 @@ FDSNRequestDialog::~FDSNRequestDialog()
 
 void FDSNRequestDialog::on_ConnectButton_clicked()
 {
-//    ui->ConnectButton->setDisabled(true);
-
     QUrl url = GenerateURL();
     url.setQuery(GenerateQuery());
 
@@ -66,6 +65,16 @@ QUrl FDSNRequestDialog::GenerateURL()
     return url;
 }
 
+void FDSNRequestDialog::onUpdateCoords(qreal latitude, qreal longitude)
+{
+    ui->LatitudeMaximumEdit->setText(QString::number(latitude + (RANGE / 2.0f)));
+    ui->LatitudeMinimumEdit->setText(QString::number(latitude - (RANGE / 2.0f)));
+
+    ui->LongitudeMaximumEdit->setText(QString::number(longitude + (RANGE / 2.0f)));
+    ui->LongitudeMinimumEdit->setText(QString::number(longitude - (RANGE / 2.0f)));
+}
+
+
 QString FDSNRequestDialog::GenerateQuery()
 {
     QString Remove = "Remove";
@@ -94,12 +103,6 @@ QString FDSNRequestDialog::GenerateQuery()
     for (auto i = fragments.begin(); i != fragments.end(); i++) {
         query += i.key() + "=" + i.value() + "&";
     }
-
-    // !!!!! Temp hack !!!!!
-//    query += "orderby=mag";
-
-    // !!!! second hack
-//    query = "minmag=1&limit=50&maxlat=38.101&minlon=-105.64100000000002&minlat=36.099&maxlon=-103.769&orderby=time";
 
     return query;
 }

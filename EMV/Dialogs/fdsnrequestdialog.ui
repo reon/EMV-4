@@ -37,11 +37,6 @@
       </item>
       <item>
        <property name="text">
-        <string>service.iris.edu/fdsnws/event/1/query</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
         <string>service.iris.edu/</string>
        </property>
       </item>
@@ -448,7 +443,7 @@
    <property name="title">
     <string>Order By : </string>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>120</x>
@@ -477,7 +472,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>240</x>
