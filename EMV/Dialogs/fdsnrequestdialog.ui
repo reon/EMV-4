@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>701</width>
-    <height>472</height>
+    <width>765</width>
+    <height>692</height>
    </rect>
   </property>
   <property name="font">
@@ -23,11 +23,11 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>251</width>
-     <height>411</height>
+     <width>271</width>
+     <height>661</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="URLverticalLayout">
     <item>
      <widget class="QListWidget" name="HostListWidget">
       <item>
@@ -68,8 +68,8 @@
   <widget class="QPushButton" name="ConnectButton">
    <property name="geometry">
     <rect>
-     <x>590</x>
-     <y>430</y>
+     <x>640</x>
+     <y>640</y>
      <width>99</width>
      <height>27</height>
     </rect>
@@ -81,10 +81,10 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>290</x>
+     <x>300</x>
      <y>10</y>
-     <width>371</width>
-     <height>306</height>
+     <width>401</width>
+     <height>621</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -429,84 +429,191 @@
       </item>
      </layout>
     </item>
+    <item>
+     <widget class="QGroupBox" name="TimeBox">
+      <property name="title">
+       <string>Time :</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_9">
+           <item>
+            <spacer name="horizontalSpacer_6">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="FilterTimeCheckBox">
+             <property name="text">
+              <string>Enable time filter</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QLabel" name="StartTimeLabel">
+             <property name="text">
+              <string>Start :</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QDateTimeEdit" name="StartDateTimeEdit">
+             <property name="dateTime">
+              <datetime>
+               <hour>0</hour>
+               <minute>0</minute>
+               <second>0</second>
+               <year>2000</year>
+               <month>1</month>
+               <day>1</day>
+              </datetime>
+             </property>
+             <property name="date">
+              <date>
+               <year>2000</year>
+               <month>1</month>
+               <day>1</day>
+              </date>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QLabel" name="EndTimeLabel">
+             <property name="text">
+              <string>End :</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QDateTimeEdit" name="EndDateTimeEdit"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Minimum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="OrderByBox">
+      <property name="title">
+       <string>Order By : </string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <layout class="QVBoxLayout" name="OrderByItem_verticalLayout">
+         <item>
+          <widget class="QRadioButton" name="OrderByMagnitudeRadioButton">
+           <property name="text">
+            <string>Magnitude</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">MagTimeButtonGroup</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="OrderByTimeRadioButton">
+           <property name="text">
+            <string>Time</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">MagTimeButtonGroup</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="OrderByUpDown_verticalLayout">
+         <item>
+          <widget class="QRadioButton" name="OrderByDesendingRadioButton">
+           <property name="text">
+            <string>Desending</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_2</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="OrderByAscendingRadioButton">
+           <property name="text">
+            <string>Ascending</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup_2</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
    </layout>
-  </widget>
-  <widget class="QGroupBox" name="OrderByBox">
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>330</y>
-     <width>371</width>
-     <height>81</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Order By : </string>
-   </property>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>10</y>
-      <width>116</width>
-      <height>56</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="OrderByItem_verticalLayout">
-     <item>
-      <widget class="QRadioButton" name="OrderByMagnitudeRadioButton">
-       <property name="text">
-        <string>Magnitude</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="OrderByTimeRadioButton">
-       <property name="text">
-        <string>Time</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>240</x>
-      <y>10</y>
-      <width>115</width>
-      <height>56</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="OrderByUpDown_verticalLayout">
-     <item>
-      <widget class="QRadioButton" name="OrderByDesendingRadioButton">
-       <property name="text">
-        <string>Desending</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="OrderByAscendingRadioButton">
-       <property name="text">
-        <string>Ascending</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
   </widget>
   <zorder>layoutWidget</zorder>
   <zorder>layoutWidget</zorder>
   <zorder>ConnectButton</zorder>
-  <zorder>OrderByBox</zorder>
  </widget>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="MagTimeButtonGroup"/>
+  <buttongroup name="buttonGroup_2"/>
+ </buttongroups>
 </ui>

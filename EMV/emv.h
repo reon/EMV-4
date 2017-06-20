@@ -78,12 +78,13 @@ private:
     QLabel* LongitudeNameLabel { new QLabel("Longitude : ", this) };
     QLabel* LongitudeLabel { new QLabel(this) };
 
+    QScopedPointer<EventLayer> eventLayer;
+    QScopedPointer<Marble::GeoDataDocument> geoDoc {new Marble::GeoDataDocument};
+
     QNetworkAccessManager net;
 
     QVector<QuakeMLEvent> events;
 
-    EventLayer* eventLayer {};
-    Marble::GeoDataDocument* geoDoc {new Marble::GeoDataDocument};
 
     QPointer<FDSNRequestDialog> fdsnDialog;
 

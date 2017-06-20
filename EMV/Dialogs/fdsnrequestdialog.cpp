@@ -11,16 +11,20 @@ FDSNRequestDialog::FDSNRequestDialog(QWidget *parent, qreal latitude, qreal long
 
     this->setAttribute(Qt::WA_DeleteOnClose);
 
+    ui->EndDateTimeEdit->setDateTime(QDateTime::currentDateTime());
+
     ui->HostListWidget->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->HostListWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->HostListWidget->setCurrentRow(0);
 
-    // To remove
-    ui->LatitudeMaximumEdit->setText(QString::number(latitude + (RANGE / 2.0f)));
-    ui->LatitudeMinimumEdit->setText(QString::number(latitude - (RANGE / 2.0f)));
+    onUpdateCoords(latitude, longitude);
 
-    ui->LongitudeMaximumEdit->setText(QString::number(longitude + (RANGE / 2.0f)));
-    ui->LongitudeMinimumEdit->setText(QString::number(longitude - (RANGE / 2.0f)));
+    // To remove
+//    ui->LatitudeMaximumEdit->setText(QString::number(latitude + (RANGE / 2.0f)));
+//    ui->LatitudeMinimumEdit->setText(QString::number(latitude - (RANGE / 2.0f)));
+
+//    ui->LongitudeMaximumEdit->setText(QString::number(longitude + (RANGE / 2.0f)));
+//    ui->LongitudeMinimumEdit->setText(QString::number(longitude - (RANGE / 2.0f)));
 }
 
 FDSNRequestDialog::~FDSNRequestDialog()
@@ -28,10 +32,22 @@ FDSNRequestDialog::~FDSNRequestDialog()
     delete ui;
 }
 
+/// Slot - Sent from MainWindow with new globe focus point
+void FDSNRequestDialog::onUpdateCoords(qreal latitude, qreal longitude)
+{
+    ui->LatitudeMaximumEdit->setText(QString::number(latitude + (RANGE / 2.0f)));
+    ui->LatitudeMinimumEdit->setText(QString::number(latitude - (RANGE / 2.0f)));
+
+    ui->LongitudeMaximumEdit->setText(QString::number(longitude + (RANGE / 2.0f)));
+    ui->LongitudeMinimumEdit->setText(QString::number(longitude - (RANGE / 2.0f)));
+}
+
 //Add error checking function
 
 void FDSNRequestDialog::on_ConnectButton_clicked()
 {
+
+
     QUrl url = GenerateURL();
     url.setQuery(GenerateQuery());
 
@@ -69,20 +85,10 @@ QUrl FDSNRequestDialog::GenerateURL()
     return url;
 }
 
-void FDSNRequestDialog::onUpdateCoords(qreal latitude, qreal longitude)
-{
-    ui->LatitudeMaximumEdit->setText(QString::number(latitude + (RANGE / 2.0f)));
-    ui->LatitudeMinimumEdit->setText(QString::number(latitude - (RANGE / 2.0f)));
-
-    ui->LongitudeMaximumEdit->setText(QString::number(longitude + (RANGE / 2.0f)));
-    ui->LongitudeMinimumEdit->setText(QString::number(longitude - (RANGE / 2.0f)));
-}
-
 
 QString FDSNRequestDialog::GenerateQuery()
 {
-    QString Remove = "Remove";
-
+    //Start with basic fragments
     QMap<QString, QString> fragments
     {
         { "minmag", ui->MagnitudeMinimumEdit->text() },
@@ -99,6 +105,12 @@ QString FDSNRequestDialog::GenerateQuery()
     for (auto key : fragments.uniqueKeys()) {
         if (fragments.value(key).isEmpty())
             fragments.remove(key);
+    }
+
+    //Now time fragments
+    if (ui->FilterTimeCheckBox->isChecked()) {
+        QString startTime = GenerateDateTimeFragment(ui->StartDateTimeEdit->dateTime());
+        QString endTime = GenerateDateTimeFragment(ui->StartDateTimeEdit->dateTime());
     }
 
     QString query;
@@ -125,4 +137,17 @@ QString FDSNRequestDialog::GenerateOrderByFragment()
     return fragment;
 }
 
+QString FDSNRequestDialog::GenerateDateTimeFragment(QDateTime dateTime)
+{
+    return dateTime.toString("yyyy-MM-dd") + "T" + dateTime.toString("hh:mm:ss");
+}
 
+void FDSNRequestDialog::on_StartDateTimeEdit_dateTimeChanged(const QDateTime &)
+{
+    ui->FilterTimeCheckBox->setChecked(true);
+}
+
+void FDSNRequestDialog::on_EndDateTimeEdit_dateTimeChanged(const QDateTime &)
+{
+    ui->FilterTimeCheckBox->setChecked(true);
+}

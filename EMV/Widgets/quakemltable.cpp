@@ -13,7 +13,7 @@ QuakeMLTable::QuakeMLTable(QWidget* parent)
     setHorizontalHeaderItem(3, new QTableWidgetItem{"Lon."});
     setHorizontalHeaderItem(4, new QTableWidgetItem{"Depth"});
 
-//    setSortingEnabled(true);
+    setSortingEnabled(true);
 
 //    horizontalHeader()->setAlternatingRowColors(true);
 //    horizontalHeader()->setSectionsClickable(true);
@@ -31,10 +31,14 @@ void QuakeMLTable::AddQuakeMLEvent(QuakeMLEvent event)
         new Item{event.depth}
     };
 
+    setSortingEnabled(false);
+
     insertRow(rowCount());
 
     for (int i = 0; i < items.count(); i++)
         setItem(rowCount() - 1, i, items.at(i));
+
+    setSortingEnabled(true);
 }
 
 void QuakeMLTable::AddQuakeMLEvents(QVector<QuakeMLEvent> events)

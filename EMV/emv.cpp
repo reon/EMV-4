@@ -5,6 +5,7 @@
 EMV::EMV(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::EMV),
+
     net{this}
 {
     ui->setupUi(this);
@@ -13,8 +14,8 @@ EMV::EMV(QWidget *parent) :
     ui->splitter->setSizes(QList<int>{180, 400});
 
 //    Marble::GeoDataCoordinates::setDefaultNotation(Marble::GeoDataCoordinates::Degree);
-    eventLayer = new EventLayer(ui->map, &events);
-    ui->map->addLayer(eventLayer);
+    eventLayer.reset(new EventLayer(ui->map, &events));
+    ui->map->addLayer(eventLayer.data());
 
     LatitudeLabel->setFixedWidth(100);
     LongitudeLabel->setFixedWidth(100);
@@ -35,14 +36,10 @@ EMV::EMV(QWidget *parent) :
 
 EMV::~EMV()
 {
-    ui->map->model()->treeModel()->removeDocument(geoDoc);
-    delete geoDoc;
+    ui->map->model()->treeModel()->removeDocument(geoDoc.data());
+//    delete geoDoc;
 
-    if (eventLayer) {
-        ui->map->removeLayer(eventLayer);
-        delete eventLayer;
-    }
-
+    ui->map->removeLayer(eventLayer.data());
     delete ui;
 }
 
@@ -68,9 +65,6 @@ void EMV::on_tableWidget_itemSelectionChanged()
     qreal longitude = ui->tableWidget->item(row, 3)->text().toDouble();
 
     ui->map->centerOn(longitude, latitude);
-//    Coords coords(longitude, latitude, Coords::Degree );
-//    QMessageBox::information(this, "Coords", coords.toString());
-//    ui->map->centerOn(coords);
 }
 
 void EMV::LoadNewQuakeML(QString xml)
@@ -115,7 +109,7 @@ void EMV::ReloadGeoDocument()
 {
     using namespace Marble;
 
-    ui->map->model()->treeModel()->removeDocument(geoDoc);
+    ui->map->model()->treeModel()->removeDocument(geoDoc.data());
     geoDoc->clear();
 
     for (QuakeMLEvent event : events)
@@ -129,7 +123,7 @@ void EMV::ReloadGeoDocument()
         geoDoc->append(placemark);
     }
 
-    ui->map->model()->treeModel()->addDocument(geoDoc);
+    ui->map->model()->treeModel()->addDocument(geoDoc.data());
 }
 
 

@@ -7,7 +7,7 @@
 #include <QStringList>
 #include <QMap>
 #include <QDialog>
-
+#include <QDateTime>
 #include <QUrl>
 
 #include "Dialogs/connectdialog.h"
@@ -34,11 +34,16 @@ private slots:
     void on_ConnectButton_clicked();
     void on_StandardCallingPatternCheck_toggled(bool checked);
 
+    void on_StartDateTimeEdit_dateTimeChanged(const QDateTime&);
+
+    void on_EndDateTimeEdit_dateTimeChanged(const QDateTime&);
+
 private:
     /// Return Scheme + Authority + Path
     QUrl GenerateURL();
     QString GenerateQuery();
     QString GenerateOrderByFragment();
+    QString GenerateDateTimeFragment(QDateTime);
 
 
     //Members
