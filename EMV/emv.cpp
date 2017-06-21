@@ -1,6 +1,7 @@
 #include "emv.h"
 #include "ui_emv.h"
 
+#include "EarthWormComp.h"
 
 EMV::EMV(QWidget *parent) :
     QMainWindow(parent),
@@ -25,8 +26,8 @@ EMV::EMV(QWidget *parent) :
     ui->StatusBar->addPermanentWidget(LongitudeNameLabel);
     ui->StatusBar->addPermanentWidget(LongitudeLabel);
 
-    connect(ui->actionTest_1, SIGNAL(triggered(bool)), this, SLOT(Test_1_IRIS_Request()));
-    connect(ui->actionTest_2, SIGNAL(triggered(bool)), this, SLOT(Test_2_ISTI_mole_Request()));
+    connect(ui->action_IRIS_Test, SIGNAL(triggered(bool)), this, SLOT(Test_1_IRIS_Request()));
+    connect(ui->action_ISTI_Test, SIGNAL(triggered(bool)), this, SLOT(Test_2_ISTI_mole_Request()));
 
     connect(ui->map, SIGNAL(visibleLatLonAltBoxChanged(GeoDataLatLonAltBox)),
         this, SLOT(on_GlobeMove()));
@@ -224,3 +225,10 @@ void EMV::ReplyFinished(QNetworkReply* response)
 
 
 
+
+void EMV::on_action_EW_Test_Initialize_triggered()
+{
+    EWC::StartImportGeneric();
+
+   // QMessageBox::information(this, "EWC::StartImportGeneric()", QString::number(result));
+}

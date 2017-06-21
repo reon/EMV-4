@@ -70,6 +70,8 @@ private slots:
 
     void on_tableWidget_itemSelectionChanged();
 
+    void on_action_EW_Test_Initialize_triggered();
+
 private:
     Ui::EMV *ui;
     //Move to ui

@@ -73,26 +73,33 @@
     </property>
     <addaction name="actionOpen_FDSN_Request_Dialong"/>
     <addaction name="separator"/>
-    <addaction name="actionTest_1"/>
-    <addaction name="actionTest_2"/>
+    <addaction name="action_IRIS_Test"/>
+    <addaction name="action_ISTI_Test"/>
     <addaction name="separator"/>
     <addaction name="actionSave_XML"/>
     <addaction name="actionLoad_XML"/>
     <addaction name="separator"/>
     <addaction name="action_Exit"/>
    </widget>
+   <widget class="QMenu" name="menuEarthWorm">
+    <property name="title">
+     <string>EarthWorm</string>
+    </property>
+    <addaction name="action_EW_Test_Initialize"/>
+   </widget>
    <addaction name="menuTests"/>
+   <addaction name="menuEarthWorm"/>
   </widget>
   <widget class="QStatusBar" name="StatusBar"/>
-  <action name="actionTest_1">
+  <action name="action_IRIS_Test">
    <property name="text">
     <string>Test 1 - IRIS</string>
    </property>
    <property name="toolTip">
-    <string>Test 1</string>
+    <string>IRIS Test</string>
    </property>
   </action>
-  <action name="actionTest_2">
+  <action name="action_ISTI_Test">
    <property name="text">
     <string>Test 2 - ISTI mole</string>
    </property>
@@ -134,6 +141,11 @@
    </property>
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="action_EW_Test_Initialize">
+   <property name="text">
+    <string>EW Test_Initialize</string>
    </property>
   </action>
  </widget>

@@ -1,2 +1,4 @@
 # Earthworm notes / modifications
 
+calls from Qt App to import_generic : EarthWormComp
+(diverted) calls from import_generic to earthworm : EarthWormHacks

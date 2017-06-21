@@ -38,7 +38,7 @@ HEADERS  += emv.h \
 
 FORMS    += emv.ui \
     Dialogs/fdsnrequestdialog.ui \
-    Dialogs/connectdialog.ui \
+    Dialogs/connectdialog.ui
 
 LIBS +=   -L/usr/local/lib -lmarblewidget-qt5
 
@@ -51,9 +51,18 @@ RESOURCES += \
 linux-g++:DEFINES += _LINUX
 linux-g++-64:DEFINES += _LINUX
 
-SOURCES += EarthWorm/src/data_exchange/import_generic/import_generic.c
+SOURCES += EarthWorm/src/data_exchange/import_generic/import_generic.c \
+    EarthWorm/src/libsrc/unix/socket_ew.c \
+    EarthWorm/src/libsrc/util/socket_ew_common.c \
+    EarthWormComp.cpp \
+    EarthWormHacks.cpp
+
+HEADERS += EarthWormComp.h \
+    EarthWormHacks.h
 
 INCLUDEPATH += EarthWorm/include
+
+LIBS += -L$$_PRO_FILE_PWD_/EarthWorm/lib -lew -lew_mt
 
 DISTFILES += \
     Notes.txt
