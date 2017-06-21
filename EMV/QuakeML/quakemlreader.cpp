@@ -35,13 +35,29 @@ void QuakeMLReader::ProcessEventParameters()
 
 void QuakeMLReader::ProcessEvent()
 {
+    //Retrieve id
     currentEvent = {};
+    ProcessEventAttributes();
+
     while(xml.readNextStartElement()) {
         if (xml.name() == "origin") ProcessOrigin();
         else if (xml.name() == "magnitude")   ProcessMagnitude();
         else xml.skipCurrentElement();
     }
     events.push_back(currentEvent);
+}
+
+/// Returnes id
+void QuakeMLReader::ProcessEventAttributes()
+{
+    auto attributes = xml.attributes().value("publicID").toString();
+    QString pattern = QStringLiteral(R"RAW(eventid=(\d+))RAW");
+    QRegularExpression regex(pattern, QRegularExpression::CaseInsensitiveOption);
+    QRegularExpressionMatch match = regex.match(attributes);
+
+    if (!match.hasMatch()) return;
+
+    currentEvent.id = match.captured(0);
 }
 
 void QuakeMLReader::ProcessOrigin()

@@ -20,8 +20,9 @@ public:
 private:
     void ProcessEventParameters();      // <eventParameters>
     void ProcessEvent();                // <eventParameters><event>
-    void ProcessOrigin();               // <event><origin>
-    void ProcessMagnitude();            // <event><magnitude>
+    void ProcessEventAttributes();      // <eventParameters><event *>
+    void ProcessOrigin();               // <eventParameters><event><origin>
+    void ProcessMagnitude();            // <eventParameters><event><magnitude>
     QString ProcessValue();             // <*><value>QString</value>
     //QString ProcessValue(QString tag) // <*><tag>QString</tag>
 

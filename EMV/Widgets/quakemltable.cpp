@@ -24,7 +24,7 @@ void QuakeMLTable::AddQuakeMLEvent(QuakeMLEvent event)
 {
     using Item = QTableWidgetItem;
     QVector<QTableWidgetItem*> items {
-        new Item{"###"},
+        new Item{event.id},
         new Item{event.dateTime},
         new Item{event.latitude},
         new Item{event.longitude},

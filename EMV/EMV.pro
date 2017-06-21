@@ -3,6 +3,7 @@
 # Project created by QtCreator 2017-06-09T12:30:35
 #
 #-------------------------------------------------
+# message($$QMAKESPEC)
 
 QT       += core gui network
 
@@ -43,3 +44,16 @@ LIBS +=   -L/usr/local/lib -lmarblewidget-qt5
 
 RESOURCES += \
     graphics.qrc
+
+
+# ---- EarthWorm Injection ----
+
+linux-g++:DEFINES += _LINUX
+linux-g++-64:DEFINES += _LINUX
+
+SOURCES += EarthWorm/src/data_exchange/import_generic/import_generic.c
+
+INCLUDEPATH += EarthWorm/include
+
+DISTFILES += \
+    Notes.txt
