@@ -3,10 +3,38 @@
 
 #include <transport.h>
 
-extern "C" int X_tport_putmsg( SHM_INFO* region,    /* info structure for memory region    */
+int X_tport_putmsg( SHM_INFO* region,    /* info structure for memory region    */
           MSG_LOGO* putlogo,   /* type,module,instid of incoming msg  */
           long      length,    /* size of incoming message            */
           char     *msg );      /* pointer to incoming message         */
+
+
+
+struct ImportGenericConfig {
+//        "<MyModuleId> "
+    const char * MyModuleId;
+//        "<RingName> "
+    const char * RingName;
+//        "<HeartBeatInt> "
+    int HeartBeatInt;
+//        "<LogFile> "
+    short LogFile;
+//        "<MaxMsgSize> "
+    int MaxMsgSize;
+//        "<MyAliveInt> "
+    int MyAliveInt;
+//        "<MyAliveString>
+    const char* MyAliveString;
+//        "<SenderIpAdr> "
+    const char* SenderIPAddress;
+//        "<SenderPort> "
+    short SenderPort;
+//        "<SenderHeartRate
+    short SenderHeartRate;
+//        "<SenderHeartText
+    const char* SenderHeartText;
+    int SocketTimeout;
+};
 
 #endif // EARTHWORMHACKS_H
 

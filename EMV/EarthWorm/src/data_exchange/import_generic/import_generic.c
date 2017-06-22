@@ -114,7 +114,6 @@
 #include <imp_exp_gen.h>
 #include <trace_buf.h>
 
-//#include "emv_import_generic_transition.h"
 
 #define MAX_LOGO  20
 
@@ -189,7 +188,7 @@ static unsigned char TypeError;
 #define  ERR_SERVER_DEAD     3   /* server machine heartbeats not received on time */
 #define  ERR_GARBAGE_IN      4   /* something other than STX after ETX             */
 
-int Initialize_Import_Generic( int argc, char **argv )
+int Initialize_Import_Generic( int argc, char **argv, struct ImportGenericConfig igConfig )
 {
    struct sockaddr_in insocket;
    time_t now;
@@ -213,9 +212,21 @@ int Initialize_Import_Generic( int argc, char **argv )
 
 /* Read the configuration file(s)
  ********************************/
-   config( argv[1] );
-   logit( "" , "import_generic(%s): Read command file <%s>\n",
-                MyModName, argv[1] );
+//   config( argv[1] );
+//   logit( "" , "import_generic(%s): Read command file <%s>\n",
+//                MyModName, argv[1] );
+
+//   strcpy(MyModName, igConfig.MyModuleId);
+    strcpy(SenderIpAdr, igConfig.SenderIPAddress);
+    SenderPort = igConfig.SenderPort;
+    SenderHeartRate = igConfig.SenderHeartRate;
+    strcpy(SenderHeartText, igConfig.SenderHeartText);
+
+    SocketTimeoutLength = igConfig.SocketTimeout;
+
+    GetType( "TYPE_HEARTBEAT", &TypeHeartBeat );
+    GetType( "TYPE_ERROR", &TypeError );
+
 
 /* Reinitialize the logging level
  ********************************/
@@ -223,22 +234,22 @@ int Initialize_Import_Generic( int argc, char **argv )
  
 /* Set Socket Debug 
  *******************/
-   setSocket_ewDebug(SOCKET_ewDebug);
+ //  setSocket_ewDebug(SOCKET_ewDebug);
    
 /* Look up important info from earthworm.h tables
  ************************************************/
-   lookup();
+//   lookup();
 
 /* Heartbeat parameters sanity checks
  ************************************/
-   logit("","17 Mar 2005 version.\n");
-   if(1000 * (unsigned int)SenderHeartRate >= SocketTimeoutLength)
-   {
-     logit("","Socket timeout (%d ms) is less than incoming heartrate (%d sec)",
-		SocketTimeoutLength, SenderHeartRate);
-     SocketTimeoutLength = 1000 * SenderHeartRate;
-     logit("", "Setting socket timeout to %d ms\n", SocketTimeoutLength);
-   }
+//   logit("","17 Mar 2005 version.\n");
+//   if(1000 * (unsigned int)SenderHeartRate >= SocketTimeoutLength)
+//   {
+//     logit("","Socket timeout (%d ms) is less than incoming heartrate (%d sec)",
+//		SocketTimeoutLength, SenderHeartRate);
+//     SocketTimeoutLength = 1000 * SenderHeartRate;
+//     logit("", "Setting socket timeout to %d ms\n", SocketTimeoutLength);
+//   }
 
 /* Get our Process ID for restart purposes
  ******************************************/
@@ -277,7 +288,9 @@ int Initialize_Import_Generic( int argc, char **argv )
    ********************************************/
    memset( (char *)&insocket, '\0', sizeof(insocket) );
    insocket.sin_family = AF_INET;
-   insocket.sin_port   = htons( (short)SenderPort );
+   uint16_t temp =  htons( (short)SenderPort );
+   insocket.sin_port   = temp;
+//   insocket.sin_port = (short) SenderPort;
 
 #if defined(_LINUX) || defined(_MACOSX)
    if ((int)(insocket.sin_addr.s_addr = inet_addr(SenderIpAdr)) == -1)
@@ -320,16 +333,16 @@ reconnect:            /* we can JUMP here from other places! */
 
    /* Are we being told to quit? 
     ****************************/
-      if ( tport_getflag( &Region ) == TERMINATE  ||
-           tport_getflag( &Region ) == MyPid        ) 
-      {
-         tport_detach( &Region );
-         logit("t", "import_generic(%s): terminating on request\n", MyModName);
-         (void)KillThread(TidMsgRcv);
-         (void)KillThread(TidSocketHeart);
-         free(MsgBuf);
-         return 0;
-      }
+//      if ( tport_getflag( &Region ) == TERMINATE  ||
+//           tport_getflag( &Region ) == MyPid        )
+//      {
+//         tport_detach( &Region );
+//         logit("t", "import_generic(%s): terminating on request\n", MyModName);
+//         (void)KillThread(TidMsgRcv);
+//         (void)KillThread(TidSocketHeart);
+//         free(MsgBuf);
+//         return 0;
+//      }
 
    /* Create a socket
     ******************/
@@ -760,241 +773,241 @@ thr_ret SocketHeartbeat( void *dummy )
 }
 
 
-/*****************************************************************************
- *  config() processes command file(s) using kom.c functions;                *
- *                    exits if any errors are encountered.                   *
- *****************************************************************************/
-void config( char *configfile )
-{
-   int      ncommand;     /* # of required commands you expect to process   */
-   char     init[20];     /* init flags, one byte for each required command */
-   int      nmiss;        /* number of required commands that were missed   */
-   char    *com;
-   char    *str;
-   int      nfiles;
-   int      success;
-   int      i;
+///*****************************************************************************
+// *  config() processes command file(s) using kom.c functions;                *
+// *                    exits if any errors are encountered.                   *
+// *****************************************************************************/
+//void config( char *configfile )
+//{
+//   int      ncommand;     /* # of required commands you expect to process   */
+//   char     init[20];     /* init flags, one byte for each required command */
+//   int      nmiss;        /* number of required commands that were missed   */
+//   char    *com;
+//   char    *str;
+//   int      nfiles;
+//   int      success;
+//   int      i;
 
-/* Set to zero one init flag for each required command
- *****************************************************/
-   ncommand = 11;
-   for( i=0; i<ncommand; i++ )  init[i] = 0;
+///* Set to zero one init flag for each required command
+// *****************************************************/
+//   ncommand = 11;
+//   for( i=0; i<ncommand; i++ )  init[i] = 0;
 
-/* Open the main configuration file
- **********************************/
-   nfiles = k_open( configfile );
-   if ( nfiles == 0 ) {
-        logit("e",
-                "import_generic: Error opening command file <%s>; exiting!\n",
-                 configfile );
-        exit( -1 );
-   }
+///* Open the main configuration file
+// **********************************/
+//   nfiles = k_open( configfile );
+//   if ( nfiles == 0 ) {
+//        logit("e",
+//                "import_generic: Error opening command file <%s>; exiting!\n",
+//                 configfile );
+//        exit( -1 );
+//   }
 
-/* Process all command files
- ***************************/
-   while(nfiles > 0)   /* While there are command files open */
-   {
-        while(k_rd())        /* Read next line from active file  */
-        {
-            com = k_str();         /* Get the first token from line */
+///* Process all command files
+// ***************************/
+//   while(nfiles > 0)   /* While there are command files open */
+//   {
+//        while(k_rd())        /* Read next line from active file  */
+//        {
+//            com = k_str();         /* Get the first token from line */
 
-        /* Ignore blank lines & comments
-         *******************************/
-            if( !com )           continue;
-            if( com[0] == '#' )  continue;
+//        /* Ignore blank lines & comments
+//         *******************************/
+//            if( !com )           continue;
+//            if( com[0] == '#' )  continue;
 
-        /* Open a nested configuration file
-         **********************************/
-            if( com[0] == '@' ) {
-               success = nfiles+1;
-               nfiles  = k_open(&com[1]);
-               if ( nfiles != success ) {
-                  logit("e",
-                          "import_generic: Error opening command file <%s>; exiting!\n",
-                           &com[1] );
-                  exit( -1 );
-               }
-               continue;
-            }
+//        /* Open a nested configuration file
+//         **********************************/
+//            if( com[0] == '@' ) {
+//               success = nfiles+1;
+//               nfiles  = k_open(&com[1]);
+//               if ( nfiles != success ) {
+//                  logit("e",
+//                          "import_generic: Error opening command file <%s>; exiting!\n",
+//                           &com[1] );
+//                  exit( -1 );
+//               }
+//               continue;
+//            }
 
-        /* Process anything else as a command
-         ************************************/
-  /*0*/     if( k_its("MyModuleId") ) {
-                str=k_str();
-                if(str) strcpy(MyModName,str);
-                init[0] = 1;
-            }
-  /*1*/     else if( k_its("RingName") ) {
-                str = k_str();
-                if(str) strcpy( RingName, str );
-                init[1] = 1;
-            }
-  /*2*/     else if( k_its("HeartBeatInt") ) {
-                HeartBeatInt = k_int();
-                init[2] = 1;
-            }
-  /*3*/     else if(k_its("LogFile") ) {
-                LogSwitch=k_int();
-                init[3]=1;
-            }
+//        /* Process anything else as a command
+//         ************************************/
+//  /*0*/     if( k_its("MyModuleId") ) {
+//                str=k_str();
+//                if(str) strcpy(MyModName,str);
+//                init[0] = 1;
+//            }
+//  /*1*/     else if( k_its("RingName") ) {
+//                str = k_str();
+//                if(str) strcpy( RingName, str );
+//                init[1] = 1;
+//            }
+//  /*2*/     else if( k_its("HeartBeatInt") ) {
+//                HeartBeatInt = k_int();
+//                init[2] = 1;
+//            }
+//  /*3*/     else if(k_its("LogFile") ) {
+//                LogSwitch=k_int();
+//                init[3]=1;
+//            }
 
-         /* Maximum size (bytes) for incoming messages
-          ********************************************/
-  /*4*/     else if( k_its("MaxMsgSize") ) {
-                MaxMsgSize = k_long();
-                init[4] = 1;
-            }
+//         /* Maximum size (bytes) for incoming messages
+//          ********************************************/
+//  /*4*/     else if( k_its("MaxMsgSize") ) {
+//                MaxMsgSize = k_long();
+//                init[4] = 1;
+//            }
 
-        /* 5 Interval for alive messages to sending machine
-        ***************************************************/
-            else if( k_its("MyAliveInt") ) {
-                MyAliveInt = k_int();
-                init[5]=1;
-            }
+//        /* 5 Interval for alive messages to sending machine
+//        ***************************************************/
+//            else if( k_its("MyAliveInt") ) {
+//                MyAliveInt = k_int();
+//                init[5]=1;
+//            }
 
-        /* 6 Text of alive message to sending machine
-        *********************************************/
-            else if( k_its("MyAliveString") ){
-                str=k_str();
-                if(str) strcpy(MyAliveString,str);
-                init[6]=1;
-            }
+//        /* 6 Text of alive message to sending machine
+//        *********************************************/
+//            else if( k_its("MyAliveString") ){
+//                str=k_str();
+//                if(str) strcpy(MyAliveString,str);
+//                init[6]=1;
+//            }
 
-        /* 7 Sender's internet address, in dot notation
-        ***********************************************/
-            else if(k_its("SenderIpAdr") ) {
-                str=k_str();
-                if(str) strcpy(SenderIpAdr,str);
-                init[7]=1;
-            }
+//        /* 7 Sender's internet address, in dot notation
+//        ***********************************************/
+//            else if(k_its("SenderIpAdr") ) {
+//                str=k_str();
+//                if(str) strcpy(SenderIpAdr,str);
+//                init[7]=1;
+//            }
 
-        /* 8 Sender's Port Number
-        *************************/
-            else if( k_its("SenderPort") ) {
-                SenderPort = k_int();
-                init[8]=1;
-            }
+//        /* 8 Sender's Port Number
+//        *************************/
+//            else if( k_its("SenderPort") ) {
+//                SenderPort = k_int();
+//                init[8]=1;
+//            }
 
-        /* 9 Sender's Heart beat interval
-        ********************************/
-            else if( k_its("SenderHeartRate") ) {
-                SenderHeartRate = k_int();
-                init[9]=1;
-            }
+//        /* 9 Sender's Heart beat interval
+//        ********************************/
+//            else if( k_its("SenderHeartRate") ) {
+//                SenderHeartRate = k_int();
+//                init[9]=1;
+//            }
 
-        /* 10 Sender's heart beat text
-        ******************************/
-            else if(k_its("SenderHeartText") ) {
-                str=k_str();
-                if(str) strcpy(SenderHeartText,str);
-                init[10]=1;
-            }
+//        /* 10 Sender's heart beat text
+//        ******************************/
+//            else if(k_its("SenderHeartText") ) {
+//                str=k_str();
+//                if(str) strcpy(SenderHeartText,str);
+//                init[10]=1;
+//            }
 
-        /* Optional:  Socket timeout length 
-        ******************************/
-            else if(k_its("SocketTimeout") ) {
-              SocketTimeoutLength = k_int();
-            }
+//        /* Optional:  Socket timeout length
+//        ******************************/
+//            else if(k_its("SocketTimeout") ) {
+//              SocketTimeoutLength = k_int();
+//            }
 
-        /* Optional Command:  Heartbeat Debug Flag
-        ******************************/
-            else if(k_its("HeartbeatDebug") ) {
-                HeartbeatDebug = k_int();
-            }
+//        /* Optional Command:  Heartbeat Debug Flag
+//        ******************************/
+//            else if(k_its("HeartbeatDebug") ) {
+//                HeartbeatDebug = k_int();
+//            }
 
-        /* Optional Command:  Socket Debug Flag
-        ******************************/
-            else if(k_its("SocketDebug") ) {
-                SOCKET_ewDebug = k_int();
-            }
+//        /* Optional Command:  Socket Debug Flag
+//        ******************************/
+//            else if(k_its("SocketDebug") ) {
+//                SOCKET_ewDebug = k_int();
+//            }
 
-        /* Unknown command
-        *****************/
-            else {
-                logit("e", "<%s> Unknown command in <%s>.\n",
-                         com, configfile );
-                continue;
-            }
+//        /* Unknown command
+//        *****************/
+//            else {
+//                logit("e", "<%s> Unknown command in <%s>.\n",
+//                         com, configfile );
+//                continue;
+//            }
 
-        /* See if there were any errors processing the command
-         *****************************************************/
-            if( k_err() ) {
-               logit("e",
-                       "Bad <%s> command in <%s>; exiting!\n",
-                        com, configfile );
-               exit( -1 );
-            }
-        }
-        nfiles = k_close();
-   }
+//        /* See if there were any errors processing the command
+//         *****************************************************/
+//            if( k_err() ) {
+//               logit("e",
+//                       "Bad <%s> command in <%s>; exiting!\n",
+//                        com, configfile );
+//               exit( -1 );
+//            }
+//        }
+//        nfiles = k_close();
+//   }
 
-/* After all files are closed, check init flags for missed commands
- ******************************************************************/
-   nmiss = 0;
-   for ( i=0; i<ncommand; i++ )  if( !init[i] ) nmiss++;
-   if ( nmiss ) {
-       logit("e", "import_generic: ERROR, no " );
-       if ( !init[0] )   logit("e", "<MyModuleId> "   );
-       if ( !init[1] )   logit("e", "<RingName> "     );
-       if ( !init[2] )   logit("e", "<HeartBeatInt> " );
-       if ( !init[3] )   logit("e", "<LogFile> "      );
-       if ( !init[4] )   logit("e", "<MaxMsgSize> "   );
-       if ( !init[5] )   logit("e", "<MyAliveInt> "   );
-       if ( !init[6] )   logit("e", "<MyAliveString> ");
-       if ( !init[7] )   logit("e", "<SenderIpAdr> "  );
-       if ( !init[8] )   logit("e", "<SenderPort> "   );
-       if ( !init[9] )   logit("e", "<SenderHeartRate> " );
-       if ( !init[10] )  logit("e", "<SenderHeartText> " );
-       logit("e", "command(s) in <%s>; exiting!\n", configfile );
-       exit( -1 );
-   }
+///* After all files are closed, check init flags for missed commands
+// ******************************************************************/
+//   nmiss = 0;
+//   for ( i=0; i<ncommand; i++ )  if( !init[i] ) nmiss++;
+//   if ( nmiss ) {
+//       logit("e", "import_generic: ERROR, no " );
+//       if ( !init[0] )   logit("e", "<MyModuleId> "   );
+//       if ( !init[1] )   logit("e", "<RingName> "     );
+//       if ( !init[2] )   logit("e", "<HeartBeatInt> " );
+//       if ( !init[3] )   logit("e", "<LogFile> "      );
+//       if ( !init[4] )   logit("e", "<MaxMsgSize> "   );
+//       if ( !init[5] )   logit("e", "<MyAliveInt> "   );
+//       if ( !init[6] )   logit("e", "<MyAliveString> ");
+//       if ( !init[7] )   logit("e", "<SenderIpAdr> "  );
+//       if ( !init[8] )   logit("e", "<SenderPort> "   );
+//       if ( !init[9] )   logit("e", "<SenderHeartRate> " );
+//       if ( !init[10] )  logit("e", "<SenderHeartText> " );
+//       logit("e", "command(s) in <%s>; exiting!\n", configfile );
+//       exit( -1 );
+//   }
 
-   return;
-}
+//   return;
+//}
 
-/****************************************************************************
- *  lookup( )   Look up important info from earthworm.h tables       *
- ****************************************************************************/
-void lookup( void )
-{
-/* Look up keys to shared memory regions
-   *************************************/
-   if( ( RingKey = GetKey(RingName) ) == -1 ) {
-        fprintf( stderr,
-                "import_generic:  Invalid ring name <%s>; exiting!\n", RingName);
-        exit( -1 );
-   }
+///****************************************************************************
+// *  lookup( )   Look up important info from earthworm.h tables       *
+// ****************************************************************************/
+//void lookup( void )
+//{
+///* Look up keys to shared memory regions
+//   *************************************/
+//   if( ( RingKey = GetKey(RingName) ) == -1 ) {
+//        fprintf( stderr,
+//                "import_generic:  Invalid ring name <%s>; exiting!\n", RingName);
+//        exit( -1 );
+//   }
 
-/* Look up installations of interest
-   *********************************/
-   if ( GetLocalInst( &MyInstId ) != 0 ) {
-      fprintf( stderr,
-              "import_generic: error getting local installation id; exiting!\n" );
-      exit( -1 );
-   }
+///* Look up installations of interest
+//   *********************************/
+//   if ( GetLocalInst( &MyInstId ) != 0 ) {
+//      fprintf( stderr,
+//              "import_generic: error getting local installation id; exiting!\n" );
+//      exit( -1 );
+//   }
 
-/* Look up modules of interest
-   ***************************/
-   if ( GetModId( MyModName, &MyModId ) != 0 ) {
-      fprintf( stderr,
-              "import_generic: Invalid module name <%s>; exiting!\n", MyModName );
-      exit( -1 );
-   }
+///* Look up modules of interest
+//   ***************************/
+//   if ( GetModId( MyModName, &MyModId ) != 0 ) {
+//      fprintf( stderr,
+//              "import_generic: Invalid module name <%s>; exiting!\n", MyModName );
+//      exit( -1 );
+//   }
 
-/* Look up message types of interest
-   *********************************/
-   if ( GetType( "TYPE_HEARTBEAT", &TypeHeartBeat ) != 0 ) {
-      fprintf( stderr,
-              "import_generic: Invalid message type <TYPE_HEARTBEAT>; exiting!\n" );
-      exit( -1 );
-   }
-   if ( GetType( "TYPE_ERROR", &TypeError ) != 0 ) {
-      fprintf( stderr,
-              "import_generic: Invalid message type <TYPE_ERROR>; exiting!\n" );
-      exit( -1 );
-   }
-   return; 
-}
+///* Look up message types of interest
+//   *********************************/
+//   if ( GetType( "TYPE_HEARTBEAT", &TypeHeartBeat ) != 0 ) {
+//      fprintf( stderr,
+//              "import_generic: Invalid message type <TYPE_HEARTBEAT>; exiting!\n" );
+//      exit( -1 );
+//   }
+//   if ( GetType( "TYPE_ERROR", &TypeError ) != 0 ) {
+//      fprintf( stderr,
+//              "import_generic: Invalid message type <TYPE_ERROR>; exiting!\n" );
+//      exit( -1 );
+//   }
+//   return;
+//}
 
 /*******************************************************************************
  * output_status() builds a heartbeat or error message & puts it into          *
