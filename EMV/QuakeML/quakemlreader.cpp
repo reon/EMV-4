@@ -9,7 +9,6 @@ QuakeMLReader::QuakeMLReader(QString XMLstring)
     while(!xml.atEnd())
     {
         xml.readNextStartElement();
-
 //        if (xml.name() == "eventParameters") ProcessEventParameters();
         if (QString::compare(xml.name().toString(),QString("eventParameters"),Qt::CaseInsensitive) == 0)
             ProcessEventParameters();
@@ -51,13 +50,13 @@ void QuakeMLReader::ProcessEvent()
 void QuakeMLReader::ProcessEventAttributes()
 {
     auto attributes = xml.attributes().value("publicID").toString();
-    QString pattern = QStringLiteral(R"RAW(eventid=(\d+))RAW");
+    QString pattern = QStringLiteral(R"RAW(eventid=(?<number>\d+))RAW");
     QRegularExpression regex(pattern, QRegularExpression::CaseInsensitiveOption);
     QRegularExpressionMatch match = regex.match(attributes);
 
     if (!match.hasMatch()) return;
 
-    currentEvent.id = match.captured(0);
+    currentEvent.id = match.captured("number");
 }
 
 void QuakeMLReader::ProcessOrigin()
@@ -67,6 +66,7 @@ void QuakeMLReader::ProcessOrigin()
         if (name == "time")             currentEvent.dateTime = ProcessValue();
         else if (name == "latitude")    currentEvent.latitude = ProcessValue();
         else if (name == "longitude")   currentEvent.longitude = ProcessValue();
+        else if (name == "depth")       currentEvent.depth = ProcessValue();
         else xml.skipCurrentElement();
     }
 }

@@ -39,6 +39,8 @@ void* EWC::ImportGeneric(void *)
 
     config.SocketTimeout = 60000;
 
+    config.HeartBeatDebug = 1;
+
     int argc;
     const char* argv[2];
 

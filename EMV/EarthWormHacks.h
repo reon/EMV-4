@@ -8,6 +8,7 @@ int X_tport_putmsg( SHM_INFO* region,    /* info structure for memory region    
           long      length,    /* size of incoming message            */
           char     *msg );      /* pointer to incoming message         */
 
+int X_import_filter( char *msg, int msgLen, MSG_LOGO* logo );
 
 
 struct ImportGenericConfig {
@@ -34,6 +35,7 @@ struct ImportGenericConfig {
 //        "<SenderHeartText
     const char* SenderHeartText;
     int SocketTimeout;
+    int HeartBeatDebug;
 };
 
 #endif // EARTHWORMHACKS_H

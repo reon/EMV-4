@@ -221,8 +221,20 @@ int Initialize_Import_Generic( int argc, char **argv, struct ImportGenericConfig
     SenderPort = igConfig.SenderPort;
     SenderHeartRate = igConfig.SenderHeartRate;
     strcpy(SenderHeartText, igConfig.SenderHeartText);
-
     SocketTimeoutLength = igConfig.SocketTimeout;
+
+    MaxMsgSize = igConfig.MaxMsgSize;
+
+    strcpy(MyModName, igConfig.MyModuleId);
+    strcpy(RingName, igConfig.RingName);
+    HeartBeatInt = igConfig.HeartBeatInt;
+
+    LogSwitch = igConfig.LogFile;
+
+    strcpy(MyAliveString, igConfig.MyAliveString);
+    MyAliveInt = igConfig.MyAliveInt;
+
+    HeartbeatDebug = igConfig.HeartBeatDebug;
 
     GetType( "TYPE_HEARTBEAT", &TypeHeartBeat );
     GetType( "TYPE_ERROR", &TypeError );
@@ -400,7 +412,7 @@ reconnect:            /* we can JUMP here from other places! */
    {
       logit( "e", "import_generic(%s): Error starting SocketHeartbeat thread. Exiting.\n",
              MyModName );
-      tport_detach( &Region );
+ //     tport_detach( &Region );
       free(MsgBuf);
       return -1;
    }
@@ -412,7 +424,7 @@ reconnect:            /* we can JUMP here from other places! */
    {
       logit( "e", "import_generic(%s): Error starting MessageReceiver thread. Exiting.\n",
              MyModName );
-      tport_detach( &Region );
+ //     tport_detach( &Region );
       free(MsgBuf);
       return -1;
    }
@@ -465,17 +477,17 @@ reconnect:            /* we can JUMP here from other places! */
 
       /* Are we being told to quit */
       /*****************************/
-      if ( tport_getflag( &Region ) == TERMINATE ||
-           tport_getflag( &Region ) == MyPid        )
-      {
+//      if ( tport_getflag( &Region ) == TERMINATE ||
+//           tport_getflag( &Region ) == MyPid        )
+//      {
 
-         tport_detach( &Region );
-         logit("t", "import_generic(%s): terminating on request\n", MyModName);
-         (void)KillThread(TidMsgRcv);
-         (void)KillThread(TidSocketHeart);
-         free(MsgBuf);
-         return 0;
-      }
+//         tport_detach( &Region );
+//         logit("t", "import_generic(%s): terminating on request\n", MyModName);
+//         (void)KillThread(TidMsgRcv);
+//         (void)KillThread(TidSocketHeart);
+//         free(MsgBuf);
+//         return 0;
+//      }
 
       /* Any other shutdown conditions here */
       /**************************************/
@@ -692,7 +704,7 @@ thr_ret MessageReceiver( void *dummy )
         MsgBuf[nchar++]=chr; if(nchar>MaxMsgSize) goto freak; /*save character */
         continue;
 
-                        freak:  /* freakout: message won't fit */
+freak:  /* freakout: message won't fit */
         {
           logit("et", "import_generic(%s): receive buffer overflow after %ld bytes\n",
                     MyModName, MaxMsgSize);
@@ -1099,6 +1111,7 @@ void import_filter( char *msg, int msgLen )
 //   }
 
     /// TODO add message to Qt queue
+    X_import_filter( msg, msgLen, &logo );
 
     return;
 }

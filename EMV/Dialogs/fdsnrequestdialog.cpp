@@ -18,13 +18,6 @@ FDSNRequestDialog::FDSNRequestDialog(QWidget *parent, qreal latitude, qreal long
     ui->HostListWidget->setCurrentRow(0);
 
     onUpdateCoords(latitude, longitude);
-
-    // To remove
-//    ui->LatitudeMaximumEdit->setText(QString::number(latitude + (RANGE / 2.0f)));
-//    ui->LatitudeMinimumEdit->setText(QString::number(latitude - (RANGE / 2.0f)));
-
-//    ui->LongitudeMaximumEdit->setText(QString::number(longitude + (RANGE / 2.0f)));
-//    ui->LongitudeMinimumEdit->setText(QString::number(longitude - (RANGE / 2.0f)));
 }
 
 FDSNRequestDialog::~FDSNRequestDialog()
@@ -107,17 +100,21 @@ QString FDSNRequestDialog::GenerateQuery()
             fragments.remove(key);
     }
 
-    //Now time fragments
-    if (ui->FilterTimeCheckBox->isChecked()) {
-        QString startTime = GenerateDateTimeFragment(ui->StartDateTimeEdit->dateTime());
-        QString endTime = GenerateDateTimeFragment(ui->StartDateTimeEdit->dateTime());
-    }
-
     QString query;
-
 
     for (auto i = fragments.begin(); i != fragments.end(); i++) {
         query += i.key() + "=" + i.value() + "&";
+    }
+
+    // Needs rewrite
+    // Now time fragments
+    if (ui->FilterTimeCheckBox->isChecked()) {
+        QString startTime = GenerateDateTimeFragment(ui->StartDateTimeEdit->dateTime().toUTC());
+        QString endTime = GenerateDateTimeFragment(ui->StartDateTimeEdit->dateTime().toUTC());
+
+//        fragments.insert("starttime", startTime);
+        query += "starttime"  "=" + startTime + "&";
+        query += "endtime"  "=" + endTime + "&";
     }
 
     return query;

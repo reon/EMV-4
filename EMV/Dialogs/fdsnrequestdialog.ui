@@ -454,6 +454,9 @@
            </item>
            <item>
             <widget class="QCheckBox" name="FilterTimeCheckBox">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Enable time filter</string>
              </property>
@@ -472,6 +475,9 @@
            </item>
            <item>
             <widget class="QDateTimeEdit" name="StartDateTimeEdit">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="dateTime">
               <datetime>
                <hour>0</hour>
@@ -503,7 +509,11 @@
             </widget>
            </item>
            <item>
-            <widget class="QDateTimeEdit" name="EndDateTimeEdit"/>
+            <widget class="QDateTimeEdit" name="EndDateTimeEdit">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>

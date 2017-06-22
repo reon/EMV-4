@@ -1,3 +1,13 @@
+# EMV
+
+Todo:
+
+FDSN Station requests
+Broader QuakeML processing, as neccessary
+
+
+
+
 # Earthworm notes / modifications
 
 calls from Qt App to import_generic : EarthWormComp
