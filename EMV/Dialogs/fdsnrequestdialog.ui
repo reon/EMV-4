@@ -139,6 +139,9 @@
       </item>
       <item>
        <widget class="QComboBox" name="ServiceSelect">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="currentText">
          <string>Event</string>
         </property>
@@ -261,6 +264,9 @@
       </item>
       <item>
        <widget class="QComboBox" name="MethodSelect">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
           <horstretch>0</horstretch>

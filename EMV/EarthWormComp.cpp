@@ -1,6 +1,9 @@
 #include <stdlib.h>
 
 #include <QtCore>
+
+#include <read_arc.h>
+
 #include "EarthWormComp.h"
 #include "EarthWormHacks.h"
 
@@ -14,6 +17,8 @@ int EWC::StartImportGeneric()
 {
     unsigned int ID {};
     StartThread(ImportGeneric, 16000, &ID);
+
+    return 1;
 }
 
 void* EWC::ImportGeneric(void *)

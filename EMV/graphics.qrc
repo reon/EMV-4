@@ -1,7 +1,8 @@
 <RCC>
     <qresource prefix="/graphics">
-        <file>icons/database.png</file>
-        <file>icons/close.png</file>
-        <file>icons/tag.png</file>
+        <file>database.png</file>
+        <file>close.png</file>
+        <file>tag.png</file>
     </qresource>
+    <qresource prefix="/Files"/>
 </RCC>

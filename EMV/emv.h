@@ -72,26 +72,29 @@ private slots:
 
     void on_action_EW_Test_Initialize_triggered();
 
+private:    
+    void SaveXML(QString xmlResponse); ///< For testing, Save XML on ReplayFinished()
+    void ReloadGeoDocument();
+
+        //Members
 private:
     Ui::EMV *ui;
-    //Move to ui
+        // Status bar labels
     QLabel* LatitudeNameLabel { new QLabel("Latitude : ", this) };
     QLabel* LatitudeLabel { new QLabel(this) };
     QLabel* LongitudeNameLabel { new QLabel("Longitude : ", this) };
     QLabel* LongitudeLabel { new QLabel(this) };
 
+    QPointer<FDSNRequestDialog> fdsnDialog;
+
     QScopedPointer<EventLayer> eventLayer;
     QScopedPointer<Marble::GeoDataDocument> geoDoc {new Marble::GeoDataDocument};
 
+        //For test net code
     QNetworkAccessManager net;
 
     QVector<QuakeMLEvent> events;
 
-
-    QPointer<FDSNRequestDialog> fdsnDialog;
-
-    void SaveXML(QString xmlResponse); ///< For testing, Save XML on ReplayFinished()
-    void ReloadGeoDocument();
 
 };
 

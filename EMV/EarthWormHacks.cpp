@@ -21,7 +21,7 @@ extern "C" {
 //    qDebug() << "X_logit_init() \n " << args.join(' ') << '\n' << "end X_logit_init()";
 //}
 
-extern "C" int X_tport_putmsg( SHM_INFO *region,    /* info structure for memory region    */
+extern "C" int X_tport_putmsg( SHM_INFO* /* region */,    /* info structure for memory region    */
           MSG_LOGO *putlogo,   /* type,module,instid of incoming msg  */
           long      length,    /* size of incoming message            */
           char     *msg )      /* pointer to incoming message         */
@@ -33,11 +33,45 @@ extern "C" int X_tport_putmsg( SHM_INFO *region,    /* info structure for memory
     return PUT_OK;
 }
 
+
+// New Hypocenter message
 extern "C" int X_import_filter( char *msg, int msgLen, MSG_LOGO* putlogo )
 {
     qDebug() << "X_import_filter : \n"
         << "MSG_LOGO: " << putlogo->instid << putlogo->mod << putlogo->type << "\n"
         << QString::fromLatin1(msg, msgLen) << "\n\n";
 
+
+    HypoArc hypoArc;
+
+    if (parse_arc(msg, &hypoArc))
+    {
+        qDebug() << "Error on parse_arc\n";
+    }
+    else
+    {
+        qDebug() << "Success \n";
+    }
+
+
+
+//    Hsum sum {};
+//    read_hyp(msg, 0, &sum);
+
+//    char * msgEnd = msg + msgLen * sizeof(char);
+
+//    char * msgPtr = msg;
+
+//    //Advance ptr to first
+
+//    while (msgPtr < msg)
+//    {
+
+//    }
+
+
+
     return PUT_OK;
 }
+
+

@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     QuakeML/quakemlevent.cpp \
     Dialogs/fdsnrequestdialog.cpp \
     Dialogs/connectdialog.cpp \
-    Widgets/quakemltable.cpp
+    Widgets/quakemltable.cpp \
+    teststring.cpp
 
 HEADERS  += emv.h \
         archcolors.h archpaintlayer.h mapwidget.h \
@@ -34,7 +35,8 @@ HEADERS  += emv.h \
     QuakeML/quakemlevent.h \
     Dialogs/fdsnrequestdialog.h \
     Dialogs/connectdialog.h \
-    Widgets/quakemltable.h
+    Widgets/quakemltable.h \
+    teststring.h
 
 FORMS    += emv.ui \
     Dialogs/fdsnrequestdialog.ui \
@@ -43,7 +45,7 @@ FORMS    += emv.ui \
 LIBS +=   -L/usr/local/lib -lmarblewidget-qt5
 
 RESOURCES += \
-    graphics.qrc
+    Embedded/emvresources.qrc
 
 
 # ---- EarthWorm Injection ----
@@ -54,6 +56,7 @@ linux-g++-64:DEFINES += _LINUX
 SOURCES += EarthWorm/src/data_exchange/import_generic/import_generic.c \
     EarthWorm/src/libsrc/unix/socket_ew.c \
     EarthWorm/src/libsrc/util/socket_ew_common.c \
+    EarthWorm/src/libsrc/util/read_arc.c \
     EarthWormComp.cpp \
     EarthWormHacks.cpp
 
@@ -65,4 +68,5 @@ INCLUDEPATH += EarthWorm/include
 LIBS += -L$$_PRO_FILE_PWD_/EarthWorm/lib -lew -lew_mt
 
 DISTFILES += \
-    Notes.txt
+    Notes.txt \
+    StationList.txt

@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Icons/close.png</file>
+        <file>Icons/database.png</file>
+        <file>Icons/tag.png</file>
+        <file>Files/StationList.txt</file>
+    </qresource>
+</RCC>
