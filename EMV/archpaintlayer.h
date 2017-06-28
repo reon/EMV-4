@@ -26,11 +26,12 @@
 //using namespace Marble;
 
 //TODO move to own class
-class archPaintLayer : public QObject, public Marble::LayerInterface
+class ArchPaintLayer : public QObject, public Marble::LayerInterface
 {
 public:
-    archPaintLayer(Marble::MarbleWidget* widget, QList<Marble::GeoDataCoordinates*> stations,
-                Marble::GeoDataCoordinates* eventcoors);
+//    ArchPaintLayer(Marble::MarbleWidget* widget, QList<Marble::GeoDataCoordinates*> stations,
+//                Marble::GeoDataCoordinates* eventcoors);
+    ArchPaintLayer(Marble::MarbleWidget* widget);
 
 
     /** Implemented from LayerInterface */
@@ -46,12 +47,18 @@ public:
     /** Conversion tool */
     Marble::GeoDataCoordinates approximate(const Marble::GeoDataCoordinates &base, qreal angle, qreal dist) const;
 
-private:
-    Marble::MarbleWidget* m_widget; /*!< Marble Widget to draw on */
-    QList<Marble::GeoDataCoordinates*> _stations; /*!< station locations to draw to */
-    Marble::GeoDataCoordinates* _eventcoors; /*!< event location to draw from */
+    void SetStations(QVector<Marble::GeoDataCoordinates> stations) { this->stations = stations; }
+    void SetEvent(Marble::GeoDataCoordinates event) { this->eventCoords = event; }
 
-    int m_index;
+    void SetShow(bool enabled = true) { this->enabled = enabled; }
+private:
+    bool enabled = false;
+
+    Marble::MarbleWidget* m_widget; /*!< Not Used. Marble Widget to draw on */
+    QVector<Marble::GeoDataCoordinates> stations; /*!< station locations to draw to */
+    Marble::GeoDataCoordinates eventCoords; /*!< event location to draw from */
+
+    int m_index;    // Currently unused, looks like user presses '+' -> index++;
 };
 
 #endif // ARCHPAINTLAYER_H

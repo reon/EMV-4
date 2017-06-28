@@ -35,8 +35,8 @@ signals:
 public slots:
 
 private:
-    Marble::MarbleWidget * mWidget;
-    QVector<QuakeMLEvent>* mEvents;     //Not managed
+    Marble::MarbleWidget * mWidget;     //Not used
+    QVector<QuakeMLEvent>* mEvents;     //Not owned
 
     int mIndex {};
 

@@ -1,6 +1,6 @@
 #include "quakemltable.h"
 
-QuakeMLTable::QuakeMLTable(QWidget* parent)
+QuakeMLTableWidget::QuakeMLTableWidget(QWidget* parent)
     : QTableWidget(0, 5, parent)
 {
     setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -20,7 +20,7 @@ QuakeMLTable::QuakeMLTable(QWidget* parent)
 //    horizontalHeader()-;
 }
 
-void QuakeMLTable::AddQuakeMLEvent(QuakeMLEvent event)
+void QuakeMLTableWidget::AddQuakeMLEvent(QuakeMLEvent event)
 {
     using Item = QTableWidgetItem;
     QVector<QTableWidgetItem*> items {
@@ -41,7 +41,7 @@ void QuakeMLTable::AddQuakeMLEvent(QuakeMLEvent event)
     setSortingEnabled(true);
 }
 
-void QuakeMLTable::AddQuakeMLEvents(QVector<QuakeMLEvent> events)
+void QuakeMLTableWidget::AddQuakeMLEvents(QVector<QuakeMLEvent> events)
 {
     for (auto event : events)
         AddQuakeMLEvent(event);

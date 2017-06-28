@@ -8,11 +8,11 @@
 
 #include "QuakeML/quakemlevent.h"
 
-class QuakeMLTable : public QTableWidget
+class QuakeMLTableWidget : public QTableWidget
 {
         Q_OBJECT
 public:
-    QuakeMLTable(QWidget* parent = 0);
+    QuakeMLTableWidget(QWidget* parent = 0);
 
     void AddQuakeMLEvent(QuakeMLEvent event);
     void AddQuakeMLEvents(QVector<QuakeMLEvent> events);

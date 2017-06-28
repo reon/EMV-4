@@ -1,6 +1,11 @@
 # EMV
+EarthWormSite.c
+> Work in progress
+
 
 Todo:
+
+Move *Layer.cpp to /Layer Folder
 
 FDSN Station requests
 Broader QuakeML processing, as neccessary

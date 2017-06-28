@@ -9,14 +9,20 @@
 
 using namespace Marble;
 
-archPaintLayer::archPaintLayer(MarbleWidget* widget,QList<Marble::GeoDataCoordinates*> stations,
-                           Marble::GeoDataCoordinates* eventcoors) : m_widget(widget), m_index(0)
+//ArchPaintLayer::ArchPaintLayer(MarbleWidget* widget,QList<Marble::GeoDataCoordinates*> stations,
+//                           Marble::GeoDataCoordinates* eventcoors) : m_widget(widget), m_index(0)
+//{
+//    stations = stations;
+//    eventCoords = eventcoors;
+//}
+
+ArchPaintLayer::ArchPaintLayer(MarbleWidget *widget)
+    : QObject(widget), m_widget(widget)
 {
-    _stations = stations;
-    _eventcoors = eventcoors;
+
 }
 
-QStringList archPaintLayer::renderPosition() const
+QStringList ArchPaintLayer::renderPosition() const
 {
     //Paint layers.
     QStringList layers = QStringList() << "SURFACE" << "HOVERS_ABOVE_SURFACE";
@@ -28,7 +34,7 @@ QStringList archPaintLayer::renderPosition() const
 }
 
 //unused example
-bool archPaintLayer::eventFilter(QObject* /* obj*/, QEvent *event)
+bool ArchPaintLayer::eventFilter(QObject* /* obj*/, QEvent *event)
 {
     // Adjust the current layer when '+' is pressed
     if (event->type() == QEvent::KeyPress)
@@ -44,7 +50,7 @@ bool archPaintLayer::eventFilter(QObject* /* obj*/, QEvent *event)
 }
 
 
-GeoDataCoordinates archPaintLayer::approximate(const GeoDataCoordinates &base, qreal angle, qreal dist) const
+GeoDataCoordinates ArchPaintLayer::approximate(const GeoDataCoordinates &base, qreal angle, qreal dist) const
 {
     // This is just a rough estimation that ignores projections.
 
@@ -53,24 +59,24 @@ GeoDataCoordinates archPaintLayer::approximate(const GeoDataCoordinates &base, q
                 base.latitude(deg) + dist * cos(angle), 0.0, deg);
 }
 
-bool archPaintLayer::render( GeoPainter *painter, ViewportParams* /* viewport */,
+bool ArchPaintLayer::render( GeoPainter *painter, ViewportParams* /* viewport */,
     const QString& /*renderPos*/, GeoSceneLayer * /*layer*/ )
 {
+    if (!enabled) return true;
+
     // Have window title reflect the current paint layer
     m_widget->setWindowTitle(renderPosition().first());
 
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    for(int i = 0; i< _stations.length(); i++)
-     {
-
+    for(int i = 0; i< stations.length(); i++)
+    {
         Marble::GeoDataLineString shapeLatitudeCircle( Marble::RespectLatitudeCircle | Marble::Tessellate );
-        shapeLatitudeCircle << *_stations[i] << *_eventcoors;
+        shapeLatitudeCircle << stations[i] << eventCoords;
 
         painter->setPen(oxygenBrightBlue );
         painter->drawPolyline( shapeLatitudeCircle );
-
-      }
+    }
 
     return true;
 }

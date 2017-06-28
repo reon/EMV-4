@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     Dialogs/fdsnrequestdialog.cpp \
     Dialogs/connectdialog.cpp \
     Widgets/quakemltable.cpp \
-    teststring.cpp
+    teststring.cpp \
+    earthwormsite.cpp
 
 HEADERS  += emv.h \
         archcolors.h archpaintlayer.h mapwidget.h \
@@ -36,7 +37,8 @@ HEADERS  += emv.h \
     Dialogs/fdsnrequestdialog.h \
     Dialogs/connectdialog.h \
     Widgets/quakemltable.h \
-    teststring.h
+    teststring.h \
+    earthwormsite.h
 
 FORMS    += emv.ui \
     Dialogs/fdsnrequestdialog.ui \
@@ -69,4 +71,4 @@ LIBS += -L$$_PRO_FILE_PWD_/EarthWorm/lib -lew -lew_mt
 
 DISTFILES += \
     Notes.txt \
-    StationList.txt
+    Embedded/Files/StationList.txt

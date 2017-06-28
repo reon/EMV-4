@@ -27,9 +27,15 @@
 #include "QuakeML/quakemlreader.h"
 #include "QuakeML/quakemlevent.h"
 
+#include "earthwormsite.h"
+
 #include "eventlayer.h"
+#include "archpaintlayer.h"
+
 #include "Dialogs/fdsnrequestdialog.h"
 
+
+#include "EarthWormComp.h"
 
 namespace Ui {
 class EMV;
@@ -88,12 +94,15 @@ private:
     QPointer<FDSNRequestDialog> fdsnDialog;
 
     QScopedPointer<EventLayer> eventLayer;
+    QScopedPointer<ArchPaintLayer> archLayer;
     QScopedPointer<Marble::GeoDataDocument> geoDoc {new Marble::GeoDataDocument};
 
         //For test net code
     QNetworkAccessManager net;
 
     QVector<QuakeMLEvent> events;
+
+    QVector<EarthWormSite> stations;
 
 
 };

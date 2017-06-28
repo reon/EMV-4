@@ -1,7 +1,6 @@
 #include "emv.h"
 #include "ui_emv.h"
 
-#include "EarthWormComp.h"
 
 EMV::EMV(QWidget *parent) :
     QMainWindow(parent),
@@ -17,6 +16,8 @@ EMV::EMV(QWidget *parent) :
 //    Marble::GeoDataCoordinates::setDefaultNotation(Marble::GeoDataCoordinates::Degree);
     eventLayer.reset(new EventLayer(ui->map, &events));
     ui->map->addLayer(eventLayer.data());
+    archLayer.reset(new ArchPaintLayer(ui->map));
+    ui->map->addLayer(archLayer.data());
 
     LatitudeLabel->setFixedWidth(100);
     LongitudeLabel->setFixedWidth(100);
@@ -33,12 +34,23 @@ EMV::EMV(QWidget *parent) :
         this, SLOT(on_GlobeMove()));
 
     connect(&net, SIGNAL(finished(QNetworkReply*)), this, SLOT(ReplyFinished(QNetworkReply*)));
+
+    QFile stationListFile(":/Files/StationList.txt");
+    stationListFile.open(QIODevice::ReadOnly | QIODevice::Text);
+    stations = EarthWormSite::fromIODevice(stationListFile);
+
+    QVector<Marble::GeoDataCoordinates> stationCoords;
+    for (auto& site : stations)
+        stationCoords.append(site.Point());
+
+    archLayer->SetStations(stationCoords);
+
+
 }
 
 EMV::~EMV()
 {
     ui->map->model()->treeModel()->removeDocument(geoDoc.data());
-//    delete geoDoc;
 
     ui->map->removeLayer(eventLayer.data());
     delete ui;
@@ -58,14 +70,15 @@ void EMV::on_GlobeMove()
 /// Move some of this to quakeMLTable
 void EMV::on_tableWidget_itemSelectionChanged()
 {
-//    using Coords = Marble::GeoDataCoordinates;
-
     int row = ui->tableWidget->currentRow();
 
     qreal latitude = ui->tableWidget->item(row,2)->text().toDouble();
     qreal longitude = ui->tableWidget->item(row, 3)->text().toDouble();
 
     ui->map->centerOn(longitude, latitude);
+
+    archLayer->SetEvent(Marble::GeoDataCoordinates(longitude, latitude, 0, Marble::GeoDataCoordinates::Degree));
+    archLayer->SetShow(true);
 }
 
 void EMV::LoadNewQuakeML(QString xml)
@@ -105,7 +118,7 @@ void EMV::SaveXML(QString xmlResponse)
     out.close();
 }
 
-/// Clears MarbleModel and reloads all QuakeMLEvents
+/// Clears MarbleModel and reloads all QuakeMLEvents and Stations
 void EMV::ReloadGeoDocument()
 {
     using namespace Marble;
@@ -113,12 +126,23 @@ void EMV::ReloadGeoDocument()
     ui->map->model()->treeModel()->removeDocument(geoDoc.data());
     geoDoc->clear();
 
-    for (QuakeMLEvent event : events)
+
+    for (QuakeMLEvent& event : events)
     {
         auto placemark = new GeoDataPlacemark("event");
 
         placemark->setCoordinate(event.longitude.toFloat(), event.latitude.toFloat(), 0, GeoDataCoordinates::Degree);
         placemark->setPopulation(777);
+        placemark->setVisualCategory(GeoDataPlacemark::GeoDataVisualCategory::Bookmark);
+
+        geoDoc->append(placemark);
+    }
+
+    for (auto& site : stations)
+    {
+        auto placemark = new GeoDataPlacemark("Station");
+
+        placemark->setCoordinate(site.longitude.toFloat(), site.latitude.toFloat(), 0, GeoDataCoordinates::Degree);
         placemark->setVisualCategory(GeoDataPlacemark::GeoDataVisualCategory::Bookmark);
 
         geoDoc->append(placemark);
