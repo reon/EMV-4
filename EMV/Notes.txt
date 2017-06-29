@@ -1,6 +1,22 @@
 # EMV
-EarthWormSite.c
-> Work in progress
+
+EWC = EarthWorm Compatibility
+
+Directories:
+EMV
+├Files: Various files/documents applicable to project
+├── build-EMV-Desktop-Debug
+└── EMV
+    ├── Dialogs
+    ├── EarthWorm        - exact SVN repo clone of EW, directory structure intect. HOWEVER, one file (import_generic.c) is under git control also
+    ├── Embedded         - Files that are packaged into executable, by Qt5 resource file
+    ├── EWC              - Source files for calling into/out of earthworm
+    ├── MarbleLayers     - Classes that add layers to map widget
+    ├── QuakeML
+    └── Widgets
+
+
+
 
 
 Todo:

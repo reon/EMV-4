@@ -19,26 +19,29 @@ INCLUDEPATH += Widgets/
 
 SOURCES += main.cpp\
         emv.cpp \
-        mapwidget.cpp archpaintlayer.cpp \
+    mapwidget.cpp \
+    MarbleLayers/archpaintlayer.cpp \
+    MarbleLayers/eventlayer.cpp \
     QuakeML/quakemlreader.cpp \
-    eventlayer.cpp \
     QuakeML/quakemlevent.cpp \
     Dialogs/fdsnrequestdialog.cpp \
     Dialogs/connectdialog.cpp \
     Widgets/quakemltable.cpp \
-    teststring.cpp \
-    earthwormsite.cpp
+    EWC/teststring.cpp \
+    EWC/earthwormsite.cpp
 
 HEADERS  += emv.h \
-        archcolors.h archpaintlayer.h mapwidget.h \
+    mapwidget.h \
+    MarbleLayers/archcolors.h \
+    MarbleLayers/archpaintlayer.h \
+    MarbleLayers/eventlayer.h \
     QuakeML/quakemlreader.h \
-    eventlayer.h \
     QuakeML/quakemlevent.h \
     Dialogs/fdsnrequestdialog.h \
     Dialogs/connectdialog.h \
     Widgets/quakemltable.h \
-    teststring.h \
-    earthwormsite.h
+    EWC/teststring.h \
+    EWC/earthwormsite.h
 
 FORMS    += emv.ui \
     Dialogs/fdsnrequestdialog.ui \
@@ -59,11 +62,11 @@ SOURCES += EarthWorm/src/data_exchange/import_generic/import_generic.c \
     EarthWorm/src/libsrc/unix/socket_ew.c \
     EarthWorm/src/libsrc/util/socket_ew_common.c \
     EarthWorm/src/libsrc/util/read_arc.c \
-    EarthWormComp.cpp \
-    EarthWormHacks.cpp
+    EWC/EarthWormComp.cpp \
+    EWC/EarthWormHacks.cpp
 
-HEADERS += EarthWormComp.h \
-    EarthWormHacks.h
+HEADERS += EWC/EarthWormComp.h \
+    EWC/EarthWormHacks.h
 
 INCLUDEPATH += EarthWorm/include
 

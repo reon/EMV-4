@@ -4,7 +4,6 @@
 
 #include "teststring.h"
 
-//to delete
 extern "C" {
 #include "EarthWormHacks.h"
 }
