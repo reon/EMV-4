@@ -2,10 +2,10 @@
 
 #include "emv.h"
 
-#include "teststring.h"
+#include "EWC/teststring.h"
 
 extern "C" {
-#include "EarthWormHacks.h"
+#include "EWC/EarthWormHacks.h"
 }
 
 int main(int argc, char *argv[])

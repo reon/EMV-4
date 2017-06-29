@@ -27,13 +27,6 @@ EMV::EMV(QWidget *parent) :
     ui->StatusBar->addPermanentWidget(LongitudeNameLabel);
     ui->StatusBar->addPermanentWidget(LongitudeLabel);
 
-    connect(ui->action_IRIS_Test, SIGNAL(triggered(bool)), this, SLOT(Test_1_IRIS_Request()));
-    connect(ui->action_ISTI_Test, SIGNAL(triggered(bool)), this, SLOT(Test_2_ISTI_mole_Request()));
-
-    connect(ui->map, SIGNAL(visibleLatLonAltBoxChanged(GeoDataLatLonAltBox)),
-        this, SLOT(on_GlobeMove()));
-
-    connect(&net, SIGNAL(finished(QNetworkReply*)), this, SLOT(ReplyFinished(QNetworkReply*)));
 
     QFile stationListFile(":/Files/StationList.txt");
     stationListFile.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -43,9 +36,34 @@ EMV::EMV(QWidget *parent) :
     for (auto& site : stations)
         stationCoords.append(site.Point());
 
+
+    stationCoords.append(Marble::GeoDataCoordinates(1,1));
+    stationCoords.append(Marble::GeoDataCoordinates(2,1));
+
+    stationCoords.append(Marble::GeoDataCoordinates(4,1));
+
+
     archLayer->SetStations(stationCoords);
 
+    // *** Earthworm crap ***
+    // A QObject to transfer to earthworm pthread for signal/slot operation
+    // Exposes private member
+   // EWC::hypoMessage = &HypoMessageReceiver;
+    EWC::emv = this;
 
+    ConnectSlots();
+}
+
+void EMV::ConnectSlots()
+{
+    connect(ui->action_IRIS_Test, SIGNAL(triggered(bool)), this, SLOT(Test_1_IRIS_Request()));
+    connect(ui->action_ISTI_Test, SIGNAL(triggered(bool)), this, SLOT(Test_2_ISTI_mole_Request()));
+
+    connect(ui->map, &MapWidget::visibleLatLonAltBoxChanged, this, &EMV::on_GlobeMove);
+
+    connect(&net, SIGNAL(finished(QNetworkReply*)), this, SLOT(ReplyFinished(QNetworkReply*)));
+
+//    connect(&HypoMessageReceiver, &HypoMessage::MessageReceived, this, &EMV::on_HypoMessageReceived);
 }
 
 EMV::~EMV()
@@ -55,6 +73,8 @@ EMV::~EMV()
     ui->map->removeLayer(eventLayer.data());
     delete ui;
 }
+
+// ********************* SLOTS ***********************
 
 void EMV::on_GlobeMove()
 {
@@ -79,6 +99,53 @@ void EMV::on_tableWidget_itemSelectionChanged()
 
     archLayer->SetEvent(Marble::GeoDataCoordinates(longitude, latitude, 0, Marble::GeoDataCoordinates::Degree));
     archLayer->SetShow(true);
+}
+
+void EMV::on_HypoMessageReceived()
+{
+    QMessageBox::information(this, "Hypo Message", "Message Received, starting FDSN request.");
+    Test_1_IRIS_Request();
+}
+
+/// Loads QuakeML .xml file into QVector<QuakeMLEvents> events
+void EMV::on_actionLoad_XML_triggered()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+        tr("Open XML"), "/home/alex", tr("XML Files (*.xml)"));
+
+    if (fileName.isNull()) return;
+
+    QFile in(fileName);
+
+    if (!in.open(QIODevice::ReadOnly))
+        return;
+
+    QTextStream textIn(&in);
+    QString XML = textIn.readAll();
+
+    emit LoadNewQuakeML(XML);
+}
+
+
+/// Open FDSN Dialog, show if already open
+void EMV::on_actionOpen_FDSN_Request_Dialong_triggered()
+{
+    using Coords = Marble::GeoDataCoordinates;
+
+    if (!fdsnDialog)
+    {
+        Coords coords = ui->map->focusPoint();
+        fdsnDialog = new FDSNRequestDialog{this, coords.latitude(Coords::Degree), coords.longitude(Coords::Degree)};
+        connect(fdsnDialog, SIGNAL(NewFDSNResponse(QString)), this, SLOT(LoadNewQuakeML(QString)));
+        connect(this, SIGNAL(LatLongChanged(qreal,qreal)), fdsnDialog, SLOT(onUpdateCoords(qreal, qreal)));
+    }
+
+    fdsnDialog->show();
+}
+
+void EMV::on_action_Exit_triggered()
+{
+    QApplication::quit();
 }
 
 void EMV::LoadNewQuakeML(QString xml)
@@ -149,49 +216,6 @@ void EMV::ReloadGeoDocument()
     }
 
     ui->map->model()->treeModel()->addDocument(geoDoc.data());
-}
-
-
-/// Loads QuakeML .xml file into QVector<QuakeMLEvents> events
-void EMV::on_actionLoad_XML_triggered()
-{
-    QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Open XML"), "/home/alex", tr("XML Files (*.xml)"));
-
-    if (fileName.isNull()) return;
-
-    QFile in(fileName);
-
-    if (!in.open(QIODevice::ReadOnly))
-        return;
-
-    QTextStream textIn(&in);
-    QString XML = textIn.readAll();
-
-    emit LoadNewQuakeML(XML);
-}
-
-/// Network
-
-/// Open FDSN Dialog, show if already open
-void EMV::on_actionOpen_FDSN_Request_Dialong_triggered()
-{
-    using Coords = Marble::GeoDataCoordinates;
-
-    if (!fdsnDialog)
-    {
-        Coords coords = ui->map->focusPoint();
-        fdsnDialog = new FDSNRequestDialog{this, coords.latitude(Coords::Degree), coords.longitude(Coords::Degree)};
-        connect(fdsnDialog, SIGNAL(NewFDSNResponse(QString)), this, SLOT(LoadNewQuakeML(QString)));
-        connect(this, SIGNAL(LatLongChanged(qreal,qreal)), fdsnDialog, SLOT(onUpdateCoords(qreal, qreal)));
-    }
-
-    fdsnDialog->show();
-}
-
-void EMV::on_action_Exit_triggered()
-{
-    QApplication::quit();
 }
 
 void EMV::Test_1_IRIS_Request()

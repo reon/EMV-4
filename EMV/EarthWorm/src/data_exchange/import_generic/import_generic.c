@@ -1,5 +1,7 @@
 
-#include "EarthWormHacks.h"
+#include "EWC/EarthWormHacks.h"
+
+// For temp use in EMV project. Dont examine
 
 
 /*
@@ -116,6 +118,12 @@
 
 
 #define MAX_LOGO  20
+
+
+const char* fakeHypoMessage = "HYPO sandwich";
+const int fakeMessageLength = 13;
+
+
 
 /* Functions in this source file
    *****************************/
@@ -780,6 +788,8 @@ thr_ret SocketHeartbeat( void *dummy )
             logit("et","import_generic(%s): SocketHeartbeat sent to export\n", MyModName);
          }
          MyLastSocketBeat=now;
+
+ //        import_filter(fakeHypoMessage, fakeMessageLength);
       }
    }
 }

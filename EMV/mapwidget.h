@@ -14,7 +14,7 @@
 #include <marble/MarbleModel.h>
 #include "marble/AbstractFloatItem.h"
 #include <marble/GeoPainter.h>
-#include "archpaintlayer.h"
+#include "MarbleLayers/archpaintlayer.h"
 
 
 class MapWidget : public Marble::MarbleWidget

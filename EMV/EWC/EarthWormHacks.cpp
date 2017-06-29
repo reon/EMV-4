@@ -7,6 +7,8 @@ extern "C" {
 #include "EarthWormHacks.h"
 }
 
+#include "EarthWormComp.h"
+
 //extern "C" void logit_init(char *prog, short mid, int bufSize, int logflag ) /* logit.c      sys-independent  */
 //{
 //    QString strProg;
@@ -42,16 +44,21 @@ extern "C" int X_import_filter( char *msg, int msgLen, MSG_LOGO* putlogo )
         << QString::fromLatin1(msg, msgLen) << "\n\n";
 
 
-    HypoArc hypoArc;
+    EWC::RaiseHypoMessageReceived();
 
-    if (parse_arc(msg, &hypoArc))
-    {
-        qDebug() << "Error on parse_arc\n";
-    }
-    else
-    {
-        qDebug() << "Success \n";
-    }
+
+
+    // Not needed right now
+
+//    HypoArc hypoArc;
+//    if (parse_arc(msg, &hypoArc))
+//    {
+//        qDebug() << "Error on parse_arc\n";
+//    }
+//    else
+//    {
+//        qDebug() << "Success \n";
+//    }
 
 
 

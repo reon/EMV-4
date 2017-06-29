@@ -11,7 +11,6 @@ int X_tport_putmsg( SHM_INFO* region,    /* info structure for memory region    
 
 int X_import_filter( char *msg, int msgLen, MSG_LOGO* logo );
 
-
 struct ImportGenericConfig {        //Unorder
     const char * MyModuleId;
     const char * RingName;
@@ -27,6 +26,7 @@ struct ImportGenericConfig {        //Unorder
     int SocketTimeout;
     int HeartBeatDebug;
 };
+
 
 #endif // EARTHWORMHACKS_H
 

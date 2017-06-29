@@ -141,10 +141,12 @@ QString FDSNRequestDialog::GenerateDateTimeFragment(QDateTime dateTime)
 
 void FDSNRequestDialog::on_StartDateTimeEdit_dateTimeChanged(const QDateTime &)
 {
-    ui->FilterTimeCheckBox->setChecked(true);
+    if (ui->FilterTimeCheckBox->isEnabled())
+        ui->FilterTimeCheckBox->setChecked(true);
 }
 
 void FDSNRequestDialog::on_EndDateTimeEdit_dateTimeChanged(const QDateTime &)
 {
-    ui->FilterTimeCheckBox->setChecked(true);
+    if (ui->FilterTimeCheckBox->isEnabled())
+        ui->FilterTimeCheckBox->setChecked(true);
 }

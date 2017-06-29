@@ -67,14 +67,14 @@ bool ArchPaintLayer::render( GeoPainter *painter, ViewportParams* /* viewport */
     // Have window title reflect the current paint layer
     m_widget->setWindowTitle(renderPosition().first());
 
-    painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->setRenderHint(QPainter::Antialiasing, false);
 
     for(int i = 0; i< stations.length(); i++)
     {
         Marble::GeoDataLineString shapeLatitudeCircle( Marble::RespectLatitudeCircle | Marble::Tessellate );
         shapeLatitudeCircle << stations[i] << eventCoords;
 
-        painter->setPen(oxygenBrightBlue );
+        painter->setPen(oxygenBrightBlue);
         painter->drawPolyline( shapeLatitudeCircle );
     }
 

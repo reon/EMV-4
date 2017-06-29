@@ -27,15 +27,16 @@
 #include "QuakeML/quakemlreader.h"
 #include "QuakeML/quakemlevent.h"
 
-#include "earthwormsite.h"
+#include "EWC/earthwormsite.h"
+#include "EWC/EarthWormComp.h"
+#include "EWC/hypomessage.h"
 
-#include "eventlayer.h"
-#include "archpaintlayer.h"
+#include "MarbleLayers/eventlayer.h"
+#include "MarbleLayers/archpaintlayer.h"
 
 #include "Dialogs/fdsnrequestdialog.h"
 
 
-#include "EarthWormComp.h"
 
 namespace Ui {
 class EMV;
@@ -55,6 +56,8 @@ public:
 signals:
     void LatLongChanged(qreal latitude, qreal longitude);
 
+public slots:
+    void on_HypoMessageReceived();
 
 private slots:
     void Test_1_IRIS_Request();
@@ -78,7 +81,11 @@ private slots:
 
     void on_action_EW_Test_Initialize_triggered();
 
+
+
 private:    
+
+    void ConnectSlots();
     void SaveXML(QString xmlResponse); ///< For testing, Save XML on ReplayFinished()
     void ReloadGeoDocument();
 
@@ -103,6 +110,8 @@ private:
     QVector<QuakeMLEvent> events;
 
     QVector<EarthWormSite> stations;
+
+//    HypoMessage HypoMessageReceiver;        //Exposed private member. Look at constructor, EWC::hypomessage
 
 
 };

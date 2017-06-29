@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     Dialogs/connectdialog.cpp \
     Widgets/quakemltable.cpp \
     EWC/teststring.cpp \
-    EWC/earthwormsite.cpp
+    EWC/earthwormsite.cpp \
+    EWC/hypomessage.cpp
 
 HEADERS  += emv.h \
     mapwidget.h \
@@ -41,7 +42,8 @@ HEADERS  += emv.h \
     Dialogs/connectdialog.h \
     Widgets/quakemltable.h \
     EWC/teststring.h \
-    EWC/earthwormsite.h
+    EWC/earthwormsite.h \
+    EWC/hypomessage.h
 
 FORMS    += emv.ui \
     Dialogs/fdsnrequestdialog.ui \

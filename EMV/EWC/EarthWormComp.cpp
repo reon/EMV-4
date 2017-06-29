@@ -7,10 +7,13 @@
 #include "EarthWormComp.h"
 #include "EarthWormHacks.h"
 
+HypoMessage* EWC::hypoMessage = nullptr;
+EMV* EWC::emv;
+
+
 extern "C" int Initialize_Import_Generic( int argc, char **argv, ImportGenericConfig config );
 
 extern "C" int StartThread( void* fun(void *), unsigned stack_size, unsigned *thread_id );
-
 
 
 int EWC::StartImportGeneric()
@@ -28,7 +31,7 @@ void* EWC::ImportGeneric(void *)
     ImportGenericConfig config {};
     config.MyModuleId = "MOD_IMPORT_GENERIC";
     config.RingName = "HYPO_RING";
-    config.HeartBeatInt = 120;
+    config.HeartBeatInt = 15;
 
     config.LogFile = 1;
     config.MaxMsgSize = 65000;
@@ -61,3 +64,22 @@ void* EWC::ImportGeneric(void *)
     return nullptr;
 }
 
+
+void EWC::RaiseHypoMessageReceived()
+{
+    static bool QObjectMovedToThisThread = false;
+
+    if (!QObjectMovedToThisThread) {
+        EWC::hypoMessage = new HypoMessage;
+        QObject::connect(EWC::hypoMessage, &HypoMessage::MessageReceived, EWC::emv, &EMV::on_HypoMessageReceived);
+
+        QObjectMovedToThisThread = true;
+    }
+
+    emit EWC::hypoMessage->MessageReceived();
+
+//    HypoMessage sender;
+//    QObject::connect(&sender, &HypoMessage::MessageReceived, EWC::hypoMessage, &HypoMessage::MessageReceived);
+
+//    emit sender.MessageReceived();
+}
