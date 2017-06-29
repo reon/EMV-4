@@ -74,7 +74,7 @@ bool ArchPaintLayer::render( GeoPainter *painter, ViewportParams* /* viewport */
         Marble::GeoDataLineString shapeLatitudeCircle( Marble::RespectLatitudeCircle | Marble::Tessellate );
         shapeLatitudeCircle << stations[i] << eventCoords;
 
-        painter->setPen(oxygenBrightBlue);
+        painter->setPen(QPen(QBrush(oxygenRed), 1.5));
         painter->drawPolyline( shapeLatitudeCircle );
     }
 

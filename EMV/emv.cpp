@@ -37,10 +37,9 @@ EMV::EMV(QWidget *parent) :
         stationCoords.append(site.Point());
 
 
-    stationCoords.append(Marble::GeoDataCoordinates(1,1));
-    stationCoords.append(Marble::GeoDataCoordinates(2,1));
-
-    stationCoords.append(Marble::GeoDataCoordinates(4,1));
+//    stationCoords.append(Marble::GeoDataCoordinates(1,1));
+//    stationCoords.append(Marble::GeoDataCoordinates(2,1));
+//    stationCoords.append(Marble::GeoDataCoordinates(4,1));
 
 
     archLayer->SetStations(stationCoords);
@@ -210,7 +209,7 @@ void EMV::ReloadGeoDocument()
         auto placemark = new GeoDataPlacemark("Station");
 
         placemark->setCoordinate(site.longitude.toFloat(), site.latitude.toFloat(), 0, GeoDataCoordinates::Degree);
-        placemark->setVisualCategory(GeoDataPlacemark::GeoDataVisualCategory::Bookmark);
+        placemark->setVisualCategory(GeoDataPlacemark::GeoDataVisualCategory::NaturalVolcano);
 
         geoDoc->append(placemark);
     }

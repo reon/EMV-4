@@ -63,7 +63,7 @@ linux-g++-64:DEFINES += _LINUX
 SOURCES += EarthWorm/src/data_exchange/import_generic/import_generic.c \
     EarthWorm/src/libsrc/unix/socket_ew.c \
     EarthWorm/src/libsrc/util/socket_ew_common.c \
-    EarthWorm/src/libsrc/util/read_arc.c \
+#    EarthWorm/src/libsrc/util/read_arc.c \
     EWC/EarthWormComp.cpp \
     EWC/EarthWormHacks.cpp
 
