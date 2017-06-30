@@ -789,7 +789,7 @@ thr_ret SocketHeartbeat( void *dummy )
          }
          MyLastSocketBeat=now;
 
- //        import_filter(fakeHypoMessage, fakeMessageLength);
+//         import_filter(fakeHypoMessage, fakeMessageLength);
       }
    }
 }

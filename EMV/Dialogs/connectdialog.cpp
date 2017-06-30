@@ -57,7 +57,7 @@ bool ConnectDialog::ProcessReply(QNetworkReply* response)
         //Default message
         QString message = "Failed to retreive data \n Response: \n" + strResponse;
 
-        if (httpCode == 204)
+        if (httpCode ==  204)
             message = "Request Successful, However No Data Matches Selection";
 
         QMessageBox::critical(this, "FDSN response", message);

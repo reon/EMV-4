@@ -47,6 +47,8 @@ void QuakeMLTableWidget::AddQuakeMLEvents(QVector<QuakeMLEvent> events)
 {
     for (auto event : events)
         AddQuakeMLEvent(event);
+
+    this->selectRow(0);
 }
 
 

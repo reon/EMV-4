@@ -47,12 +47,42 @@ void EMV::on_tableWidget_itemSelectionChanged()
     archLayer->SetShow(true);
 }
 
+//Test function, ugly
 void EMV::on_HypoMessageReceived()
 {
+
+    events.clear();
+
     #ifdef Q_DEBUG
     QMessageBox::information(this, "Hypo Message", "Message Received, starting FDSN request.");
     #endif
-    Test_1_IRIS_Request();
+
+    QUrl url {"http://love.isti.com:8089/mole"};
+    QString query {"minmag=0&limit=200&orderby=mag&"};
+
+    QDateTime dateTimeStart = QDateTime::currentDateTime()/*.addSecs(-3600)*/;
+    QDateTime dateTimeEnd = QDateTime::currentDateTime();
+
+    dateTimeStart = dateTimeStart.toUTC();
+    dateTimeEnd = dateTimeEnd.toUTC();
+
+    QString startTime = dateTimeStart.toString("yyyy-MM-dd") + "T" + "00:00:00" /*dateTimeStart.toString("hh:mm:ss")*/;
+    QString endTime = dateTimeEnd.toString("yyyy-MM-dd") + "T" + "23:59:59" /* dateTimeEnd.toString("hh:mm:ss")*/;
+
+//    QString startTime = dateTimeStart.toString("yyyy-MM-dd") + "T" + dateTimeStart.toString("hh:mm:ss");
+//    QString endTime = dateTimeEnd.toString("yyyy-MM-dd") + "T" + dateTimeEnd.toString("hh:mm:ss");
+
+//    QString startTime = GenerateDateTimeFragment(ui->StartDateTimeEdit->dateTime().toUTC());
+//    QString endTime = GenerateDateTimeFragment(ui->EndDateTimeEdit->dateTime().toUTC());
+
+    query += "start=" + startTime + "&";
+    query += "end=" + endTime;
+
+    url.setQuery(QUrlQuery(query));
+
+    qDebug() << url.toString() << "\n";
+
+    emit FDSNRequest(url);
 }
 
 /// Loads QuakeML .xml file into QVector<QuakeMLEvents> events
