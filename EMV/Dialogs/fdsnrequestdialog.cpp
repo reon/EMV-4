@@ -110,12 +110,17 @@ QString FDSNRequestDialog::GenerateQuery()
     // Now time fragments
     if (ui->FilterTimeCheckBox->isChecked()) {
         QString startTime = GenerateDateTimeFragment(ui->StartDateTimeEdit->dateTime().toUTC());
-        QString endTime = GenerateDateTimeFragment(ui->StartDateTimeEdit->dateTime().toUTC());
+        QString endTime = GenerateDateTimeFragment(ui->EndDateTimeEdit->dateTime().toUTC());
 
 //        fragments.insert("starttime", startTime);
-        query += "starttime"  "=" + startTime + "&";
-        query += "endtime"  "=" + endTime + "&";
+        query += "start"  "=" + startTime + "&";
+        query += "end"  "=" + endTime + "&";
     }
+
+    if (query.endsWith('&'))
+        query = query.left(query.length()-1);
+
+    qDebug() << " FDSN query :  " << query << "\n\n";
 
     return query;
 }
