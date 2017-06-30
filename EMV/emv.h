@@ -8,6 +8,7 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QTextStream>
+#include <QSettings>
 
 #include <QLabel>
 #include <QMainWindow>
@@ -60,34 +61,42 @@ public slots:
     void on_HypoMessageReceived();
 
 private slots:
+    void on_Start();        //Operations that cannot/should not happen in constructor. Runs 0.5 sec after constructor
+
+    //Network
     void Test_1_IRIS_Request();
     void Test_2_ISTI_mole_Request();
 
-    //Network
     void FDSNRequest(QUrl url);
     void ReplyFinished(QNetworkReply* response);
 
     void LoadNewQuakeML(QString xml);
 
-    void on_actionLoad_XML_triggered();
-
-    void on_actionOpen_FDSN_Request_Dialong_triggered();
-
-    void on_action_Exit_triggered();
-
     void on_GlobeMove();
 
     void on_tableWidget_itemSelectionChanged();
 
+    void on_action_Load_XML_triggered();
+
+    void on_action_Open_FDSN_Request_Dialong_triggered();
+
+    void on_action_Exit_triggered();
+
     void on_action_EW_Test_Initialize_triggered();
 
 
+    void on_action_Connect_on_Startup_changed();
 
-private:    
-
+private:
     void ConnectSlots();
     void SaveXML(QString xmlResponse); ///< For testing, Save XML on ReplayFinished()
     void ReloadGeoDocument();
+
+
+
+    void LoadSettings();
+//    void DefaultSettings();
+
 
         //Members
 private:
@@ -113,7 +122,7 @@ private:
 
 //    HypoMessage HypoMessageReceiver;        //Exposed private member. Look at constructor, EWC::hypomessage
 
-
+    QSettings settings;
 };
 
 #endif // EMV_H

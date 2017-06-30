@@ -49,14 +49,17 @@ void QuakeMLReader::ProcessEvent()
 /// Returnes id
 void QuakeMLReader::ProcessEventAttributes()
 {
-    auto attributes = xml.attributes().value("publicID").toString();
-    QString pattern = QStringLiteral(R"RAW(eventid=(?<number>\d+))RAW");
-    QRegularExpression regex(pattern, QRegularExpression::CaseInsensitiveOption);
-    QRegularExpressionMatch match = regex.match(attributes);
+    auto attribute = xml.attributes().value("publicID").toString();
+    currentEvent.id = attribute;
 
-    if (!match.hasMatch()) return;
+//    auto attributes = xml.attributes().value("publicID").toString();
+//    QString pattern = QStringLiteral(R"RAW(eventid=(?<number>\d+))RAW");
+//    QRegularExpression regex(pattern, QRegularExpression::CaseInsensitiveOption);
+//    QRegularExpressionMatch match = regex.match(attributes);
 
-    currentEvent.id = match.captured("number");
+//    if (!match.hasMatch()) return;
+
+//    currentEvent.id = match.captured("number");
 }
 
 void QuakeMLReader::ProcessOrigin()

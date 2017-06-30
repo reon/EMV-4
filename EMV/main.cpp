@@ -10,11 +10,12 @@ extern "C" {
 
 int main(int argc, char *argv[])
 {
-//    MSG_LOGO blank {};
-//    X_import_filter(const_cast<char*>(TestString::testString), 4607, &blank);
-
-
     QApplication a(argc, argv);
+
+    QCoreApplication::setOrganizationName("ISTI");
+    QCoreApplication::setOrganizationDomain("ISTI.com");
+    QCoreApplication::setApplicationName("EMV");
+
     EMV w;
 
     w.showMaximized();

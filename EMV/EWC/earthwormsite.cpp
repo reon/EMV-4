@@ -70,6 +70,6 @@ Marble::GeoDataPlacemark EarthWormSite::Placemark() const
 
 QString EarthWormSite::SNCL() const
 {
-    return name + "." + network + "." + channel;
+    return network + "." + name + ".." + channel;
 
 }

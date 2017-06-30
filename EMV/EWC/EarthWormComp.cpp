@@ -77,9 +77,4 @@ void EWC::RaiseHypoMessageReceived()
     }
 
     emit EWC::hypoMessage->MessageReceived();
-
-//    HypoMessage sender;
-//    QObject::connect(&sender, &HypoMessage::MessageReceived, EWC::hypoMessage, &HypoMessage::MessageReceived);
-
-//    emit sender.MessageReceived();
 }

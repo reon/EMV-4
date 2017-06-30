@@ -15,6 +15,7 @@ EMV
     ├── QuakeML
     └── Widgets
 
+Settings.ui /.cpp /.h not used for now
 
 
 https://forum.kde.org/viewtopic.php?f=217&t=126915

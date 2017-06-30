@@ -44,8 +44,16 @@ EMV::EMV(QWidget *parent) :
    // EWC::hypoMessage = &HypoMessageReceiver;
     EWC::emv = this;
 
+    LoadSettings();
     ConnectSlots();
-    ReloadGeoDocument();
+    ReloadGeoDocument();        //To load stations on to map
+
+
+    //Deferred startup
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout,
+        [this, timer]() { this->on_Start(); timer->stop(); timer->deleteLater();});
+    timer->start(500);
 }
 
 void EMV::ConnectSlots()
@@ -66,80 +74,6 @@ EMV::~EMV()
     delete ui;
 }
 
-// ********************* SLOTS ***********************
-
-void EMV::on_GlobeMove()
-{
-    using Coords = Marble::GeoDataCoordinates;
-
-    Coords coords = ui->map->focusPoint();
-    LatitudeLabel->setText(QString::number(coords.latitude(Coords::Degree)));
-    LongitudeLabel->setText(QString::number(coords.longitude(Coords::Degree)));
-
-    emit LatLongChanged(coords.latitude(Coords::Degree), coords.longitude(Coords::Degree));
-}
-
-/// Move some of this to quakeMLTable
-void EMV::on_tableWidget_itemSelectionChanged()
-{
-    int row = ui->tableWidget->currentRow();
-
-    qreal latitude = ui->tableWidget->item(row,2)->text().toDouble();
-    qreal longitude = ui->tableWidget->item(row, 3)->text().toDouble();
-
-    ui->map->centerOn(longitude, latitude);
-    ui->map->setZoom(2000);
-
-    archLayer->SetEvent(Marble::GeoDataCoordinates(longitude, latitude, 0, Marble::GeoDataCoordinates::Degree));
-    archLayer->SetShow(true);
-}
-
-void EMV::on_HypoMessageReceived()
-{
-    QMessageBox::information(this, "Hypo Message", "Message Received, starting FDSN request.");
-    Test_1_IRIS_Request();
-}
-
-/// Loads QuakeML .xml file into QVector<QuakeMLEvents> events
-void EMV::on_actionLoad_XML_triggered()
-{
-    QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Open XML"), "/home/alex", tr("XML Files (*.xml)"));
-
-    if (fileName.isNull()) return;
-
-    QFile in(fileName);
-
-    if (!in.open(QIODevice::ReadOnly))
-        return;
-
-    QTextStream textIn(&in);
-    QString XML = textIn.readAll();
-
-    emit LoadNewQuakeML(XML);
-}
-
-
-/// Open FDSN Dialog, show if already open
-void EMV::on_actionOpen_FDSN_Request_Dialong_triggered()
-{
-    using Coords = Marble::GeoDataCoordinates;
-
-    if (!fdsnDialog)
-    {
-        Coords coords = ui->map->focusPoint();
-        fdsnDialog = new FDSNRequestDialog{this, coords.latitude(Coords::Degree), coords.longitude(Coords::Degree)};
-        connect(fdsnDialog, SIGNAL(NewFDSNResponse(QString)), this, SLOT(LoadNewQuakeML(QString)));
-        connect(this, SIGNAL(LatLongChanged(qreal,qreal)), fdsnDialog, SLOT(onUpdateCoords(qreal, qreal)));
-    }
-
-    fdsnDialog->show();
-}
-
-void EMV::on_action_Exit_triggered()
-{
-    QApplication::quit();
-}
 
 void EMV::LoadNewQuakeML(QString xml)
 {
@@ -161,10 +95,10 @@ void EMV::LoadNewQuakeML(QString xml)
     ui->tableWidget->AddQuakeMLEvents(qxml.events);
 }
 
-/// For inspecting
+/// For inspecting response
 void EMV::SaveXML(QString xmlResponse)
 {
-    if (!ui->actionSave_XML->isChecked())
+    if (!ui->action_Save_XML->isChecked())
         return;
 
     QFile out("XML Response at : " + QDateTime::currentDateTime().toString("hh:mm dd.MM") + ".xml", this);
@@ -189,7 +123,7 @@ void EMV::ReloadGeoDocument()
 
     for (QuakeMLEvent& event : events)
     {
-        auto placemark = new GeoDataPlacemark("event");
+        auto placemark = new GeoDataPlacemark("");
 
         placemark->setCoordinate(event.longitude.toFloat(), event.latitude.toFloat(), 0, GeoDataCoordinates::Degree);
         placemark->setPopulation(777);
@@ -267,9 +201,4 @@ void EMV::ReplyFinished(QNetworkReply* response)
 
 
 
-void EMV::on_action_EW_Test_Initialize_triggered()
-{
-    EWC::StartImportGeneric();
 
-   // QMessageBox::information(this, "EWC::StartImportGeneric()", QString::number(result));
-}

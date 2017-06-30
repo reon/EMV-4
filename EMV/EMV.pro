@@ -29,7 +29,10 @@ SOURCES += main.cpp\
     Widgets/quakemltable.cpp \
     EWC/teststring.cpp \
     EWC/earthwormsite.cpp \
-    EWC/hypomessage.cpp
+    EWC/hypomessage.cpp \
+    emv_settings.cpp \
+    Dialogs/settings.cpp \
+    emv_slots.cpp
 
 HEADERS  += emv.h \
     mapwidget.h \
@@ -43,11 +46,13 @@ HEADERS  += emv.h \
     Widgets/quakemltable.h \
     EWC/teststring.h \
     EWC/earthwormsite.h \
-    EWC/hypomessage.h
+    EWC/hypomessage.h \
+    Dialogs/settings.h
 
 FORMS    += emv.ui \
     Dialogs/fdsnrequestdialog.ui \
-    Dialogs/connectdialog.ui
+    Dialogs/connectdialog.ui \
+    Dialogs/settings.ui
 
 LIBS +=   -L/usr/local/lib -lmarblewidget-qt5
 

@@ -1,7 +1,7 @@
 #include "quakemltable.h"
 
 QuakeMLTableWidget::QuakeMLTableWidget(QWidget* parent)
-    : QTableWidget(0, 5, parent)
+    : QTableWidget(0, 6, parent)
 {
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::SingleSelection);
@@ -12,6 +12,7 @@ QuakeMLTableWidget::QuakeMLTableWidget(QWidget* parent)
     setHorizontalHeaderItem(2, new QTableWidgetItem{"Lat."});
     setHorizontalHeaderItem(3, new QTableWidgetItem{"Lon."});
     setHorizontalHeaderItem(4, new QTableWidgetItem{"Depth"});
+    setHorizontalHeaderItem(5, new QTableWidgetItem{"Magnitude"});
 
     setSortingEnabled(true);
 
@@ -28,7 +29,8 @@ void QuakeMLTableWidget::AddQuakeMLEvent(QuakeMLEvent event)
         new Item{event.dateTime},
         new Item{event.latitude},
         new Item{event.longitude},
-        new Item{event.depth}
+        new Item{event.depth},
+        new Item{event.magnitude}
     };
 
     setSortingEnabled(false);

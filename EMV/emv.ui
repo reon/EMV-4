@@ -71,13 +71,13 @@
     <property name="title">
      <string>Connect</string>
     </property>
-    <addaction name="actionOpen_FDSN_Request_Dialong"/>
+    <addaction name="action_Open_FDSN_Request_Dialong"/>
     <addaction name="separator"/>
     <addaction name="action_IRIS_Test"/>
     <addaction name="action_ISTI_Test"/>
     <addaction name="separator"/>
-    <addaction name="actionSave_XML"/>
-    <addaction name="actionLoad_XML"/>
+    <addaction name="action_Save_XML"/>
+    <addaction name="action_Load_XML"/>
     <addaction name="separator"/>
     <addaction name="action_Exit"/>
    </widget>
@@ -86,6 +86,7 @@
      <string>EarthWorm</string>
     </property>
     <addaction name="action_EW_Test_Initialize"/>
+    <addaction name="action_Connect_on_Startup"/>
    </widget>
    <addaction name="menuTests"/>
    <addaction name="menuEarthWorm"/>
@@ -104,7 +105,7 @@
     <string>Test 2 - ISTI mole</string>
    </property>
   </action>
-  <action name="actionSave_XML">
+  <action name="action_Save_XML">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -116,7 +117,7 @@
     <string>Save XML</string>
    </property>
   </action>
-  <action name="actionLoad_XML">
+  <action name="action_Load_XML">
    <property name="icon">
     <iconset>
      <normaloff>:/graphics/icons/tag.png</normaloff>:/graphics/icons/tag.png</iconset>
@@ -125,7 +126,7 @@
     <string>Load XML</string>
    </property>
   </action>
-  <action name="actionOpen_FDSN_Request_Dialong">
+  <action name="action_Open_FDSN_Request_Dialong">
    <property name="icon">
     <iconset resource="Embedded/emvresources.qrc">
      <normaloff>:/Icons/database.png</normaloff>:/Icons/database.png</iconset>
@@ -146,6 +147,14 @@
   <action name="action_EW_Test_Initialize">
    <property name="text">
     <string>EW Test_Initialize</string>
+   </property>
+  </action>
+  <action name="action_Connect_on_Startup">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Connect on Startup</string>
    </property>
   </action>
  </widget>
