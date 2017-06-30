@@ -31,6 +31,7 @@ public:
 
     Marble::GeoDataCoordinates Point() const;
     Marble::GeoDataPlacemark Placemark() const;
+    QString SNCL() const;
 
 private:
 
@@ -40,7 +41,7 @@ public:
     QString network;
     QString channel;
     QString location;
-    QString stationName;
+//    QString stationName;
 
     int channelID{};
     int index{};

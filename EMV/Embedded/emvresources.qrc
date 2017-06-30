@@ -4,5 +4,6 @@
         <file>Icons/database.png</file>
         <file>Icons/tag.png</file>
         <file>Files/StationList.txt</file>
+        <file>Files/StationList2.txt</file>
     </qresource>
 </RCC>

@@ -28,19 +28,13 @@ EMV::EMV(QWidget *parent) :
     ui->StatusBar->addPermanentWidget(LongitudeLabel);
 
 
-    QFile stationListFile(":/Files/StationList.txt");
+    QFile stationListFile(":/Files/StationList2.txt");
     stationListFile.open(QIODevice::ReadOnly | QIODevice::Text);
     stations = EarthWormSite::fromIODevice(stationListFile);
 
     QVector<Marble::GeoDataCoordinates> stationCoords;
     for (auto& site : stations)
         stationCoords.append(site.Point());
-
-
-//    stationCoords.append(Marble::GeoDataCoordinates(1,1));
-//    stationCoords.append(Marble::GeoDataCoordinates(2,1));
-//    stationCoords.append(Marble::GeoDataCoordinates(4,1));
-
 
     archLayer->SetStations(stationCoords);
 
@@ -51,6 +45,7 @@ EMV::EMV(QWidget *parent) :
     EWC::emv = this;
 
     ConnectSlots();
+    ReloadGeoDocument();
 }
 
 void EMV::ConnectSlots()
@@ -61,8 +56,6 @@ void EMV::ConnectSlots()
     connect(ui->map, &MapWidget::visibleLatLonAltBoxChanged, this, &EMV::on_GlobeMove);
 
     connect(&net, SIGNAL(finished(QNetworkReply*)), this, SLOT(ReplyFinished(QNetworkReply*)));
-
-//    connect(&HypoMessageReceiver, &HypoMessage::MessageReceived, this, &EMV::on_HypoMessageReceived);
 }
 
 EMV::~EMV()
@@ -95,6 +88,7 @@ void EMV::on_tableWidget_itemSelectionChanged()
     qreal longitude = ui->tableWidget->item(row, 3)->text().toDouble();
 
     ui->map->centerOn(longitude, latitude);
+    ui->map->setZoom(2000);
 
     archLayer->SetEvent(Marble::GeoDataCoordinates(longitude, latitude, 0, Marble::GeoDataCoordinates::Degree));
     archLayer->SetShow(true);
@@ -206,7 +200,7 @@ void EMV::ReloadGeoDocument()
 
     for (auto& site : stations)
     {
-        auto placemark = new GeoDataPlacemark("Station");
+        auto placemark = new GeoDataPlacemark(site.SNCL());
 
         placemark->setCoordinate(site.longitude.toFloat(), site.latitude.toFloat(), 0, GeoDataCoordinates::Degree);
         placemark->setVisualCategory(GeoDataPlacemark::GeoDataVisualCategory::NaturalVolcano);

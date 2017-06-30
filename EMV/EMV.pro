@@ -77,3 +77,5 @@ LIBS += -L$$_PRO_FILE_PWD_/EarthWorm/lib -lew -lew_mt
 DISTFILES += \
     Notes.txt \
     Embedded/Files/StationList.txt
+    Embedded/Files/StationList2.txt
+

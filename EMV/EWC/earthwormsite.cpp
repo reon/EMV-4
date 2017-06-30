@@ -3,11 +3,11 @@
 EarthWormSite::EarthWormSite(QString line)
 {
     QStringList list = line.split(' ', QString::SkipEmptyParts);
-    if (list.count() != 12)
+    if (list.count() < 9)
         qDebug() << "EarthWormSite(): Invalid Line\n  :  " << line;
 
     //Seperate direction from number
-    constexpr int LongFloatIndex = 5;
+    constexpr int LongFloatIndex = 6;
     QString LongFloatLine = list.takeAt(LongFloatIndex);
     list.insert(LongFloatIndex, LongFloatLine.right(1));    // Direction
     list.insert(LongFloatIndex, LongFloatLine.remove(LongFloatLine.length()-1,1));    // Number
@@ -18,7 +18,7 @@ EarthWormSite::EarthWormSite(QString line)
     int charIndex = std::max(FusedLine.indexOf('N'), FusedLine.indexOf('S'));
     list.insert(FusedLineIndex, FusedLine.left(charIndex));
     list.insert(FusedLineIndex + 1, FusedLine.mid(charIndex, 1));
-    list.insert(FusedLineIndex + 2, FusedLine.mid(charIndex+1));
+//    list.insert(FusedLineIndex + 2, FusedLine.mid(charIndex+1));
 
     name = list[0];
     network = list[1];
@@ -66,4 +66,10 @@ Marble::GeoDataPlacemark EarthWormSite::Placemark() const
     placemark.setVisualCategory(GeoDataPlacemark::GeoDataVisualCategory::Bookmark);
 
     return placemark;
+}
+
+QString EarthWormSite::SNCL() const
+{
+    return name + "." + network + "." + channel;
+
 }
