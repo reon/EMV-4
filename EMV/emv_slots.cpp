@@ -15,7 +15,7 @@ void EMV::on_Start()
     //No connect on start up if Q_DEBUG
     #ifndef Q_DEBUG
     if (settings.value("start/EWHypo", false).toBool())
-        on_action_EW_Test_Initialize_triggered();
+        on_action_EW_Initialize_triggered();
     #endif
 
     runOnce = true;
@@ -50,7 +50,6 @@ void EMV::on_tableWidget_itemSelectionChanged()
 //Test function, ugly
 void EMV::on_HypoMessageReceived()
 {
-
     events.clear();
 
     #ifdef Q_DEBUG
@@ -60,20 +59,18 @@ void EMV::on_HypoMessageReceived()
     QUrl url {"http://love.isti.com:8089/mole"};
     QString query {"minmag=0&limit=200&orderby=mag&"};
 
-    QDateTime dateTimeStart = QDateTime::currentDateTime()/*.addSecs(-3600)*/;
+    int minutes = settings.value("EW/RangeInMinutes", 60 * 24).toInt();
+    QDateTime dateTimeStart = QDateTime::currentDateTime().addSecs(-1 * 60 * minutes);
     QDateTime dateTimeEnd = QDateTime::currentDateTime();
 
     dateTimeStart = dateTimeStart.toUTC();
     dateTimeEnd = dateTimeEnd.toUTC();
 
-    QString startTime = dateTimeStart.toString("yyyy-MM-dd") + "T" + "00:00:00" /*dateTimeStart.toString("hh:mm:ss")*/;
-    QString endTime = dateTimeEnd.toString("yyyy-MM-dd") + "T" + "23:59:59" /* dateTimeEnd.toString("hh:mm:ss")*/;
+//    QString startTime = dateTimeStart.toString("yyyy-MM-dd") + "T" + "00:00:00" /*dateTimeStart.toString("hh:mm:ss")*/;
+//    QString endTime = dateTimeEnd.toString("yyyy-MM-dd") + "T" + "23:59:59" /* dateTimeEnd.toString("hh:mm:ss")*/;
 
-//    QString startTime = dateTimeStart.toString("yyyy-MM-dd") + "T" + dateTimeStart.toString("hh:mm:ss");
-//    QString endTime = dateTimeEnd.toString("yyyy-MM-dd") + "T" + dateTimeEnd.toString("hh:mm:ss");
-
-//    QString startTime = GenerateDateTimeFragment(ui->StartDateTimeEdit->dateTime().toUTC());
-//    QString endTime = GenerateDateTimeFragment(ui->EndDateTimeEdit->dateTime().toUTC());
+    QString startTime = dateTimeStart.toString("yyyy-MM-dd") + "T" + dateTimeStart.toString("hh:mm:ss");
+    QString endTime = dateTimeEnd.toString("yyyy-MM-dd") + "T" + dateTimeEnd.toString("hh:mm:ss");
 
     query += "start=" + startTime + "&";
     query += "end=" + endTime;
@@ -82,14 +79,14 @@ void EMV::on_HypoMessageReceived()
 
     qDebug() << url.toString() << "\n";
 
-    emit FDSNRequest(url);
+    /*emit*/ FDSNRequest(url);
 }
 
 /// Loads QuakeML .xml file into QVector<QuakeMLEvents> events
 void EMV::on_action_Load_XML_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Open XML"), "/home/alex", tr("XML Files (*.xml)"));
+        tr("Open XML"), QDir::homePath(), tr("XML Files (*.xml)"));
 
     if (fileName.isNull()) return;
 
@@ -101,12 +98,12 @@ void EMV::on_action_Load_XML_triggered()
     QTextStream textIn(&in);
     QString XML = textIn.readAll();
 
-    emit LoadNewQuakeML(XML);
+    /*emit*/ LoadNewQuakeML(XML);
 }
 
 
 /// Open FDSN Dialog, show if already open
-void EMV::on_action_Open_FDSN_Request_Dialong_triggered()
+void EMV::on_action_Open_FDSN_Request_Dialog_triggered()
 {
     using Coords = Marble::GeoDataCoordinates;
 
@@ -116,28 +113,26 @@ void EMV::on_action_Open_FDSN_Request_Dialong_triggered()
         fdsnDialog = new FDSNRequestDialog{this, coords.latitude(Coords::Degree), coords.longitude(Coords::Degree)};
         connect(fdsnDialog, &FDSNRequestDialog::NewFDSNResponse, this, &EMV::LoadNewQuakeML);
         connect(this, &EMV::LatLongChanged, fdsnDialog, &FDSNRequestDialog::onUpdateCoords);
-
-//        connect(fdsnDialog, SIGNAL(NewFDSNResponse(QString)), this, SLOT(LoadNewQuakeML(QString)));
-//        connect(this, SIGNAL(LatLongChanged(qreal,qreal)), fdsnDialog, SLOT(onUpdateCoords(qreal, qreal)));
     }
 
     fdsnDialog->show();
 }
+
+void EMV::on_action_Settings_triggered()
+{
+    if (!settingsDialog) {
+        settingsDialog = new Settings();
+    }
+    settingsDialog->show();
+}
+
 
 void EMV::on_action_Exit_triggered()
 {
     QApplication::quit();
 }
 
-void EMV::on_action_EW_Test_Initialize_triggered()
+void EMV::on_action_EW_Initialize_triggered()
 {
     EWC::StartImportGeneric();
-
-   // QMessageBox::information(this, "EWC::StartImportGeneric()", QString::number(result));
-}
-
-void EMV::on_action_Connect_on_Startup_changed()
-{
-    settings.setValue("start/EWHypo", ui->action_Connect_on_Startup->isChecked());
-
 }

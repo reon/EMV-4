@@ -36,6 +36,7 @@
 #include "MarbleLayers/archpaintlayer.h"
 
 #include "Dialogs/fdsnrequestdialog.h"
+#include "Dialogs/settings.h"
 
 
 
@@ -51,11 +52,8 @@ public:
     explicit EMV(QWidget *parent = 0);
     ~EMV();
 
-//    static QUrl GetURL() { return QUrl("http://service.iris.edu/fdsnws/event/1/query"); }
-//    static QUrl GetURL() { return QUrl("http://www.google.com"); }
-
 signals:
-    void LatLongChanged(qreal latitude, qreal longitude);
+    void LatLongChanged(qreal latitude, qreal longitude);   // For sending coords to FDSNRequest Dialog
 
 public slots:
     void on_HypoMessageReceived();
@@ -78,14 +76,13 @@ private slots:
 
     void on_action_Load_XML_triggered();
 
-    void on_action_Open_FDSN_Request_Dialong_triggered();
+    void on_action_Open_FDSN_Request_Dialog_triggered();
 
     void on_action_Exit_triggered();
 
-    void on_action_EW_Test_Initialize_triggered();
+    void on_action_EW_Initialize_triggered();
 
-
-    void on_action_Connect_on_Startup_changed();
+    void on_action_Settings_triggered();
 
 private:
     void ConnectSlots();
@@ -97,11 +94,11 @@ private:
     void LoadSettings();
 //    void DefaultSettings();
 
-
-        //Members
+    //Members
 private:
     Ui::EMV *ui;
-        // Status bar labels
+
+    // Status bar labels
     QLabel* LatitudeNameLabel { new QLabel("Latitude : ", this) };
     QLabel* LatitudeLabel { new QLabel(this) };
     QLabel* LongitudeNameLabel { new QLabel("Longitude : ", this) };
@@ -113,16 +110,15 @@ private:
     QScopedPointer<ArchPaintLayer> archLayer;
     QScopedPointer<Marble::GeoDataDocument> geoDoc {new Marble::GeoDataDocument};
 
-        //For test net code
+    //For test net code
     QNetworkAccessManager net;
 
     QVector<QuakeMLEvent> events;
 
     QVector<EarthWormSite> stations;
 
-//    HypoMessage HypoMessageReceiver;        //Exposed private member. Look at constructor, EWC::hypomessage
-
     QSettings settings;
+    QPointer<Settings> settingsDialog;
 };
 
 #endif // EMV_H

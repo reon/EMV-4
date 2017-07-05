@@ -47,7 +47,8 @@ HEADERS  += emv.h \
     EWC/teststring.h \
     EWC/earthwormsite.h \
     EWC/hypomessage.h \
-    Dialogs/settings.h
+    Dialogs/settings.h \
+    EWC/importgenericconfig.h
 
 FORMS    += emv.ui \
     Dialogs/fdsnrequestdialog.ui \

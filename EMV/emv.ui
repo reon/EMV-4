@@ -71,7 +71,7 @@
     <property name="title">
      <string>Connect</string>
     </property>
-    <addaction name="action_Open_FDSN_Request_Dialong"/>
+    <addaction name="action_Open_FDSN_Request_Dialog"/>
     <addaction name="separator"/>
     <addaction name="action_IRIS_Test"/>
     <addaction name="action_ISTI_Test"/>
@@ -85,8 +85,9 @@
     <property name="title">
      <string>EarthWorm</string>
     </property>
-    <addaction name="action_EW_Test_Initialize"/>
-    <addaction name="action_Connect_on_Startup"/>
+    <addaction name="action_EW_Initialize"/>
+    <addaction name="separator"/>
+    <addaction name="action_Settings"/>
    </widget>
    <addaction name="menuTests"/>
    <addaction name="menuEarthWorm"/>
@@ -126,7 +127,7 @@
     <string>Load XML</string>
    </property>
   </action>
-  <action name="action_Open_FDSN_Request_Dialong">
+  <action name="action_Open_FDSN_Request_Dialog">
    <property name="icon">
     <iconset resource="Embedded/emvresources.qrc">
      <normaloff>:/Icons/database.png</normaloff>:/Icons/database.png</iconset>
@@ -144,9 +145,12 @@
     <string>Exit</string>
    </property>
   </action>
-  <action name="action_EW_Test_Initialize">
+  <action name="action_EW_Initialize">
    <property name="text">
-    <string>EW Test_Initialize</string>
+    <string>EW Initialize</string>
+   </property>
+   <property name="toolTip">
+    <string>EW Initialize</string>
    </property>
   </action>
   <action name="action_Connect_on_Startup">
@@ -155,6 +159,11 @@
    </property>
    <property name="text">
     <string>Connect on Startup</string>
+   </property>
+  </action>
+  <action name="action_Settings">
+   <property name="text">
+    <string>Settings</string>
    </property>
   </action>
  </widget>

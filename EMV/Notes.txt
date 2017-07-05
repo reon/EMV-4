@@ -15,18 +15,17 @@ EMV
     ├── QuakeML
     └── Widgets
 
-Settings.ui /.cpp /.h not used for now
+Todo:
 
+
+Settings.ui /.cpp /.h to be renamed to EarthWormSettings, derive from QDialog
+Add checks to settings
+Remove emv_settings.cpp
 
 https://forum.kde.org/viewtopic.php?f=217&t=126915
 
 
 
-Todo:
-
-Move *Layer.cpp to /Layer Folder
-
-FDSN Station requests
 Broader QuakeML processing, as neccessary
 
 

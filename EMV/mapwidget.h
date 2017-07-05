@@ -40,7 +40,7 @@ public:
 //    virtual void customPaint(Marble::GeoPainter* painter);
 
 public slots:
-    void updateData();
+//    void updateData();
 
 
 private:

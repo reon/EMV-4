@@ -5,6 +5,9 @@
 
 #include "emv.h"
 
+#include "importgenericconfig.h"
+
+/// TODO delete hypomessage
 #include "hypomessage.h"
 
 class EMV;
@@ -12,7 +15,10 @@ class EMV;
 
 namespace EWC {
     int StartImportGeneric();
+
     void * ImportGeneric(void* );
+    ImportGenericConfig DefaultConfig();
+
 
     void RaiseHypoMessageReceived();
 

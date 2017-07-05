@@ -5,7 +5,6 @@
 EMV::EMV(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::EMV),
-
     net{this}
 {
     ui->setupUi(this);
@@ -13,7 +12,6 @@ EMV::EMV(QWidget *parent) :
     //Size the two main widgets, with table being smaller
     ui->splitter->setSizes(QList<int>{180, 400});
 
-//    Marble::GeoDataCoordinates::setDefaultNotation(Marble::GeoDataCoordinates::Degree);
     eventLayer.reset(new EventLayer(ui->map, &events));
     ui->map->addLayer(eventLayer.data());
     archLayer.reset(new ArchPaintLayer(ui->map));
@@ -27,7 +25,7 @@ EMV::EMV(QWidget *parent) :
     ui->StatusBar->addPermanentWidget(LongitudeNameLabel);
     ui->StatusBar->addPermanentWidget(LongitudeLabel);
 
-
+    //Load station
     QFile stationListFile(":/Files/StationList2.txt");
     stationListFile.open(QIODevice::ReadOnly | QIODevice::Text);
     stations = EarthWormSite::fromIODevice(stationListFile);
@@ -41,7 +39,7 @@ EMV::EMV(QWidget *parent) :
     // *** Earthworm crap ***
     // A QObject to transfer to earthworm pthread for signal/slot operation
     // Exposes private member
-   // EWC::hypoMessage = &HypoMessageReceiver;
+    // EWC::hypoMessage = &HypoMessageReceiver;
     EWC::emv = this;
 
     LoadSettings();
@@ -49,10 +47,10 @@ EMV::EMV(QWidget *parent) :
     ReloadGeoDocument();        //To load stations on to map
 
 
-    //Deferred startup
+    //Deferred startup actions in on_Start()
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout,
-        [this, timer]() { this->on_Start(); timer->stop(); timer->deleteLater();});
+        [this, timer]() { timer->stop(); this->on_Start(); timer->deleteLater();});
     timer->start(500);
 }
 
@@ -85,7 +83,7 @@ void EMV::LoadNewQuakeML(QString xml)
 
     if (qxml.events.empty()) return;
 
-    //Might need to move
+    //Center map on one of the new events
     ui->map->centerOn(qxml.events[0].longitude.toFloat(), qxml.events[0].latitude.toFloat(), true);
 
     events += qxml.events;
@@ -152,8 +150,7 @@ void EMV::Test_1_IRIS_Request()
 
     url.setQuery(QUrlQuery(query));
 
-    emit FDSNRequest(url);
-    //net.get(QNetworkRequest(url));
+    /*emit*/ FDSNRequest(url);
 }
 
 void EMV::Test_2_ISTI_mole_Request()
@@ -162,7 +159,7 @@ void EMV::Test_2_ISTI_mole_Request()
     QString query {"minmag=2&limit=200&orderby=mag"};
 
     url.setQuery(QUrlQuery(query));
-    emit FDSNRequest(url);
+    /*emit*/ FDSNRequest(url);
 }
 
 
@@ -195,8 +192,9 @@ void EMV::ReplyFinished(QNetworkReply* response)
         return;
     }
 
-    emit LoadNewQuakeML(strResponse);
+    /*emit*/ LoadNewQuakeML(strResponse);
 }
+
 
 
 

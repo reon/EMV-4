@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QSettings>
+#include <QDateTime>
 
 namespace Ui {
 class Settings;
@@ -16,8 +17,12 @@ public:
     explicit Settings(QWidget *parent = 0);
     ~Settings();
 
+
+
 private slots:
-    void on_checkBox_stateChanged(int arg1);
+
+protected:
+    void closeEvent(QCloseEvent *) override;
 
 private:
     Ui::Settings *ui;

@@ -28,6 +28,31 @@ void* EWC::ImportGeneric(void *)
 {
     //setenv("EW_LOG", "/home/alex/Documents/EMV/EMV/EarthWorm/logs", 0);
 
+    ImportGenericConfig config = DefaultConfig();
+
+    QSettings settings;
+
+    //Lazy but works
+    config.SenderIPAddress = settings.value("EW/IP", QString(config.SenderIPAddress)).toString().toLatin1().data();
+    config.SenderPort = settings.value("EW/Port", qint16(config.SenderPort)).toInt();
+
+    int argc;
+    const char* argv[2];
+
+    const char* empty = "";
+    const char* configFile = "/home/alex/Documents/EMV/EMV/EarthWorm/src/data_exchange/import_generic/import_generic.d";
+
+    argv[0] = empty;
+    argv[1] = configFile;
+    argc = 2;
+
+    Initialize_Import_Generic( argc, const_cast<char**>(argv), config);
+
+    return nullptr;
+}
+
+ImportGenericConfig EWC::DefaultConfig()
+{
     ImportGenericConfig config {};
     config.MyModuleId = "MOD_IMPORT_GENERIC";
     config.RingName = "HYPO_RING";
@@ -49,21 +74,8 @@ void* EWC::ImportGeneric(void *)
 
     config.HeartBeatDebug = 1;
 
-    int argc;
-    const char* argv[2];
-
-    const char* empty = "";
-    const char* configFile = "/home/alex/Documents/EMV/EMV/EarthWorm/src/data_exchange/import_generic/import_generic.d";
-
-    argv[0] = empty;
-    argv[1] = configFile;
-    argc = 2;
-
-    Initialize_Import_Generic( argc, const_cast<char**>(argv), config);
-
-    return nullptr;
+    return config;
 }
-
 
 void EWC::RaiseHypoMessageReceived()
 {
