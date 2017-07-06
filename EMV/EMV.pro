@@ -30,9 +30,8 @@ SOURCES += main.cpp\
     EWC/teststring.cpp \
     EWC/earthwormsite.cpp \
     EWC/hypomessage.cpp \
-    emv_settings.cpp \
-    Dialogs/settings.cpp \
-    emv_slots.cpp
+    emv_slots.cpp \
+    Dialogs/earthwormsettings.cpp
 
 HEADERS  += emv.h \
     mapwidget.h \
@@ -47,13 +46,13 @@ HEADERS  += emv.h \
     EWC/teststring.h \
     EWC/earthwormsite.h \
     EWC/hypomessage.h \
-    Dialogs/settings.h \
-    EWC/importgenericconfig.h
+    EWC/importgenericconfig.h \
+    Dialogs/earthwormsettings.h
 
 FORMS    += emv.ui \
     Dialogs/fdsnrequestdialog.ui \
     Dialogs/connectdialog.ui \
-    Dialogs/settings.ui
+    Dialogs/earthwormsettings.ui
 
 LIBS +=   -L/usr/local/lib -lmarblewidget-qt5
 
@@ -82,6 +81,10 @@ LIBS += -L$$_PRO_FILE_PWD_/EarthWorm/lib -lew -lew_mt
 
 DISTFILES += \
     Notes.txt \
-    Embedded/Files/StationList.txt
-    Embedded/Files/StationList2.txt
+    Embedded/Files/StationList.txt \
+    Embedded/Files/StationList2.txt \
+    import_generic.d
+
+
+
 

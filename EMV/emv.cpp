@@ -42,7 +42,10 @@ EMV::EMV(QWidget *parent) :
     // EWC::hypoMessage = &HypoMessageReceiver;
     EWC::emv = this;
 
-    LoadSettings();
+//    ui->action_Connect_on_Startup->blockSignals(true);
+//    ui->action_Connect_on_Startup->setChecked(settings.value("start/EWHypo").toBool());
+//    ui->action_Connect_on_Startup->blockSignals(false);
+
     ConnectSlots();
     ReloadGeoDocument();        //To load stations on to map
 
@@ -200,3 +203,8 @@ void EMV::ReplyFinished(QNetworkReply* response)
 
 
 
+
+void EMV::on_action_Test_Hypo_Message_triggered()
+{
+    on_HypoMessageReceived();
+}

@@ -73,9 +73,6 @@
     </property>
     <addaction name="action_Open_FDSN_Request_Dialog"/>
     <addaction name="separator"/>
-    <addaction name="action_IRIS_Test"/>
-    <addaction name="action_ISTI_Test"/>
-    <addaction name="separator"/>
     <addaction name="action_Save_XML"/>
     <addaction name="action_Load_XML"/>
     <addaction name="separator"/>
@@ -89,8 +86,17 @@
     <addaction name="separator"/>
     <addaction name="action_Settings"/>
    </widget>
+   <widget class="QMenu" name="menuTests_2">
+    <property name="title">
+     <string>Tests</string>
+    </property>
+    <addaction name="action_IRIS_Test"/>
+    <addaction name="action_ISTI_Test"/>
+    <addaction name="action_Test_Hypo_Message"/>
+   </widget>
    <addaction name="menuTests"/>
    <addaction name="menuEarthWorm"/>
+   <addaction name="menuTests_2"/>
   </widget>
   <widget class="QStatusBar" name="StatusBar"/>
   <action name="action_IRIS_Test">
@@ -153,17 +159,17 @@
     <string>EW Initialize</string>
    </property>
   </action>
-  <action name="action_Connect_on_Startup">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Connect on Startup</string>
-   </property>
-  </action>
   <action name="action_Settings">
    <property name="text">
     <string>Settings</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+M</string>
+   </property>
+  </action>
+  <action name="action_Test_Hypo_Message">
+   <property name="text">
+    <string>Test Hypo Message</string>
    </property>
   </action>
  </widget>

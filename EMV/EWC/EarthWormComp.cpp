@@ -32,19 +32,29 @@ void* EWC::ImportGeneric(void *)
 
     QSettings settings;
 
-    //Lazy but works
-    config.SenderIPAddress = settings.value("EW/IP", QString(config.SenderIPAddress)).toString().toLatin1().data();
+    QString strSenderIPAddress = settings.value("EW/IP", "").toString().trimmed();
+    QByteArray byteArray;
+    if (!strSenderIPAddress.isEmpty()) {
+        byteArray = strSenderIPAddress.toLatin1();
+        config.SenderIPAddress = byteArray.data();
+    }
+
     config.SenderPort = settings.value("EW/Port", qint16(config.SenderPort)).toInt();
 
-    int argc;
+    int argc = 2;
     const char* argv[2];
 
     const char* empty = "";
-    const char* configFile = "/home/alex/Documents/EMV/EMV/EarthWorm/src/data_exchange/import_generic/import_generic.d";
-
     argv[0] = empty;
-    argv[1] = configFile;
-    argc = 2;
+
+//    const char* defaultConfigFile = "/home/alex/Documents/EMV/EMV/EarthWorm/src/data_exchange/import_generic/import_generic.d";
+    QString defaultConfigFile = QCoreApplication::applicationDirPath() + "//import_generic.d";
+    QString configFile = settings.value("EW/ImportFile", "").toString();
+
+    if (configFile.isEmpty())
+        argv[1] = defaultConfigFile.toLatin1().data();
+    else
+        argv[1] = configFile.toLatin1().data();
 
     Initialize_Import_Generic( argc, const_cast<char**>(argv), config);
 
@@ -63,8 +73,8 @@ ImportGenericConfig EWC::DefaultConfig()
     config.MyAliveString = "alive";
     config.MyAliveInt = 30;
 
-//    config.SenderIPAddress = "108.61.62.101";
-    config.SenderIPAddress = "192.168.4.15";
+    config.SenderIPAddress = "108.61.62.101";
+//    config.SenderIPAddress = "192.168.4.15";
 
     config.SenderPort = 16095;
     config.SenderHeartRate = 60;

@@ -36,7 +36,7 @@
 #include "MarbleLayers/archpaintlayer.h"
 
 #include "Dialogs/fdsnrequestdialog.h"
-#include "Dialogs/settings.h"
+#include "Dialogs/earthwormsettings.h"
 
 
 
@@ -84,15 +84,12 @@ private slots:
 
     void on_action_Settings_triggered();
 
+    void on_action_Test_Hypo_Message_triggered();
+
 private:
     void ConnectSlots();
     void SaveXML(QString xmlResponse); ///< For testing, Save XML on ReplayFinished()
     void ReloadGeoDocument();
-
-
-
-    void LoadSettings();
-//    void DefaultSettings();
 
     //Members
 private:
@@ -118,7 +115,7 @@ private:
     QVector<EarthWormSite> stations;
 
     QSettings settings;
-    QPointer<Settings> settingsDialog;
+
 };
 
 #endif // EMV_H
