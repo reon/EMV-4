@@ -17,6 +17,11 @@ CONFIG += c++11
 #For promoting widget in emv.ui
 INCLUDEPATH += Widgets/
 
+macx {
+    DEFINES += NO_EARTHWORM
+    INCLUDEPATH += /Users/alexm/lib/include/
+}
+
 SOURCES += main.cpp\
         emv.cpp \
     mapwidget.cpp \
@@ -54,13 +59,21 @@ FORMS    += emv.ui \
     Dialogs/connectdialog.ui \
     Dialogs/earthwormsettings.ui
 
-LIBS +=   -L/usr/local/lib -lmarblewidget-qt5
+macx {
+    LIBS += -L/Users/alexm/lib/ -lmarblewidget-qt5.0.27.1
+}
+
+unix:!macx {
+    LIBS +=   -L/usr/local/lib -lmarblewidget-qt5
+}
 
 RESOURCES += \
     Embedded/emvresources.qrc
 
 
 # ---- EarthWorm Injection ----
+
+unix:!macx {
 
 linux-g++:DEFINES += _LINUX
 linux-g++-64:DEFINES += _LINUX
@@ -78,6 +91,8 @@ HEADERS += EWC/EarthWormComp.h \
 INCLUDEPATH += EarthWorm/include
 
 LIBS += -L$$_PRO_FILE_PWD_/EarthWorm/lib -lew -lew_mt
+
+}
 
 DISTFILES += \
     Notes.txt \

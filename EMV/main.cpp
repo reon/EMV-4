@@ -2,11 +2,11 @@
 
 #include "emv.h"
 
-#include "EWC/teststring.h"
-
+#ifndef NO_EARTHWORM
 extern "C" {
 #include "EWC/EarthWormHacks.h"
 }
+#endif
 
 int main(int argc, char *argv[])
 {

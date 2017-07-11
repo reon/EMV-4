@@ -1,0 +1,21 @@
+
+( The quotes are the wrong ones, replace in terminal )
+curl —L -O “https://download.qt.io/archive/qt/5.5/5.5.1/qt-opensource-mac-x64-clang-5.5.1.dmg”
+
+install qt to default (~/Qt5.5.1/)
+
+git clone -b Applications/17.04 git://anongit.kde.org/marble ~/marble/sources
+
+cd ~/marble
+mkdir build
+cd build
+
+cmake -DCMAKE_BUILD_TYPE=release -DWITH_libshp=OFF -DWITH_libgps=OFF -DWITH_libwlocate=OFF -DWITH_KF5=FALSE -DCMAKE_PREFIX_PATH=~/Qt5.5.1/5.5/clang_64/ -DCMAKE_INSTALL_PREFIX=~/lib/ ~/marble/sources
+
+# use copy_marble_includes.sh to copy all .h to folder
+
+cp src/lib/marble/libmarblewidget*.dylib ~/lib/
+
+build EMV.pro
+
+

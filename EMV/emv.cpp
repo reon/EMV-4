@@ -40,7 +40,9 @@ EMV::EMV(QWidget *parent) :
     // A QObject to transfer to earthworm pthread for signal/slot operation
     // Exposes private member
     // EWC::hypoMessage = &HypoMessageReceiver;
+    #ifndef NO_EARTHWORM
     EWC::emv = this;
+    #endif
 
 //    ui->action_Connect_on_Startup->blockSignals(true);
 //    ui->action_Connect_on_Startup->setChecked(settings.value("start/EWHypo").toBool());

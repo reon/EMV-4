@@ -146,5 +146,7 @@ void EMV::on_action_Exit_triggered()
 
 void EMV::on_action_EW_Initialize_triggered()
 {
+    #ifndef NO_EARTHWORM
     EWC::StartImportGeneric();
+    #endif
 }
